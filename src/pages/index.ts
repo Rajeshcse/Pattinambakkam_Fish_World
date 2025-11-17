@@ -1,0 +1,9 @@
+export { Home } from './Home';
+export { Login } from './Login';
+export { Register } from './Register';
+export { Profile } from './Profile';
+export { ProfileEdit } from './ProfileEdit';
+export { VerifyEmail } from './VerifyEmail';
+export { ForgotPassword } from './ForgotPassword';
+export { ResetPassword } from './ResetPassword';
+export { ChangePassword } from './ChangePassword';
