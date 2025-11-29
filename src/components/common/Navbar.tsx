@@ -22,8 +22,17 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
         <div className="flex items-center gap-4">
           <span className="text-gray-600 hidden sm:inline">Welcome, {user.name}!</span>
           <div className="flex items-center gap-2">
-            <Link 
-              to="/profile" 
+            {user.role === 'admin' && (
+              <Link
+                to="/admin/dashboard"
+                className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition font-medium text-sm"
+                title="Admin Dashboard"
+              >
+                Admin
+              </Link>
+            )}
+            <Link
+              to="/profile"
               className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
               title={`${user.name}'s Profile`}
             >
@@ -32,9 +41,9 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               </div>
               <span className="text-sm text-gray-700 hidden sm:inline">Profile</span>
             </Link>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={logout}
               className="ml-2"
             >

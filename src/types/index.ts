@@ -136,3 +136,61 @@ export interface DecodedToken {
   iat: number;
   exp: number;
 }
+
+// Admin Dashboard Types
+export interface DashboardStats {
+  totalUsers: number;
+  verifiedUsers: number;
+  unverifiedUsers: number;
+  totalAdmins: number;
+  recentUsers: User[];
+}
+
+export interface DashboardResponse {
+  success: boolean;
+  data: DashboardStats;
+}
+
+// Admin User Management Types
+export interface UserListQueryParams {
+  page?: number;
+  limit?: number;
+  role?: 'user' | 'admin';
+  isVerified?: boolean;
+  search?: string;
+}
+
+export interface PaginationMeta {
+  currentPage: number;
+  totalPages: number;
+  totalUsers: number;
+  limit: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+export interface UserListResponse {
+  success: boolean;
+  data: {
+    users: User[];
+    pagination: PaginationMeta;
+  };
+}
+
+export interface UserResponse {
+  success: boolean;
+  data: User;
+}
+
+export interface ChangeUserRoleRequest {
+  role: 'user' | 'admin';
+}
+
+export interface ToggleVerificationRequest {
+  isVerified: boolean;
+}
+
+export interface BulkActionRequest {
+  action: 'delete' | 'verify' | 'unverify';
+  userIds: string[];
+}

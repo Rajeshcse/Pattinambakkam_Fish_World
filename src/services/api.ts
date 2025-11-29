@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import { config } from '@/config/env';
 
-// Get API base URL from environment variables
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+// Get validated API base URL from environment configuration
+const API_BASE_URL = config.apiBaseUrl;
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -12,16 +13,9 @@ const apiClient: AxiosInstance = axios.create({
   timeout: 10000,
 });
 
-// Log API configuration for debugging
-console.log('API Configuration:', {
-  baseURL: API_BASE_URL,
-  timeout: 10000
-});
-
 // Request interceptor for debugging
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    console.log(`API Request: ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
     return config;
   },
   (error) => {
@@ -33,7 +27,6 @@ apiClient.interceptors.request.use(
 // Response interceptor for debugging
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log(`API Response: ${response.status} ${response.statusText}`);
     return response;
   },
   (error) => {

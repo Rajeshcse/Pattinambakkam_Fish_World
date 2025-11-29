@@ -9,6 +9,7 @@ import {
 } from '@/types';
 import { authService } from '@/services';
 import { toast } from 'react-toastify';
+import { getErrorMessage, logError } from '@/utils/errors';
 
 // Create Auth Context
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -64,7 +65,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         authService.setAccessToken(response.accessToken);
         setToken(response.accessToken);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      logError(error, 'AuthContext.refreshAccessToken');
       authService.clearAuthData();
       setToken(null);
       setUser(null);
@@ -133,8 +135,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(response.user);
         toast.success(response.message || 'Welcome back to Kidzo!');
       }
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
+    } catch (error: unknown) {
+      logError(error, 'AuthContext.login');
+      const errorMessage = getErrorMessage(error) || 'Login failed. Please try again.';
       toast.error(errorMessage, { autoClose: 5000 });
       throw new Error(errorMessage);
     }
@@ -157,9 +160,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.error('Unexpected response structure:', response);
         throw new Error('Invalid response from server');
       }
-    } catch (error: any) {
-      console.error('Registration error details:', error);
-      const errorMessage = error.response?.data?.message || error.message || 'Registration failed. Please try again.';
+    } catch (error: unknown) {
+      logError(error, 'AuthContext.register');
+      const errorMessage = getErrorMessage(error) || 'Registration failed. Please try again.';
       toast.error(errorMessage, { autoClose: 5000 });
       throw new Error(errorMessage);
     }

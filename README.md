@@ -349,6 +349,14 @@ Check:
 - `.env.development` has correct API URL
 - CORS is enabled on backend
 
+
+**4.Admin :**
+{
+  "email": "admin@kidzo.com",
+  "password": "Admin123"
+}
+
+
 ## 📚 Additional Resources
 
 - [React Documentation](https://react.dev)
@@ -368,5 +376,6 @@ MIT
 Built with ❤️ by the Kidzo Team
 
 ---
+
 
 **Happy Coding! 🚀**

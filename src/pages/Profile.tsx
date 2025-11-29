@@ -12,6 +12,30 @@ export const Profile: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
+  const formatMemberSince = (dateString: string | undefined): string => {
+    if (!dateString) return 'Not available';
+    
+    console.log('Date string from backend:', dateString, typeof dateString);
+    
+    try {
+      const date = new Date(dateString);
+      console.log('Parsed date:', date, 'isValid:', !isNaN(date.getTime()));
+      
+      if (isNaN(date.getTime())) {
+        return 'Not available';
+      }
+      
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    } catch (error) {
+      console.log('Date parsing error:', error);
+      return 'Not available';
+    }
+  };
+
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true);
@@ -207,11 +231,10 @@ export const Profile: React.FC = () => {
               <div className="pb-4">
                 <h3 className="text-sm font-medium text-gray-500">Member Since</h3>
                 <p className="mt-1 text-lg text-gray-900">
-                  {new Date(user.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
+                  {formatMemberSince(user.createdAt)}
+                </p>
+                <p className="text-xs text-gray-400">
+                  Debug: {JSON.stringify({ createdAt: user.createdAt })}
                 </p>
               </div>
             </div>

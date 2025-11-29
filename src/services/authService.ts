@@ -10,6 +10,7 @@ import {
   ResetPasswordRequest,
   ChangePasswordRequest,
 } from '@/types';
+import { handleApiError, logError, isAxiosError } from '@/utils/errors';
 
 /**
  * Authentication Service
@@ -21,17 +22,11 @@ class AuthService {
    */
   async testConnection(): Promise<boolean> {
     try {
-      console.log('Testing API connection...');
       // Try a simple GET request to test connectivity
       await apiClient.get('/api/auth/test', { timeout: 5000 });
-      console.log('API connection test successful');
       return true;
-    } catch (error: any) {
-      console.error('API connection test failed:', {
-        message: error.message,
-        code: error.code,
-        isTimeout: error.code === 'ECONNABORTED'
-      });
+    } catch (error: unknown) {
+      logError(error, 'AuthService.testConnection');
       return false;
     }
   }
@@ -42,17 +37,7 @@ class AuthService {
   async register(data: RegisterRequest): Promise<AuthSuccessResponse> {
     // Validate data before sending
     const { name, email, phone, password } = data;
-    console.log('=== REGISTER API CALL ===');
-    console.log('Endpoint: POST /api/auth/register');
-    console.log('Base URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001');
-    console.log('Request data:', {
-      name,
-      email,
-      phone,
-      password: '[HIDDEN]',
-      hasAllFields: !!(name && email && phone && password)
-    });
-    
+
     // Validate required fields
     if (!name || !email || !phone || !password) {
       const missingFields = [];
@@ -64,52 +49,32 @@ class AuthService {
     }
     
     try {
-      const startTime = Date.now();
-      console.log('Sending registration request...');
-      
       const response = await apiClient.post<AuthSuccessResponse>(
         '/api/auth/register',
         data
       );
-      
-      const duration = Date.now() - startTime;
-      console.log(`Registration successful in ${duration}ms:`, {
-        success: response.data.success,
-        message: response.data.message,
-        hasAccessToken: !!response.data.accessToken,
-        hasRefreshToken: !!response.data.refreshToken,
-        hasUser: !!response.data.user,
-        userName: response.data.user?.name
-      });
-      
+
       return response.data;
-    } catch (error: any) {
-      const duration = Date.now() - (Date.now() - 10000); // rough estimate
-      console.error('=== REGISTER API ERROR ===');
-      console.error('Error details:', {
-        message: error.message,
-        code: error.code,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        responseData: error.response?.data,
-        isTimeout: error.code === 'ECONNABORTED',
-        isNetworkError: error.code === 'NETWORK_ERROR',
-        duration: `~${duration}ms`
-      });
-      
-      // Provide more specific error messages
-      if (error.code === 'ECONNABORTED') {
-        throw new Error('Request timeout - API server may be slow or unreachable');
+    } catch (error: unknown) {
+      logError(error, 'AuthService.register');
+
+      const appError = handleApiError(error);
+
+      // Provide more specific error messages based on error type
+      if (isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+          throw new Error('Request timeout - API server may be slow or unreachable');
+        }
+        if (error.response?.status === 400) {
+          const apiMessage = error.response.data?.message || 'Invalid registration data';
+          throw new Error(apiMessage);
+        }
+        if (error.response?.status && error.response.status >= 500) {
+          throw new Error('Server error - please try again later');
+        }
       }
-      if (error.response?.status === 400) {
-        const apiMessage = error.response.data?.message || 'Invalid registration data';
-        throw new Error(apiMessage);
-      }
-      if (error.response?.status >= 500) {
-        throw new Error('Server error - please try again later');
-      }
-      
-      throw error;
+
+      throw new Error(appError.message);
     }
   }
 

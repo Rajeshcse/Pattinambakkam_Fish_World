@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
+import { ConfirmProvider } from '@/hooks/useConfirm';
 import { PrivateRoute, PublicRoute } from '@/routes';
+import { AdminRoute } from '@/routes/AdminRoute';
 import {
   Home,
   Login,
@@ -13,14 +15,17 @@ import {
   ResetPassword,
   ChangePassword,
 } from '@/pages';
+import { AdminDashboard, AdminUsers, AdminUserDetail, AdminTest } from '@/pages/admin';
+import { ApiTest } from '@/pages/admin/ApiTest';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <Router>
-        <div className="App">
+      <ConfirmProvider>
+        <Router>
+          <div className="App">
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
@@ -91,6 +96,48 @@ const App: React.FC = () => {
               }
             />
 
+            {/* Admin Routes */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <AdminRoute>
+                  <AdminUsers />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/users/:id"
+              element={
+                <AdminRoute>
+                  <AdminUserDetail />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/test"
+              element={
+                <AdminRoute>
+                  <AdminTest />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/api-test"
+              element={
+                <AdminRoute>
+                  <ApiTest />
+                </AdminRoute>
+              }
+            />
+
             {/* Catch all - redirect to home */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
@@ -109,8 +156,9 @@ const App: React.FC = () => {
             theme="light"
             limit={3}
           />
-        </div>
-      </Router>
+          </div>
+        </Router>
+      </ConfirmProvider>
     </AuthProvider>
   );
 };

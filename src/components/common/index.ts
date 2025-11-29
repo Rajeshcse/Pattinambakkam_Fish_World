@@ -6,3 +6,5 @@ export { FormField } from './FormField';
 export { ErrorAlert } from './ErrorAlert';
 export { Navbar } from './Navbar';
 export { Layout } from './Layout';
+export { Modal } from './Modal';
+export { ConfirmDialog } from './ConfirmDialog';
