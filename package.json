@@ -1,8 +1,8 @@
 {
-  "name": "kidzo-spa",
+  "name": "Pattinambakkam_Fish_World-spa",
   "version": "1.0.0",
   "type": "module",
-  "description": "Kidzo Authentication System - React + TypeScript Frontend",
+  "description": "Pattinambakkam_Fish_World Authentication System - React + TypeScript Frontend",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

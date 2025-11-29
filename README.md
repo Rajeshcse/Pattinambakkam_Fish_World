@@ -1,6 +1,6 @@
-# Kidzo Authentication System - Frontend
+# Pattinambakkam_Fish_World Authentication System - Frontend
 
-A complete, production-ready React + TypeScript frontend application for the Kidzo Authentication API. Built with modern technologies and best practices.
+A complete, production-ready React + TypeScript frontend application for the Pattinambakkam_Fish_World Authentication API. Built with modern technologies and best practices.
 
 ## 🚀 Features
 
@@ -36,7 +36,7 @@ A complete, production-ready React + TypeScript frontend application for the Kid
 ## 📁 Project Structure
 
 ```
-kidzo-spa/
+Pattinambakkam_Fish_World-spa/
 ├── config/
 │   └── swagger.js              # API documentation
 ├── src/
@@ -113,11 +113,11 @@ The project includes `.env.development` and `.env.production` files. Update them
 ```env
 # .env.development
 VITE_API_BASE_URL=http://localhost:3001
-VITE_APP_NAME=Kidzo
+VITE_APP_NAME=Pattinambakkam_Fish_World
 
 # .env.production
-VITE_API_BASE_URL=https://api.kidzo.com
-VITE_APP_NAME=Kidzo
+VITE_API_BASE_URL=https://api.Pattinambakkam_Fish_World.com
+VITE_APP_NAME=Pattinambakkam_Fish_World
 ```
 
 ### Development
@@ -172,7 +172,7 @@ The app automatically handles:
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `VITE_API_BASE_URL` | Backend API URL | `http://localhost:3001` |
-| `VITE_APP_NAME` | Application name | `Kidzo` |
+| `VITE_APP_NAME` | Application name | `Pattinambakkam_Fish_World` |
 
 ### API Endpoints
 
@@ -352,7 +352,7 @@ Check:
 
 **4.Admin :**
 {
-  "email": "admin@kidzo.com",
+  "email": "admin@Pattinambakkam_Fish_World.com",
   "password": "Admin123"
 }
 
@@ -373,7 +373,7 @@ MIT
 
 ## 👥 Author
 
-Built with ❤️ by the Kidzo Team
+Built with ❤️ by the Pattinambakkam_Fish_World Team
 
 ---
 

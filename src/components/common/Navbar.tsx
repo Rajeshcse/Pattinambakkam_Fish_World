@@ -14,7 +14,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
     <div className={`flex justify-between items-center px-6 py-6 max-w-7xl mx-auto ${className}`}>
       <Link to="/" className="flex items-center gap-2">
         <span className="text-3xl">📚</span>
-        <h1 className="text-2xl font-bold text-gray-800">Kidzo</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Pattinambakkam_Fish_World</h1>
       </Link>
       
       {/* Dynamic Navigation based on auth state */}

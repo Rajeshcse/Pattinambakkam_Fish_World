@@ -27,7 +27,7 @@ export const Login: React.FC = () => {
 
   return (
     <AuthLayout 
-      title="Kidzo" 
+      title="Pattinambakkam_Fish_World" 
       subtitle="Welcome back to your creative journey"
     >
       <div className="space-y-6">

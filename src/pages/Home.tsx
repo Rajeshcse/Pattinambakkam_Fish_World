@@ -10,7 +10,7 @@ export const Home: React.FC = () => {
       <div className="max-w-4xl mx-auto px-6 py-16">
         <Card className="mb-8">
           <div className="text-center space-y-4">
-            <p className="text-sm text-gray-500 uppercase tracking-wide">Welcome to Kidzo</p>
+            <p className="text-sm text-gray-500 uppercase tracking-wide">Welcome to Pattinambakkam_Fish_World</p>
             <h1 className="text-3xl font-bold text-gray-900">Simple Auth Boilerplate</h1>
             <p className="text-gray-600">
               Use the navigation to access login or registration screens when needed.

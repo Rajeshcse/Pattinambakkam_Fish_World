@@ -133,7 +133,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         authService.setAuthData(response.accessToken, response.refreshToken, response.user);
         setToken(response.accessToken);
         setUser(response.user);
-        toast.success(response.message || 'Welcome back to Kidzo!');
+        toast.success(response.message || 'Welcome back to Pattinambakkam_Fish_World!');
       }
     } catch (error: unknown) {
       logError(error, 'AuthContext.login');
@@ -154,7 +154,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         authService.setAuthData(response.accessToken, response.refreshToken, response.user);
         setToken(response.accessToken);
         setUser(response.user);
-        toast.success(response.message || 'Welcome to Kidzo! Please verify your email.');
+        toast.success(response.message || 'Welcome to Pattinambakkam_Fish_World! Please verify your email.');
       } else {
         // Handle case where response structure is unexpected
         console.error('Unexpected response structure:', response);

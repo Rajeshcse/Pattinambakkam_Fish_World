@@ -54,7 +54,7 @@ export const ResetPassword: React.FC = () => {
 
   return (
     <AuthLayout
-      title="Kidzo"
+      title="Pattinambakkam_Fish_World"
       subtitle="Create your new password"
     >
       <div className="space-y-6">

@@ -38,7 +38,7 @@ export const ForgotPassword: React.FC = () => {
 
   return (
     <AuthLayout
-      title="Kidzo"
+      title="Pattinambakkam_Fish_World"
       subtitle="Reset your password securely"
     >
       <div className="space-y-6">

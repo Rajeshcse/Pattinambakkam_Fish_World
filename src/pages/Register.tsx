@@ -33,7 +33,7 @@ export const Register: React.FC = () => {
 
   return (
     <AuthLayout 
-      title="Kidzo" 
+      title="Pattinambakkam_Fish_World" 
       subtitle="Create your account to start your creative journey"
     >
       <div className="space-y-6">
