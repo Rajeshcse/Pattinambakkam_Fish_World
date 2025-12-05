@@ -7,3 +7,4 @@ export { VerifyEmail } from './VerifyEmail';
 export { ForgotPassword } from './ForgotPassword';
 export { ResetPassword } from './ResetPassword';
 export { ChangePassword } from './ChangePassword';
+export { default as Products } from './Products';

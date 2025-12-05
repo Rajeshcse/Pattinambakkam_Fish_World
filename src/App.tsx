@@ -14,8 +14,9 @@ import {
   ForgotPassword,
   ResetPassword,
   ChangePassword,
+  Products,
 } from '@/pages';
-import { AdminDashboard, AdminUsers, AdminUserDetail, AdminTest } from '@/pages/admin';
+import { AdminDashboard, AdminUsers, AdminUserDetail, AdminTest, ProductManagement, ProductForm } from '@/pages/admin';
 import { ApiTest } from '@/pages/admin/ApiTest';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
             <Route
               path="/login"
               element={
@@ -134,6 +136,30 @@ const App: React.FC = () => {
               element={
                 <AdminRoute>
                   <ApiTest />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/products"
+              element={
+                <AdminRoute>
+                  <ProductManagement />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/products/new"
+              element={
+                <AdminRoute>
+                  <ProductForm />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/products/edit/:id"
+              element={
+                <AdminRoute>
+                  <ProductForm />
                 </AdminRoute>
               }
             />

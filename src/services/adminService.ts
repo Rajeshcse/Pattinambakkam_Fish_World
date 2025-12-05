@@ -71,22 +71,45 @@ class AdminService {
       '/api/admin/users',
       { params }
     );
-    
+
     const data = response.data;
-    
-    if (data.users && data.pagination) {
+
+    // Handle case where data is the users array directly with pagination at top level
+    if (Array.isArray(data.data) && data.pagination) {
+      const transformedUsers = data.data.map((user: any) => ({
+        id: user._id || user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone || '',
+        role: user.role,
+        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
+        avatar: user.avatar,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }));
+
+      return {
+        success: data.success || true,
+        data: {
+          users: transformedUsers,
+          pagination: data.pagination
+        }
+      };
+    }
+    // Handle case where users is a property alongside pagination
+    else if (data.users && data.pagination) {
       const transformedUsers = data.users.map((user: any) => ({
         id: user._id || user.id,
         name: user.name,
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        isVerified: user.isVerified,
+        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
         avatar: user.avatar,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       }));
-      
+
       return {
         success: true,
         data: {
@@ -94,19 +117,21 @@ class AdminService {
           pagination: data.pagination
         }
       };
-    } else if (data.data && data.data.users) {
+    }
+    // Handle nested data structure
+    else if (data.data && data.data.users) {
       const transformedUsers = data.data.users.map((user: any) => ({
         id: user._id || user.id,
         name: user.name,
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        isVerified: user.isVerified,
+        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
         avatar: user.avatar,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       }));
-      
+
       return {
         success: data.success || true,
         data: {
