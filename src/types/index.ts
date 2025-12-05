@@ -194,3 +194,77 @@ export interface BulkActionRequest {
   action: 'delete' | 'verify' | 'unverify';
   userIds: string[];
 }
+
+// Product types
+export type ProductCategory = 'Fish' | 'Prawn' | 'Crab' | 'Squid';
+
+export interface FishProduct {
+  _id: string;
+  name: string;
+  category: ProductCategory;
+  price: number;
+  stock: number;
+  description: string;
+  images: string[];
+  createdBy: string;
+  isAvailable: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateProductRequest {
+  name: string;
+  category: ProductCategory;
+  price: number;
+  stock: number;
+  description?: string;
+  images?: string[];
+}
+
+export interface UpdateProductRequest {
+  name?: string;
+  category?: ProductCategory;
+  price?: number;
+  stock?: number;
+  description?: string;
+  images?: string[];
+  isAvailable?: boolean;
+}
+
+export interface ProductQueryParams {
+  page?: number;
+  limit?: number;
+  category?: ProductCategory;
+  isAvailable?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+  search?: string;
+}
+
+export interface ProductStats {
+  totalProducts: number;
+  availableProducts: number;
+  totalStock: number;
+  averagePrice: number;
+}
+
+export interface ProductPaginationMeta {
+  currentPage: number;
+  totalPages: number;
+  totalProducts: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+export interface ProductListResponse {
+  success: boolean;
+  data: FishProduct[];
+  pagination: ProductPaginationMeta;
+  stats: ProductStats;
+}
+
+export interface ProductResponse {
+  success: boolean;
+  message: string;
+  product: FishProduct;
+}

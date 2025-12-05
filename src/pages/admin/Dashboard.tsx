@@ -139,7 +139,7 @@ export const AdminDashboard: React.FC = () => {
           {/* Quick Actions */}
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Button
                 variant="primary"
                 size="lg"
@@ -147,6 +147,15 @@ export const AdminDashboard: React.FC = () => {
                 onClick={() => navigate('/admin/users')}
               >
                 Manage Users
+              </Button>
+              <Button
+                variant="primary"
+                size="lg"
+                fullWidth
+                onClick={() => navigate('/admin/products')}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                Manage Products
               </Button>
               <Button
                 variant="secondary"
@@ -170,7 +179,7 @@ export const AdminDashboard: React.FC = () => {
           {/* Recent Users */}
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Recent Users</h2>
-            {stats.recentUsers.length === 0 ? (
+            {!stats.recentUsers || stats.recentUsers.length === 0 ? (
               <Card>
                 <p className="text-gray-500">No recent users</p>
               </Card>
