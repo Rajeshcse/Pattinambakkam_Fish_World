@@ -4,8 +4,9 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  role: 'user' | 'admin';
-  isVerified: boolean;
+  role: "user" | "admin";
+  isVerified: boolean; // Email verified
+  isPhoneVerified: boolean; // Phone verified
   avatar?: string;
   createdAt: string;
   updatedAt?: string;
@@ -57,6 +58,7 @@ export interface LogoutRequest {
 export interface MessageResponse {
   success: boolean;
   message: string;
+  statusCode?: number;
   expiresIn?: string;
 }
 
@@ -67,12 +69,14 @@ export interface VerifyEmailRequest {
 
 // Password Management types
 export interface ForgotPasswordRequest {
-  email: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface ResetPasswordRequest {
-  email: string;
-  otp: string;
+  email?: string;
+  phone?: string;
+  resetCode: string;
   newPassword: string;
 }
 
@@ -155,7 +159,7 @@ export interface DashboardResponse {
 export interface UserListQueryParams {
   page?: number;
   limit?: number;
-  role?: 'user' | 'admin';
+  role?: "user" | "admin";
   isVerified?: boolean;
   search?: string;
 }
@@ -183,7 +187,7 @@ export interface UserResponse {
 }
 
 export interface ChangeUserRoleRequest {
-  role: 'user' | 'admin';
+  role: "user" | "admin";
 }
 
 export interface ToggleVerificationRequest {
@@ -191,12 +195,19 @@ export interface ToggleVerificationRequest {
 }
 
 export interface BulkActionRequest {
-  action: 'delete' | 'verify' | 'unverify';
+  action: "delete" | "verify" | "unverify";
   userIds: string[];
 }
 
 // Product types
-export type ProductCategory = 'Fish' | 'Prawn' | 'Crab' | 'Squid';
+export type ProductCategory =
+  | "Fish"
+  | "Prawn"
+  | "Crab"
+  | "Squid"
+  | "Lobsters"
+  | "Seafood Combo"
+  | "Dry Fish";
 
 export interface FishProduct {
   _id: string;
@@ -267,4 +278,10 @@ export interface ProductResponse {
   success: boolean;
   message: string;
   product: FishProduct;
+}
+
+export interface MessageResponse {
+  success: boolean;
+  message: string;
+  via?: "email" | "phone";
 }
