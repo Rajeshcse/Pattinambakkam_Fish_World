@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Formik, Form } from 'formik';
-import { toast } from 'react-toastify';
-import { useAuth } from '@/hooks/useAuth';
-import { Button, Card, Navbar } from '@/components/common';
-import { FormField } from '@/components/common/FormField';
-import { ErrorAlert } from '@/components/common/ErrorAlert';
-import { changePasswordSchema, changePasswordInitialValues } from '@/validation/schemas';
-import { authService } from '@/services';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
+import { toast } from "react-toastify";
+import { useAuth } from "@/hooks/useAuth";
+import { Button, Card, Navbar } from "@/components/common";
+import { FormField } from "@/components/common/FormField";
+import { ErrorAlert } from "@/components/common/ErrorAlert";
+import {
+  changePasswordSchema,
+  changePasswordInitialValues,
+} from "@/validation/schemas";
+import { authService, profileService } from "@/services";
 
 export const ChangePassword: React.FC = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,16 +28,29 @@ export const ChangePassword: React.FC = () => {
 
     try {
       const response = await authService.changePassword({
-        currentPassword: values.currentPassword,
+        oldPassword: values.currentPassword,
         newPassword: values.newPassword,
+        confirmPassword: values.confirmPassword,
       });
 
       if (response.success) {
-        toast.success(response.message || 'Password changed successfully! Other sessions have been logged out.');
-        navigate('/profile');
+        // Refetch user profile to update context with latest verification status
+        try {
+          const updatedProfile = await profileService.getProfile();
+          updateUser(updatedProfile);
+        } catch (err) {
+          console.error("Error fetching updated profile:", err);
+        }
+
+        toast.success(
+          response.message ||
+            "Password changed successfully! Other sessions have been logged out."
+        );
+        navigate("/profile");
       }
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 'Failed to change password';
+      const errorMessage =
+        err.response?.data?.message || "Failed to change password";
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -43,7 +59,7 @@ export const ChangePassword: React.FC = () => {
   };
 
   if (!user) {
-    navigate('/login');
+    navigate("/login");
     return null;
   }
 
@@ -53,7 +69,7 @@ export const ChangePassword: React.FC = () => {
       <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <button
-            onClick={() => navigate('/profile')}
+            onClick={() => navigate("/profile")}
             className="text-sm font-medium text-primary-600 hover:text-primary-500 flex items-center"
           >
             <svg
@@ -76,9 +92,12 @@ export const ChangePassword: React.FC = () => {
         <Card>
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Change Password</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Change Password
+              </h2>
               <p className="mt-1 text-sm text-gray-600">
-                Update your password to keep your account secure. This will log you out from all other devices.
+                Update your password to keep your account secure. This will log
+                you out from all other devices.
               </p>
             </div>
 
@@ -137,7 +156,8 @@ export const ChangePassword: React.FC = () => {
                           Security Notice
                         </h3>
                         <p className="mt-1 text-sm text-yellow-700">
-                          Changing your password will log you out from all other devices for security reasons.
+                          Changing your password will log you out from all other
+                          devices for security reasons.
                         </p>
                       </div>
                     </div>
@@ -158,7 +178,7 @@ export const ChangePassword: React.FC = () => {
                     <Button
                       type="button"
                       variant="secondary"
-                      onClick={() => navigate('/profile')}
+                      onClick={() => navigate("/profile")}
                     >
                       Cancel
                     </Button>

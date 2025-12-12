@@ -5,7 +5,7 @@
  * and general application errors.
  */
 
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError } from "axios";
 
 /**
  * Standard application error interface
@@ -38,14 +38,14 @@ export interface ValidationError {
  * Error categories for different handling strategies
  */
 export enum ErrorCategory {
-  NETWORK = 'NETWORK',
-  AUTHENTICATION = 'AUTHENTICATION',
-  AUTHORIZATION = 'AUTHORIZATION',
-  VALIDATION = 'VALIDATION',
-  NOT_FOUND = 'NOT_FOUND',
-  SERVER = 'SERVER',
-  TIMEOUT = 'TIMEOUT',
-  UNKNOWN = 'UNKNOWN',
+  NETWORK = "NETWORK",
+  AUTHENTICATION = "AUTHENTICATION",
+  AUTHORIZATION = "AUTHORIZATION",
+  VALIDATION = "VALIDATION",
+  NOT_FOUND = "NOT_FOUND",
+  SERVER = "SERVER",
+  TIMEOUT = "TIMEOUT",
+  UNKNOWN = "UNKNOWN",
 }
 
 /**
@@ -89,14 +89,15 @@ export function getErrorMessage(error: unknown): string {
   // Handle AxiosError
   if (isAxiosError(error)) {
     // Try to get message from response data
-    const responseMessage = error.response?.data?.message;
-    if (typeof responseMessage === 'string') {
+    const responseData = error.response?.data as any;
+    const responseMessage = responseData?.message;
+    if (typeof responseMessage === "string") {
       return responseMessage;
     }
 
     // Try to get error from response data
-    const responseError = error.response?.data?.error;
-    if (typeof responseError === 'string') {
+    const responseError = responseData?.error;
+    if (typeof responseError === "string") {
       return responseError;
     }
 
@@ -106,15 +107,15 @@ export function getErrorMessage(error: unknown): string {
     }
 
     // Handle specific error codes
-    if (error.code === 'ECONNABORTED') {
-      return 'Request timeout. Please try again.';
+    if (error.code === "ECONNABORTED") {
+      return "Request timeout. Please try again.";
     }
 
-    if (error.code === 'ERR_NETWORK') {
-      return 'Network error. Please check your connection.';
+    if (error.code === "ERR_NETWORK") {
+      return "Network error. Please check your connection.";
     }
 
-    return error.message || 'An unexpected error occurred';
+    return error.message || "An unexpected error occurred";
   }
 
   // Handle standard Error
@@ -123,22 +124,22 @@ export function getErrorMessage(error: unknown): string {
   }
 
   // Handle string errors
-  if (typeof error === 'string') {
+  if (typeof error === "string") {
     return error;
   }
 
   // Handle object with message property
   if (
     error &&
-    typeof error === 'object' &&
-    'message' in error &&
-    typeof error.message === 'string'
+    typeof error === "object" &&
+    "message" in error &&
+    typeof error.message === "string"
   ) {
     return error.message;
   }
 
   // Fallback
-  return 'An unexpected error occurred';
+  return "An unexpected error occurred";
 }
 
 /**
@@ -167,13 +168,14 @@ export function handleApiError(
   if (isAxiosError(error)) {
     const message = getErrorMessage(error);
     const statusCode = error.response?.status;
-    const code = error.response?.data?.code || error.code;
+    const responseData = error.response?.data as any;
+    const code = responseData?.code || error.code;
 
     return {
-      message: message || fallbackMessage || 'Request failed',
+      message: message || fallbackMessage || "Request failed",
       code,
       statusCode,
-      details: error.response?.data,
+      details: responseData as Record<string, unknown>,
       originalError: error,
     };
   }
@@ -181,22 +183,22 @@ export function handleApiError(
   // Handle standard Error
   if (isError(error)) {
     return {
-      message: error.message || fallbackMessage || 'An error occurred',
+      message: error.message || fallbackMessage || "An error occurred",
       originalError: error,
     };
   }
 
   // Handle string errors
-  if (typeof error === 'string') {
+  if (typeof error === "string") {
     return {
-      message: error || fallbackMessage || 'An error occurred',
+      message: error || fallbackMessage || "An error occurred",
       originalError: error,
     };
   }
 
   // Fallback for unknown error types
   return {
-    message: fallbackMessage || 'An unexpected error occurred',
+    message: fallbackMessage || "An unexpected error occurred",
     originalError: error,
   };
 }
@@ -228,9 +230,9 @@ export function categorizeError(error: unknown): CategorizedError {
   if (isAxiosError(error)) {
     const status = error.response?.status;
 
-    if (error.code === 'ECONNABORTED') {
+    if (error.code === "ECONNABORTED") {
       category = ErrorCategory.TIMEOUT;
-    } else if (error.code === 'ERR_NETWORK' || !status) {
+    } else if (error.code === "ERR_NETWORK" || !status) {
       category = ErrorCategory.NETWORK;
     } else if (status === 401) {
       category = ErrorCategory.AUTHENTICATION;
@@ -276,7 +278,8 @@ export function getValidationErrors(error: unknown): ValidationError[] | null {
     return null;
   }
 
-  const errors = error.response?.data?.errors;
+  const responseData = error.response?.data as any;
+  const errors = responseData?.errors;
 
   if (Array.isArray(errors) && errors.length > 0) {
     return errors as ValidationError[];
@@ -346,7 +349,7 @@ export function isNotFoundError(error: unknown): boolean {
  */
 export function logError(error: unknown, context?: string): void {
   if (import.meta.env.DEV) {
-    const prefix = context ? `[${context}]` : '[Error]';
+    const prefix = context ? `[${context}]` : "[Error]";
 
     if (isAxiosError(error)) {
       console.error(`${prefix} API Error:`, {

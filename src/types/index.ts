@@ -5,8 +5,10 @@ export interface User {
   email: string;
   phone: string;
   role: "user" | "admin";
-  isVerified: boolean; // Email verified
-  isPhoneVerified: boolean; // Phone verified
+  isVerified?: boolean; // Email verified (legacy)
+  isPhoneVerified?: boolean; // Phone verified (legacy)
+  emailVerified?: boolean; // Email verified
+  phoneVerified?: boolean; // Phone verified
   avatar?: string;
   createdAt: string;
   updatedAt?: string;
@@ -81,8 +83,9 @@ export interface ResetPasswordRequest {
 }
 
 export interface ChangePasswordRequest {
-  currentPassword: string;
+  oldPassword: string;
   newPassword: string;
+  confirmPassword: string;
 }
 
 export interface ProfileSuccessResponse {

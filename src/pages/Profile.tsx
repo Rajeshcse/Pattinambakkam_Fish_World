@@ -12,6 +12,16 @@ export const Profile: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
+  // Normalize user data to handle both field name formats
+  const normalizeUser = (userData: User): User => {
+    return {
+      ...userData,
+      isVerified: userData.isVerified ?? userData.emailVerified ?? false,
+      isPhoneVerified:
+        userData.isPhoneVerified ?? userData.phoneVerified ?? false,
+    };
+  };
+
   const formatMemberSince = (dateString: string | undefined): string => {
     if (!dateString) return "Not available";
 
@@ -41,8 +51,9 @@ export const Profile: React.FC = () => {
       setLoading(true);
       try {
         const profileData = await profileService.getProfile();
-        setUser(profileData);
-        updateUser(profileData);
+        const normalizedUser = normalizeUser(profileData);
+        setUser(normalizedUser);
+        updateUser(normalizedUser);
       } catch (error) {
         console.error("Error fetching profile:", error);
       } finally {
@@ -50,10 +61,9 @@ export const Profile: React.FC = () => {
       }
     };
 
-    if (!authUser) {
-      fetchProfile();
-    }
-  }, [authUser, updateUser]);
+    // Always fetch fresh profile data from backend
+    fetchProfile();
+  }, [updateUser]);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -155,6 +165,42 @@ export const Profile: React.FC = () => {
             </div>
           )}
 
+          {/* Email Verification Banner */}
+          {!user.isVerified && (
+            <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-blue-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                </div>
+                <div className="ml-3 flex-1">
+                  <h3 className="text-sm font-medium text-blue-800">
+                    Email Address Not Verified
+                  </h3>
+                  <p className="mt-1 text-sm text-blue-700">
+                    Verify your email address to ensure you can recover your
+                    account.
+                  </p>
+                  <div className="mt-3">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => navigate("/verify-email")}
+                    >
+                      Verify Email
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <Card>
             <div className="space-y-6">
               {/* Profile Picture */}
@@ -191,6 +237,34 @@ export const Profile: React.FC = () => {
                   </h3>
                   <div className="mt-1 flex items-center gap-2">
                     <p className="text-lg text-gray-900">{user.email}</p>
+                    {user.isVerified ? (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                        <svg
+                          className="w-3 h-3 mr-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Verified
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                        <svg
+                          className="w-3 h-3 mr-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+                        Not Verified
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -230,7 +304,7 @@ export const Profile: React.FC = () => {
                   <h3 className="text-sm font-medium text-gray-500">
                     Account Status
                   </h3>
-                  <div className="mt-1 flex items-center gap-2">
+                  <div className="mt-1 flex items-center gap-2 flex-wrap">
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-medium ${
                         user.isPhoneVerified
@@ -242,6 +316,17 @@ export const Profile: React.FC = () => {
                         ? "Phone Verified"
                         : "Phone Not Verified"}
                     </span>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        user.isVerified
+                          ? "bg-green-100 text-green-800"
+                          : "bg-blue-100 text-blue-800"
+                      }`}
+                    >
+                      {user.isVerified
+                        ? "Email Verified"
+                        : "Email Not Verified"}
+                    </span>
                   </div>
                 </div>
 
@@ -251,9 +336,6 @@ export const Profile: React.FC = () => {
                   </h3>
                   <p className="mt-1 text-lg text-gray-900">
                     {formatMemberSince(user.createdAt)}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    Debug: {JSON.stringify({ createdAt: user.createdAt })}
                   </p>
                 </div>
               </div>

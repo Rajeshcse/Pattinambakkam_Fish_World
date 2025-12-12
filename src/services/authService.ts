@@ -237,8 +237,8 @@ class AuthService {
    * Change password for authenticated user
    */
   async changePassword(data: ChangePasswordRequest): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
-      "/change-password",
+    const response = await apiClient.put<MessageResponse>(
+      "/api/auth/change-password",
       data
     );
     return response.data;
