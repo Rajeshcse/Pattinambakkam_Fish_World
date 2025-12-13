@@ -1,4 +1,9 @@
-import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, {
+  AxiosInstance,
+  AxiosError,
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+} from 'axios';
 import { config } from '@/config/env';
 
 // Get validated API base URL from environment configuration
@@ -30,7 +35,9 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error(`API Response Error: ${error.response?.status || 'Network Error'}`);
+    console.error(
+      `API Response Error: ${error.response?.status || 'Network Error'}`
+    );
     return Promise.reject(error);
   }
 );
@@ -42,7 +49,10 @@ let failedQueue: Array<{
   reject: (reason?: unknown) => void;
 }> = [];
 
-const processQueue = (error: AxiosError | null, token: string | null = null) => {
+const processQueue = (
+  error: AxiosError | null,
+  token: string | null = null
+) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
@@ -71,9 +81,15 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
-    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
       const requestUrl = originalRequest.url ?? '';
 
       // Don't retry for auth endpoints or refresh token endpoint
@@ -118,10 +134,10 @@ apiClient.interceptors.response.use(
 
         try {
           // Attempt to refresh the token
-          const response = await axios.post<{ success: boolean; accessToken: string }>(
-            `${API_BASE_URL}/api/auth/refresh-token`,
-            { refreshToken }
-          );
+          const response = await axios.post<{
+            success: boolean;
+            accessToken: string;
+          }>(`${API_BASE_URL}/api/auth/refresh-token`, { refreshToken });
 
           if (response.data.success && response.data.accessToken) {
             const newAccessToken = response.data.accessToken;

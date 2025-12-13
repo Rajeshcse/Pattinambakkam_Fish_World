@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Formik, Form } from "formik";
-import { toast } from "react-toastify";
-import { useAuth } from "@/hooks/useAuth";
-import { Button } from "@/components/common";
-import { FormField } from "@/components/common/FormField";
-import { ErrorAlert } from "@/components/common/ErrorAlert";
-import { AuthLayout } from "@/components/auth/AuthLayout";
-import { otpSchema, otpInitialValues } from "@/validation/schemas";
-import { authService } from "@/services";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
+import { toast } from 'react-toastify';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/common';
+import { FormField } from '@/components/common/FormField';
+import { ErrorAlert } from '@/components/common/ErrorAlert';
+import { AuthLayout } from '@/components/auth/AuthLayout';
+import { otpSchema, otpInitialValues } from '@/validation/schemas';
+import { authService } from '@/services';
 
 export const VerifyEmail: React.FC = () => {
   const { user, updateUser } = useAuth();
@@ -22,8 +22,8 @@ export const VerifyEmail: React.FC = () => {
   // Redirect if user is already verified
   useEffect(() => {
     if (user?.isVerified) {
-      toast.info("Your email is already verified");
-      navigate("/profile");
+      toast.info('Your email is already verified');
+      navigate('/profile');
     }
   }, [user, navigate]);
 
@@ -48,12 +48,12 @@ export const VerifyEmail: React.FC = () => {
         setOtpSent(true);
         setResendCooldown(60); // 60 second cooldown
         toast.success(
-          response.message || "Verification OTP sent to your email"
+          response.message || 'Verification OTP sent to your email'
         );
       }
     } catch (err: any) {
       const errorMessage =
-        err.response?.data?.message || "Failed to send verification email";
+        err.response?.data?.message || 'Failed to send verification email';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -72,12 +72,12 @@ export const VerifyEmail: React.FC = () => {
       if (response.success) {
         setResendCooldown(60);
         toast.success(
-          response.message || "New verification OTP sent to your email"
+          response.message || 'New verification OTP sent to your email'
         );
       }
     } catch (err: any) {
       const errorMessage =
-        err.response?.data?.message || "Failed to resend verification email";
+        err.response?.data?.message || 'Failed to resend verification email';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -96,12 +96,12 @@ export const VerifyEmail: React.FC = () => {
         if (user) {
           updateUser({ ...user, isVerified: true });
         }
-        toast.success(response.message || "Email verified successfully!");
-        navigate("/profile");
+        toast.success(response.message || 'Email verified successfully!');
+        navigate('/profile');
       }
     } catch (err: any) {
       const errorMessage =
-        err.response?.data?.message || "Failed to verify email";
+        err.response?.data?.message || 'Failed to verify email';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -110,21 +110,21 @@ export const VerifyEmail: React.FC = () => {
   };
 
   if (!user) {
-    navigate("/login");
+    navigate('/login');
     return null;
   }
 
   return (
     <AuthLayout
-      title="Verify Email"
-      subtitle="Secure your account with email verification"
+      title='Verify Email'
+      subtitle='Secure your account with email verification'
     >
-      <div className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+      <div className='space-y-6'>
+        <div className='text-center'>
+          <h2 className='text-2xl font-bold text-gray-900'>
             Email Verification
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className='mt-2 text-sm text-gray-600'>
             We'll send a 6-digit OTP to <strong>{user.email}</strong>
           </p>
         </div>
@@ -134,15 +134,15 @@ export const VerifyEmail: React.FC = () => {
         )}
 
         {!otpSent ? (
-          <div className="space-y-4">
-            <p className="text-sm text-gray-600">
+          <div className='space-y-4'>
+            <p className='text-sm text-gray-600'>
               Click the button below to receive a verification code in your
               email. The code will expire in 10 minutes.
             </p>
             <Button
-              type="button"
-              variant="primary"
-              size="lg"
+              type='button'
+              variant='primary'
+              size='lg'
               fullWidth
               loading={isSendingOTP}
               onClick={handleSendOTP}
@@ -157,39 +157,39 @@ export const VerifyEmail: React.FC = () => {
             onSubmit={handleVerifyOTP}
           >
             {(formik) => (
-              <Form className="space-y-4">
+              <Form className='space-y-4'>
                 <div>
                   <FormField
-                    name="otp"
-                    label="Verification Code"
-                    placeholder="Enter 6-digit OTP"
+                    name='otp'
+                    label='Verification Code'
+                    placeholder='Enter 6-digit OTP'
                     formik={formik}
                     maxLength={6}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className='mt-1 text-xs text-gray-500'>
                     Enter the 6-digit code sent to your email
                   </p>
                 </div>
 
                 <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
+                  type='submit'
+                  variant='primary'
+                  size='lg'
                   fullWidth
                   loading={isSubmitting}
                 >
                   Verify Email
                 </Button>
 
-                <div className="text-center">
+                <div className='text-center'>
                   <button
-                    type="button"
+                    type='button'
                     onClick={handleResendOTP}
                     disabled={resendCooldown > 0 || isSendingOTP}
                     className={`text-sm font-medium ${
                       resendCooldown > 0
-                        ? "text-gray-400 cursor-not-allowed"
-                        : "text-primary-600 hover:text-primary-500"
+                        ? 'text-gray-400 cursor-not-allowed'
+                        : 'text-primary-600 hover:text-primary-500'
                     }`}
                   >
                     {resendCooldown > 0
@@ -202,11 +202,11 @@ export const VerifyEmail: React.FC = () => {
           </Formik>
         )}
 
-        <div className="text-center">
+        <div className='text-center'>
           <button
-            type="button"
-            onClick={() => navigate("/profile")}
-            className="text-sm font-medium text-gray-600 hover:text-gray-500"
+            type='button'
+            onClick={() => navigate('/profile')}
+            className='text-sm font-medium text-gray-600 hover:text-gray-500'
           >
             Skip for now
           </button>

@@ -1,4 +1,4 @@
-import apiClient from "./api";
+import apiClient from './api';
 import {
   RegisterRequest,
   LoginRequest,
@@ -9,8 +9,8 @@ import {
   ForgotPasswordRequest,
   ResetPasswordRequest,
   ChangePasswordRequest,
-} from "@/types";
-import { handleApiError, logError, isAxiosError } from "@/utils/errors";
+} from '@/types';
+import { handleApiError, logError, isAxiosError } from '@/utils/errors';
 
 /**
  * Authentication Service
@@ -23,10 +23,10 @@ class AuthService {
   async testConnection(): Promise<boolean> {
     try {
       // Try a simple GET request to test connectivity
-      await apiClient.get("/api/auth/test", { timeout: 5000 });
+      await apiClient.get('/api/auth/test', { timeout: 5000 });
       return true;
     } catch (error: unknown) {
-      logError(error, "AuthService.testConnection");
+      logError(error, 'AuthService.testConnection');
       return false;
     }
   }
@@ -41,40 +41,40 @@ class AuthService {
     // Validate required fields
     if (!name || !email || !phone || !password) {
       const missingFields = [];
-      if (!name) missingFields.push("name");
-      if (!email) missingFields.push("email");
-      if (!phone) missingFields.push("phone");
-      if (!password) missingFields.push("password");
-      throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
+      if (!name) missingFields.push('name');
+      if (!email) missingFields.push('email');
+      if (!phone) missingFields.push('phone');
+      if (!password) missingFields.push('password');
+      throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
     }
 
     try {
       const response = await apiClient.post<AuthSuccessResponse>(
-        "/api/auth/register",
+        '/api/auth/register',
         data
       );
 
       return response.data;
     } catch (error: unknown) {
-      logError(error, "AuthService.register");
+      logError(error, 'AuthService.register');
 
       const appError = handleApiError(error);
 
       // Provide more specific error messages based on error type
       if (isAxiosError(error)) {
-        if (error.code === "ECONNABORTED") {
+        if (error.code === 'ECONNABORTED') {
           throw new Error(
-            "Request timeout - API server may be slow or unreachable"
+            'Request timeout - API server may be slow or unreachable'
           );
         }
         if (error.response?.status === 400) {
           const apiMessage =
             (error.response.data as any)?.message ||
-            "Invalid registration data";
+            'Invalid registration data';
           throw new Error(apiMessage);
         }
         if (error.response?.status && error.response.status >= 500) {
-          throw new Error("Server error - please try again later");
+          throw new Error('Server error - please try again later');
         }
       }
 
@@ -87,7 +87,7 @@ class AuthService {
    */
   async login(credentials: LoginRequest): Promise<AuthSuccessResponse> {
     const response = await apiClient.post<AuthSuccessResponse>(
-      "/api/auth/login",
+      '/api/auth/login',
       credentials
     );
     return response.data;
@@ -98,7 +98,7 @@ class AuthService {
    */
   async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
     const response = await apiClient.post<RefreshTokenResponse>(
-      "/api/auth/refresh-token",
+      '/api/auth/refresh-token',
       { refreshToken }
     );
     return response.data;
@@ -108,7 +108,7 @@ class AuthService {
    * Logout user from current device
    */
   async logout(refreshToken: string): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>("/api/auth/logout", {
+    const response = await apiClient.post<MessageResponse>('/api/auth/logout', {
       refreshToken,
     });
     return response.data;
@@ -119,7 +119,7 @@ class AuthService {
    */
   async logoutAll(): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
-      "/api/auth/logout-all"
+      '/api/auth/logout-all'
     );
     return response.data;
   }
@@ -131,7 +131,7 @@ class AuthService {
    */
   async sendVerificationEmail(): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
-      "/api/auth/send-verification-email"
+      '/api/auth/send-verification-email'
     );
     return response.data;
   }
@@ -141,7 +141,7 @@ class AuthService {
    */
   async verifyEmail(data: VerifyEmailRequest): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
-      "/api/auth/verify-email",
+      '/api/auth/verify-email',
       data
     );
     return response.data;
@@ -152,7 +152,7 @@ class AuthService {
    */
   async resendVerificationEmail(): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
-      "/api/auth/resend-verification-email"
+      '/api/auth/resend-verification-email'
     );
     return response.data;
   }
@@ -166,7 +166,7 @@ class AuthService {
     phone: string;
   }): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
-      "/api/auth/send-phone-otp",
+      '/api/auth/send-phone-otp',
       data
     );
 
@@ -180,7 +180,7 @@ class AuthService {
     phone: string;
   }): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
-      "/api/auth/resend-phone-otp",
+      '/api/auth/resend-phone-otp',
       data
     );
     return response.data as MessageResponse;
@@ -193,14 +193,14 @@ class AuthService {
   }): Promise<MessageResponse> {
     try {
       const response = await apiClient.post<MessageResponse>(
-        "/api/auth/verify-phone-otp",
+        '/api/auth/verify-phone-otp',
         data
       );
       return response.data as MessageResponse;
     } catch (err: any) {
       return {
         success: false,
-        message: err.response?.data?.message || "Verification failed",
+        message: err.response?.data?.message || 'Verification failed',
       };
     }
   }
@@ -210,7 +210,7 @@ class AuthService {
    */
   async forgotPassword(data: ForgotPasswordRequest): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
-      "/api/auth/forgot-password",
+      '/api/auth/forgot-password',
       data
     );
     return response.data;
@@ -221,13 +221,13 @@ class AuthService {
     phone?: string;
     otp: string;
   }) {
-    const res = await apiClient.post("/api/auth/verify-password", data);
+    const res = await apiClient.post('/api/auth/verify-password', data);
     return res.data;
   }
 
   async resetPassword(data: ResetPasswordRequest): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
-      "/api/auth/reset-password",
+      '/api/auth/reset-password',
       data
     );
     return response.data;
@@ -238,7 +238,7 @@ class AuthService {
    */
   async changePassword(data: ChangePasswordRequest): Promise<MessageResponse> {
     const response = await apiClient.put<MessageResponse>(
-      "/api/auth/change-password",
+      '/api/auth/change-password',
       data
     );
     return response.data;
@@ -250,30 +250,30 @@ class AuthService {
    * Store authentication tokens and user data
    */
   setAuthData(accessToken: string, refreshToken: string, user: any): void {
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   /**
    * Update only the access token
    */
   setAccessToken(accessToken: string): void {
-    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem('accessToken', accessToken);
   }
 
   /**
    * Get stored access token
    */
   getAccessToken(): string | null {
-    return localStorage.getItem("accessToken");
+    return localStorage.getItem('accessToken');
   }
 
   /**
    * Get stored refresh token
    */
   getRefreshToken(): string | null {
-    return localStorage.getItem("refreshToken");
+    return localStorage.getItem('refreshToken');
   }
 
   /**
@@ -287,7 +287,7 @@ class AuthService {
    * Get stored user data
    */
   getUser(): any | null {
-    const user = localStorage.getItem("user");
+    const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
 
@@ -295,18 +295,18 @@ class AuthService {
    * Update stored user data
    */
   setUser(user: any): void {
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   /**
    * Clear all authentication data
    */
   clearAuthData(): void {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("user");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
     // Also remove old token key for backward compatibility
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
   }
 
   /**

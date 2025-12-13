@@ -22,6 +22,9 @@ dist-ssr/
 .env.local
 .env.*.local
 
+# Prettier configuration
+.prettierrc
+
 # Logs
 logs
 *.log

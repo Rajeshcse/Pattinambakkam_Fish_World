@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useFormik } from "formik";
-import { useAuth } from "./useAuth";
-import { profileService } from "@/services";
-import { profileUpdateSchema } from "@/validation/schemas";
-import { User } from "@/types";
+import { useState } from 'react';
+import { useFormik } from 'formik';
+import { useAuth } from './useAuth';
+import { profileService } from '@/services';
+import { profileUpdateSchema } from '@/validation/schemas';
+import { User } from '@/types';
 
 interface ProfileEditFormCallbacks {
   onSuccess?: (updatedUser: User) => void; // Changed to accept User parameter
@@ -13,14 +13,14 @@ interface ProfileEditFormCallbacks {
 
 export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
   const { user, updateUser } = useAuth();
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const initialValues = {
-    name: user?.name || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
-    avatar: user?.avatar || "",
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    avatar: user?.avatar || '',
   };
 
   const formik = useFormik({
@@ -28,12 +28,12 @@ export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
     validationSchema: profileUpdateSchema,
     onSubmit: async (values) => {
       if (!user) {
-        setError("User not found");
-        callbacks?.onError?.("User not found");
+        setError('User not found');
+        callbacks?.onError?.('User not found');
         return;
       }
 
-      setError("");
+      setError('');
       setIsSubmitting(true);
 
       try {
@@ -57,17 +57,17 @@ export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
         const message =
           error instanceof Error
             ? error.message
-            : "Failed to update profile. Please try again.";
+            : 'Failed to update profile. Please try again.';
         setError(message);
         callbacks?.onError?.(message);
-        console.error("Profile update error:", error);
+        console.error('Profile update error:', error);
       } finally {
         setIsSubmitting(false);
       }
     },
   });
 
-  const dismissError = () => setError("");
+  const dismissError = () => setError('');
 
   return {
     formik,

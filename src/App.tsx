@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-} from "react-router-dom";
-import { AuthProvider } from "@/context/AuthContext";
-import { ConfirmProvider } from "@/hooks/useConfirm";
-import { PrivateRoute, PublicRoute } from "@/routes";
-import { AdminRoute } from "@/routes/AdminRoute";
+} from 'react-router-dom';
+import { AuthProvider } from '@/context/AuthContext';
+import { ConfirmProvider } from '@/hooks/useConfirm';
+import { PrivateRoute, PublicRoute } from '@/routes';
+import { AdminRoute } from '@/routes/AdminRoute';
 
 import {
   Home,
@@ -21,9 +21,9 @@ import {
   ResetPassword,
   ChangePassword,
   Products,
-} from "@/pages";
-import { PhoneVerification } from "@/pages/PhoneVerification";
-import VerifyResetOTP from "@/pages/verifyResetOTP";
+} from '@/pages';
+import { PhoneVerification } from '@/pages/PhoneVerification';
+import VerifyResetOTP from '@/pages/verifyResetOTP';
 import {
   AdminDashboard,
   AdminUsers,
@@ -31,23 +31,23 @@ import {
   AdminTest,
   ProductManagement,
   ProductForm,
-} from "@/pages/admin";
-import { ApiTest } from "@/pages/admin/ApiTest";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+} from '@/pages/admin';
+import { ApiTest } from '@/pages/admin/ApiTest';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <ConfirmProvider>
         <Router>
-          <div className="App">
+          <div className='App'>
             <Routes>
               {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
+              <Route path='/' element={<Home />} />
+              <Route path='/products' element={<Products />} />
               <Route
-                path="/login"
+                path='/login'
                 element={
                   <PublicRoute>
                     <Login />
@@ -55,7 +55,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/register"
+                path='/register'
                 element={
                   <PublicRoute>
                     <Register />
@@ -63,7 +63,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/forgot-password"
+                path='/forgot-password'
                 element={
                   <PublicRoute>
                     <ForgotPassword />
@@ -71,7 +71,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/verify-password"
+                path='/verify-password'
                 element={
                   <PublicRoute>
                     <VerifyResetOTP />
@@ -79,7 +79,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/reset-password"
+                path='/reset-password'
                 element={
                   <PublicRoute>
                     <ResetPassword />
@@ -87,7 +87,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/verify-phone"
+                path='/verify-phone'
                 element={
                   <PrivateRoute>
                     <PhoneVerification />
@@ -95,7 +95,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/verify-email"
+                path='/verify-email'
                 element={
                   <PrivateRoute>
                     <VerifyEmail />
@@ -104,7 +104,7 @@ const App: React.FC = () => {
               />
               {/* Protected Routes */}
               <Route
-                path="/profile"
+                path='/profile'
                 element={
                   <PrivateRoute>
                     <Profile />
@@ -112,7 +112,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/profile/edit"
+                path='/profile/edit'
                 element={
                   <PrivateRoute>
                     <ProfileEdit />
@@ -120,7 +120,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/verify-email"
+                path='/verify-email'
                 element={
                   <PrivateRoute>
                     <VerifyEmail />
@@ -128,7 +128,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/change-password"
+                path='/change-password'
                 element={
                   <PrivateRoute>
                     <ChangePassword />
@@ -138,7 +138,7 @@ const App: React.FC = () => {
 
               {/* Admin Routes */}
               <Route
-                path="/admin/dashboard"
+                path='/admin/dashboard'
                 element={
                   <AdminRoute>
                     <AdminDashboard />
@@ -146,7 +146,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/admin/users"
+                path='/admin/users'
                 element={
                   <AdminRoute>
                     <AdminUsers />
@@ -154,7 +154,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/admin/users/:id"
+                path='/admin/users/:id'
                 element={
                   <AdminRoute>
                     <AdminUserDetail />
@@ -162,7 +162,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/admin/test"
+                path='/admin/test'
                 element={
                   <AdminRoute>
                     <AdminTest />
@@ -170,7 +170,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/admin/api-test"
+                path='/admin/api-test'
                 element={
                   <AdminRoute>
                     <ApiTest />
@@ -178,7 +178,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/admin/products"
+                path='/admin/products'
                 element={
                   <AdminRoute>
                     <ProductManagement />
@@ -186,7 +186,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/admin/products/new"
+                path='/admin/products/new'
                 element={
                   <AdminRoute>
                     <ProductForm />
@@ -194,7 +194,7 @@ const App: React.FC = () => {
                 }
               />
               <Route
-                path="/admin/products/edit/:id"
+                path='/admin/products/edit/:id'
                 element={
                   <AdminRoute>
                     <ProductForm />
@@ -203,12 +203,12 @@ const App: React.FC = () => {
               />
 
               {/* Catch all - redirect to home */}
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path='*' element={<Navigate to='/' replace />} />
             </Routes>
 
             {/* Toast notifications */}
             <ToastContainer
-              position="top-center"
+              position='top-center'
               autoClose={5000}
               hideProgressBar={false}
               newestOnTop={true}
@@ -217,7 +217,7 @@ const App: React.FC = () => {
               pauseOnFocusLoss={false}
               draggable={true}
               pauseOnHover={true}
-              theme="light"
+              theme='light'
               limit={3}
             />
           </div>

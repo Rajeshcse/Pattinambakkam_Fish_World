@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -24,20 +21,20 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       screens: {
-        'xs': '475px',
+        xs: '475px',
       },
       animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'swim': 'swim 20s linear infinite',
-        'bubble': 'bubble 8s ease-in infinite',
-        'wave': 'wave 3s ease-in-out infinite',
-        'shimmer': 'shimmer 2s infinite',
+        float: 'float 6s ease-in-out infinite',
+        swim: 'swim 20s linear infinite',
+        bubble: 'bubble 8s ease-in infinite',
+        wave: 'wave 3s ease-in-out infinite',
+        shimmer: 'shimmer 2s infinite',
         'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-        'sparkle': 'sparkle 2s ease-in-out infinite',
+        sparkle: 'sparkle 2s ease-in-out infinite',
         'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
         'scale-pulse': 'scale-pulse 2s ease-in-out infinite',
       },
     },
   },
   plugins: [],
-}
+};

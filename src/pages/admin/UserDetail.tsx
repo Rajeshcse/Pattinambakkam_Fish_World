@@ -6,7 +6,12 @@ import { User } from '@/types';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/hooks/useAuth';
 import { useConfirm } from '@/hooks/useConfirm';
-import { getErrorMessage, logError, isNotFoundError, isAuthorizationError } from '@/utils/errors';
+import {
+  getErrorMessage,
+  logError,
+  isNotFoundError,
+  isAuthorizationError,
+} from '@/utils/errors';
 
 export const AdminUserDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -93,7 +98,7 @@ export const AdminUserDetail: React.FC = () => {
         // Refresh user data to get latest state
         await fetchUser();
       }
-      
+
       setIsEditing(false);
       toast.success('User updated successfully');
     } catch (error: unknown) {
@@ -157,7 +162,8 @@ export const AdminUserDetail: React.FC = () => {
       fetchUser();
     } catch (error: unknown) {
       logError(error, 'UserDetail.handleChangeRole');
-      const errorMessage = getErrorMessage(error) || 'Failed to change user role';
+      const errorMessage =
+        getErrorMessage(error) || 'Failed to change user role';
       toast.error(errorMessage);
     }
   };
@@ -179,26 +185,29 @@ export const AdminUserDetail: React.FC = () => {
 
     try {
       await adminService.toggleUserVerification(id, newStatus);
-      toast.success(`User ${action === 'verify' ? 'verified' : 'unverified'} successfully`);
+      toast.success(
+        `User ${action === 'verify' ? 'verified' : 'unverified'} successfully`
+      );
       fetchUser();
     } catch (error: unknown) {
       logError(error, 'UserDetail.handleToggleVerification');
-      const errorMessage = getErrorMessage(error) || 'Failed to toggle verification';
+      const errorMessage =
+        getErrorMessage(error) || 'Failed to toggle verification';
       toast.error(errorMessage);
     }
   };
 
   if (loading) {
-    return <Loading fullScreen text="Loading user details..." />;
+    return <Loading fullScreen text='Loading user details...' />;
   }
 
   if (!user) {
     return (
       <Layout>
-        <div className="py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto">
+        <div className='py-12 px-4 sm:px-6 lg:px-8'>
+          <div className='max-w-3xl mx-auto'>
             <Card>
-              <p className="text-red-500">User not found</p>
+              <p className='text-red-500'>User not found</p>
             </Card>
           </div>
         </div>
@@ -208,67 +217,75 @@ export const AdminUserDetail: React.FC = () => {
 
   return (
     <Layout>
-      <div className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="mb-8 flex justify-between items-center">
+      <div className='py-12 px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-3xl mx-auto'>
+          <div className='mb-8 flex justify-between items-center'>
             <div>
-              <h1 className="text-4xl font-bold text-primary-600 mb-2">User Details</h1>
-              <p className="text-gray-600">View and manage user information</p>
+              <h1 className='text-4xl font-bold text-primary-600 mb-2'>
+                User Details
+              </h1>
+              <p className='text-gray-600'>View and manage user information</p>
             </div>
-            <Button variant="outline" onClick={() => navigate('/admin/users')}>
+            <Button variant='outline' onClick={() => navigate('/admin/users')}>
               Back to Users
             </Button>
           </div>
 
           <Card>
             {isEditing ? (
-              <form onSubmit={handleUpdateUser} className="space-y-6">
+              <form onSubmit={handleUpdateUser} className='space-y-6'>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     Name
                   </label>
                   <input
-                    type="text"
+                    type='text'
                     value={editForm.name}
-                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, name: e.target.value })
+                    }
+                    className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500'
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     Email
                   </label>
                   <input
-                    type="email"
+                    type='email'
                     value={editForm.email}
-                    onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, email: e.target.value })
+                    }
+                    className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500'
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     Phone
                   </label>
                   <input
-                    type="tel"
+                    type='tel'
                     value={editForm.phone}
-                    onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, phone: e.target.value })
+                    }
+                    className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500'
                     required
                   />
                 </div>
 
-                <div className="flex gap-4">
-                  <Button type="submit" variant="primary" fullWidth>
+                <div className='flex gap-4'>
+                  <Button type='submit' variant='primary' fullWidth>
                     Save Changes
                   </Button>
                   <Button
-                    type="button"
-                    variant="outline"
+                    type='button'
+                    variant='outline'
                     fullWidth
                     onClick={() => {
                       setIsEditing(false);
@@ -284,19 +301,19 @@ export const AdminUserDetail: React.FC = () => {
                 </div>
               </form>
             ) : (
-              <div className="space-y-6">
+              <div className='space-y-6'>
                 {/* Profile Picture */}
-                <div className="flex justify-center">
-                  <div className="relative">
+                <div className='flex justify-center'>
+                  <div className='relative'>
                     {user.avatar ? (
                       <img
                         src={user.avatar}
                         alt={user.name}
-                        className="w-32 h-32 rounded-full object-cover border-4 border-primary-200"
+                        className='w-32 h-32 rounded-full object-cover border-4 border-primary-200'
                       />
                     ) : (
-                      <div className="w-32 h-32 rounded-full bg-primary-200 flex items-center justify-center border-4 border-primary-300">
-                        <span className="text-4xl font-bold text-primary-600">
+                      <div className='w-32 h-32 rounded-full bg-primary-200 flex items-center justify-center border-4 border-primary-300'>
+                        <span className='text-4xl font-bold text-primary-600'>
                           {user.name.charAt(0).toUpperCase()}
                         </span>
                       </div>
@@ -305,30 +322,40 @@ export const AdminUserDetail: React.FC = () => {
                 </div>
 
                 {/* User Information */}
-                <div className="space-y-4">
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">User ID</h3>
-                    <p className="mt-1 text-lg text-gray-900 font-mono">{user.id}</p>
+                <div className='space-y-4'>
+                  <div className='border-b pb-4'>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      User ID
+                    </h3>
+                    <p className='mt-1 text-lg text-gray-900 font-mono'>
+                      {user.id}
+                    </p>
                   </div>
 
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Full Name</h3>
-                    <p className="mt-1 text-lg text-gray-900">{user.name}</p>
+                  <div className='border-b pb-4'>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Full Name
+                    </h3>
+                    <p className='mt-1 text-lg text-gray-900'>{user.name}</p>
                   </div>
 
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Email Address</h3>
-                    <p className="mt-1 text-lg text-gray-900">{user.email}</p>
+                  <div className='border-b pb-4'>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Email Address
+                    </h3>
+                    <p className='mt-1 text-lg text-gray-900'>{user.email}</p>
                   </div>
 
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Phone Number</h3>
-                    <p className="mt-1 text-lg text-gray-900">{user.phone}</p>
+                  <div className='border-b pb-4'>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Phone Number
+                    </h3>
+                    <p className='mt-1 text-lg text-gray-900'>{user.phone}</p>
                   </div>
 
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Role</h3>
-                    <div className="mt-1 flex items-center gap-2">
+                  <div className='border-b pb-4'>
+                    <h3 className='text-sm font-medium text-gray-500'>Role</h3>
+                    <div className='mt-1 flex items-center gap-2'>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           user.role === 'admin'
@@ -341,9 +368,11 @@ export const AdminUserDetail: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Verification Status</h3>
-                    <div className="mt-1 flex items-center gap-2">
+                  <div className='border-b pb-4'>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Verification Status
+                    </h3>
+                    <div className='mt-1 flex items-center gap-2'>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           user.isVerified
@@ -356,9 +385,11 @@ export const AdminUserDetail: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Member Since</h3>
-                    <p className="mt-1 text-lg text-gray-900">
+                  <div className='pb-4'>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Member Since
+                    </h3>
+                    <p className='mt-1 text-lg text-gray-900'>
                       {new Date(user.createdAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
@@ -369,39 +400,41 @@ export const AdminUserDetail: React.FC = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="space-y-4 pt-4">
-                  <div className="flex gap-4">
+                <div className='space-y-4 pt-4'>
+                  <div className='flex gap-4'>
                     <Button
-                      variant="primary"
-                      size="md"
+                      variant='primary'
+                      size='md'
                       fullWidth
                       onClick={() => setIsEditing(true)}
                     >
                       Edit User
                     </Button>
                     <Button
-                      variant="secondary"
-                      size="md"
+                      variant='secondary'
+                      size='md'
                       fullWidth
                       onClick={handleChangeRole}
                       disabled={user.id === currentUser?.id}
                     >
-                      {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
+                      {user.role === 'admin'
+                        ? 'Demote to User'
+                        : 'Promote to Admin'}
                     </Button>
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className='flex gap-4'>
                     <Button
-                      variant="outline"
-                      size="md"
+                      variant='outline'
+                      size='md'
                       fullWidth
                       onClick={handleToggleVerification}
                     >
                       {user.isVerified ? 'Unverify Email' : 'Verify Email'}
                     </Button>
                     <Button
-                      variant="danger"
-                      size="md"
+                      variant='danger'
+                      size='md'
                       fullWidth
                       onClick={handleDeleteUser}
                       disabled={user.id === currentUser?.id}

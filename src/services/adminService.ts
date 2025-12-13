@@ -13,53 +13,54 @@ import {
 
 class AdminService {
   async getDashboardStats(): Promise<DashboardResponse> {
-    const response = await apiClient.get(
-      '/api/admin/dashboard'
-    );
-    
+    const response = await apiClient.get('/api/admin/dashboard');
+
     const data = response.data;
-    
+
     if (data.dashboard && data.dashboard.overview) {
       const overview = data.dashboard.overview;
-      
-      const transformedRecentUsers = (data.dashboard.recentUsers || []).map((user: any) => ({
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone || '',
-        role: user.role,
-        isVerified: user.isVerified,
-        avatar: user.avatar,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      }));
-      
+
+      const transformedRecentUsers = (data.dashboard.recentUsers || []).map(
+        (user: any) => ({
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone || '',
+          role: user.role,
+          isVerified: user.isVerified,
+          avatar: user.avatar,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        })
+      );
+
       const transformedStats = {
         totalUsers: overview.totalUsers || 0,
         verifiedUsers: overview.verifiedUsers || 0,
-        unverifiedUsers: (overview.totalUsers || 0) - (overview.verifiedUsers || 0),
+        unverifiedUsers:
+          (overview.totalUsers || 0) - (overview.verifiedUsers || 0),
         totalAdmins: overview.adminUsers || 0,
-        recentUsers: transformedRecentUsers
+        recentUsers: transformedRecentUsers,
       };
-      
+
       return {
         success: data.success || true,
-        data: transformedStats
+        data: transformedStats,
       };
     } else if (data.dashboard) {
       return {
         success: data.success || true,
-        data: data.dashboard
+        data: data.dashboard,
       };
     } else if (data.data) {
       return {
         success: data.success || true,
-        data: data.data
+        data: data.data,
       };
     } else if (data.totalUsers !== undefined) {
       return {
         success: true,
-        data: data
+        data: data,
       };
     } else {
       return data;
@@ -67,10 +68,7 @@ class AdminService {
   }
 
   async getAllUsers(params?: UserListQueryParams): Promise<UserListResponse> {
-    const response = await apiClient.get(
-      '/api/admin/users',
-      { params }
-    );
+    const response = await apiClient.get('/api/admin/users', { params });
 
     const data = response.data;
 
@@ -82,18 +80,21 @@ class AdminService {
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
+        isVerified:
+          user.isEmailVerified !== undefined
+            ? user.isEmailVerified
+            : user.isVerified,
         avatar: user.avatar,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt
+        updatedAt: user.updatedAt,
       }));
 
       return {
         success: data.success || true,
         data: {
           users: transformedUsers,
-          pagination: data.pagination
-        }
+          pagination: data.pagination,
+        },
       };
     }
     // Handle case where users is a property alongside pagination
@@ -104,18 +105,21 @@ class AdminService {
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
+        isVerified:
+          user.isEmailVerified !== undefined
+            ? user.isEmailVerified
+            : user.isVerified,
         avatar: user.avatar,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt
+        updatedAt: user.updatedAt,
       }));
 
       return {
         success: true,
         data: {
           users: transformedUsers,
-          pagination: data.pagination
-        }
+          pagination: data.pagination,
+        },
       };
     }
     // Handle nested data structure
@@ -126,18 +130,21 @@ class AdminService {
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
+        isVerified:
+          user.isEmailVerified !== undefined
+            ? user.isEmailVerified
+            : user.isVerified,
         avatar: user.avatar,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt
+        updatedAt: user.updatedAt,
       }));
 
       return {
         success: data.success || true,
         data: {
           users: transformedUsers,
-          pagination: data.data.pagination
-        }
+          pagination: data.data.pagination,
+        },
       };
     } else {
       return data;
@@ -145,21 +152,19 @@ class AdminService {
   }
 
   async getUserById(userId: string): Promise<UserResponse> {
-    const response = await apiClient.get(
-      `/api/admin/users/${userId}`
-    );
-    
+    const response = await apiClient.get(`/api/admin/users/${userId}`);
+
     const data = response.data;
-    
+
     if (data.user) {
       return {
         success: data.success || true,
-        data: data.user
+        data: data.user,
       };
     } else if (data.data) {
       return {
         success: data.success || true,
-        data: data.data
+        data: data.data,
       };
     } else {
       return data;
@@ -170,22 +175,19 @@ class AdminService {
     userId: string,
     data: ProfileUpdateRequest
   ): Promise<UserResponse> {
-    const response = await apiClient.put(
-      `/api/admin/users/${userId}`,
-      data
-    );
-    
+    const response = await apiClient.put(`/api/admin/users/${userId}`, data);
+
     const responseData = response.data;
-    
+
     if (responseData.user) {
       return {
         success: responseData.success || true,
-        data: responseData.user
+        data: responseData.user,
       };
     } else if (responseData.data) {
       return {
         success: responseData.success || true,
-        data: responseData.data
+        data: responseData.data,
       };
     } else {
       return responseData;

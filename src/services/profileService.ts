@@ -15,9 +15,8 @@ class ProfileService {
    * Get authenticated user profile
    */
   async getProfile(): Promise<User> {
-    const response = await apiClient.get<ProfileSuccessResponse>(
-      '/api/auth/profile'
-    );
+    const response =
+      await apiClient.get<ProfileSuccessResponse>('/api/auth/profile');
     return response.data.user;
   }
 
