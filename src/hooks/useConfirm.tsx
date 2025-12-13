@@ -5,7 +5,13 @@
  * Replaces window.confirm() with a beautiful modal component.
  */
 
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+} from 'react';
 import { ConfirmDialog } from '@/components/common';
 
 interface ConfirmOptions {
@@ -26,7 +32,9 @@ interface ConfirmContextValue {
   confirm: (options: ConfirmOptions) => Promise<boolean>;
 }
 
-const ConfirmContext = createContext<ConfirmContextValue | undefined>(undefined);
+const ConfirmContext = createContext<ConfirmContextValue | undefined>(
+  undefined
+);
 
 interface ConfirmProviderProps {
   children: ReactNode;
@@ -49,7 +57,9 @@ interface ConfirmState extends ConfirmOptions {
  * </ConfirmProvider>
  * ```
  */
-export const ConfirmProvider: React.FC<ConfirmProviderProps> = ({ children }) => {
+export const ConfirmProvider: React.FC<ConfirmProviderProps> = ({
+  children,
+}) => {
   const [confirmState, setConfirmState] = useState<ConfirmState | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 

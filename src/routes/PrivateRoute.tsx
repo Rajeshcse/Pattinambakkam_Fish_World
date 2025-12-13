@@ -15,8 +15,8 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <Loading fullScreen text="Authenticating..." />;
+    return <Loading fullScreen text='Authenticating...' />;
   }
 
-  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+  return isAuthenticated ? <>{children}</> : <Navigate to='/login' replace />;
 };

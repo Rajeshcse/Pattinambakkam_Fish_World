@@ -51,22 +51,22 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       title={title}
-      size="sm"
+      size='sm'
       closeOnOverlayClick={!isLoading}
       closeOnEscape={!isLoading}
       showCloseButton={!isLoading}
     >
-      <div className="space-y-6">
+      <div className='space-y-6'>
         {/* Message */}
-        <p className="text-gray-600 text-sm leading-relaxed">{message}</p>
+        <p className='text-gray-600 text-sm leading-relaxed'>{message}</p>
 
         {/* Actions */}
-        <div className="flex gap-3 justify-end">
+        <div className='flex gap-3 justify-end'>
           <Button
-            variant="outline"
+            variant='outline'
             onClick={onClose}
             disabled={isLoading}
-            size="md"
+            size='md'
           >
             {cancelText}
           </Button>
@@ -74,7 +74,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             variant={variant}
             onClick={handleConfirm}
             loading={isLoading}
-            size="md"
+            size='md'
           >
             {confirmText}
           </Button>

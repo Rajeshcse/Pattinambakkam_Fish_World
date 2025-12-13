@@ -5,7 +5,10 @@ export interface User {
   email: string;
   phone: string;
   role: 'user' | 'admin';
-  isVerified: boolean;
+  isVerified?: boolean; // Email verified (legacy)
+  isPhoneVerified?: boolean; // Phone verified (legacy)
+  emailVerified?: boolean; // Email verified
+  phoneVerified?: boolean; // Phone verified
   avatar?: string;
   createdAt: string;
   updatedAt?: string;
@@ -57,6 +60,7 @@ export interface LogoutRequest {
 export interface MessageResponse {
   success: boolean;
   message: string;
+  statusCode?: number;
   expiresIn?: string;
 }
 
@@ -67,18 +71,21 @@ export interface VerifyEmailRequest {
 
 // Password Management types
 export interface ForgotPasswordRequest {
-  email: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface ResetPasswordRequest {
-  email: string;
-  otp: string;
+  email?: string;
+  phone?: string;
+  resetCode: string;
   newPassword: string;
 }
 
 export interface ChangePasswordRequest {
-  currentPassword: string;
+  oldPassword: string;
   newPassword: string;
+  confirmPassword: string;
 }
 
 export interface ProfileSuccessResponse {
@@ -196,7 +203,14 @@ export interface BulkActionRequest {
 }
 
 // Product types
-export type ProductCategory = 'Fish' | 'Prawn' | 'Crab' | 'Squid';
+export type ProductCategory =
+  | 'Fish'
+  | 'Prawn'
+  | 'Crab'
+  | 'Squid'
+  | 'Lobsters'
+  | 'Seafood Combo'
+  | 'Dry Fish';
 
 export interface FishProduct {
   _id: string;
@@ -267,4 +281,10 @@ export interface ProductResponse {
   success: boolean;
   message: string;
   product: FishProduct;
+}
+
+export interface MessageResponse {
+  success: boolean;
+  message: string;
+  via?: 'email' | 'phone';
 }

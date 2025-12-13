@@ -47,7 +47,7 @@ class AuthService {
       if (!password) missingFields.push('password');
       throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
     }
-    
+
     try {
       const response = await apiClient.post<AuthSuccessResponse>(
         '/api/auth/register',
@@ -63,10 +63,14 @@ class AuthService {
       // Provide more specific error messages based on error type
       if (isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
-          throw new Error('Request timeout - API server may be slow or unreachable');
+          throw new Error(
+            'Request timeout - API server may be slow or unreachable'
+          );
         }
         if (error.response?.status === 400) {
-          const apiMessage = error.response.data?.message || 'Invalid registration data';
+          const apiMessage =
+            (error.response.data as any)?.message ||
+            'Invalid registration data';
           throw new Error(apiMessage);
         }
         if (error.response?.status && error.response.status >= 500) {
@@ -104,10 +108,9 @@ class AuthService {
    * Logout user from current device
    */
   async logout(refreshToken: string): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/logout',
-      { refreshToken }
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/logout', {
+      refreshToken,
+    });
     return response.data;
   }
 
@@ -154,10 +157,56 @@ class AuthService {
     return response.data;
   }
 
-  // Password Management Methods
+  // Phone Verification Methods
 
   /**
-   * Request password reset OTP
+   * Send phone verification OTP via SMS
+   */
+  async sendPhoneVerificationOTP(data: {
+    phone: string;
+  }): Promise<MessageResponse> {
+    const response = await apiClient.post<MessageResponse>(
+      '/api/auth/send-phone-otp',
+      data
+    );
+
+    return response.data as MessageResponse;
+  }
+
+  /**
+   * Resend phone verification OTP via SMS
+   */
+  async resendPhoneVerificationOTP(data: {
+    phone: string;
+  }): Promise<MessageResponse> {
+    const response = await apiClient.post<MessageResponse>(
+      '/api/auth/resend-phone-otp',
+      data
+    );
+    return response.data as MessageResponse;
+  }
+
+  // Verify phone OTP
+  async verifyPhoneOTP(data: {
+    phone: string;
+    otp: string;
+  }): Promise<MessageResponse> {
+    try {
+      const response = await apiClient.post<MessageResponse>(
+        '/api/auth/verify-phone-otp',
+        data
+      );
+      return response.data as MessageResponse;
+    } catch (err: any) {
+      return {
+        success: false,
+        message: err.response?.data?.message || 'Verification failed',
+      };
+    }
+  }
+
+  /**
+   * Send password reset OTP to phone using email lookup
    */
   async forgotPassword(data: ForgotPasswordRequest): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
@@ -167,9 +216,15 @@ class AuthService {
     return response.data;
   }
 
-  /**
-   * Reset password with OTP
-   */
+  async verifyPasswordResetOTP(data: {
+    email?: string;
+    phone?: string;
+    otp: string;
+  }) {
+    const res = await apiClient.post('/api/auth/verify-password', data);
+    return res.data;
+  }
+
   async resetPassword(data: ResetPasswordRequest): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>(
       '/api/auth/reset-password',
@@ -182,7 +237,7 @@ class AuthService {
    * Change password for authenticated user
    */
   async changePassword(data: ChangePasswordRequest): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
+    const response = await apiClient.put<MessageResponse>(
       '/api/auth/change-password',
       data
     );

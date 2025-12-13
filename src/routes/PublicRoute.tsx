@@ -13,5 +13,5 @@ interface PublicRouteProps {
 export const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
-  return isAuthenticated ? <Navigate to="/profile" replace /> : <>{children}</>;
+  return isAuthenticated ? <Navigate to='/profile' replace /> : <>{children}</>;
 };

@@ -11,16 +11,20 @@ export const schemas = {
       role: { type: 'string', enum: ['user', 'admin'], example: 'user' },
       isVerified: { type: 'boolean', example: false },
       avatar: { type: 'string', example: '' },
-      createdAt: { type: 'string', format: 'date-time', example: '2024-01-01T00:00:00.000Z' }
-    }
+      createdAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2024-01-01T00:00:00.000Z',
+      },
+    },
   },
 
   Error: {
     type: 'object',
     properties: {
       success: { type: 'boolean', example: false },
-      message: { type: 'string', example: 'Error message' }
-    }
+      message: { type: 'string', example: 'Error message' },
+    },
   },
 
   ValidationError: {
@@ -36,10 +40,10 @@ export const schemas = {
             type: { type: 'string' },
             msg: { type: 'string' },
             path: { type: 'string' },
-            location: { type: 'string' }
-          }
-        }
-      }
-    }
-  }
+            location: { type: 'string' },
+          },
+        },
+      },
+    },
+  },
 };

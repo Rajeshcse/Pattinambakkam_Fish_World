@@ -26,15 +26,18 @@ export const useLoginForm = (callbacks?: LoginFormCallbacks) => {
         const isEmail = values.identifier.includes('@');
         const credentials: LoginRequest = {
           password: values.password,
-          ...(isEmail ? { email: values.identifier } : { phone: values.identifier }),
+          ...(isEmail
+            ? { email: values.identifier }
+            : { phone: values.identifier }),
         };
 
         await login(credentials);
         callbacks?.onSuccess?.();
       } catch (error) {
-        const message = error instanceof Error 
-          ? error.message 
-          : 'Login failed. Please check your credentials.';
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'Login failed. Please check your credentials.';
         setError(message);
         callbacks?.onError?.(message);
         console.error('Login error:', error);

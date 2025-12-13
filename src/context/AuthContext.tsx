@@ -1,4 +1,10 @@
-import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from 'react';
 // jwt-decode is avoided here to keep decoding lightweight and avoid import shape issues
 import {
   User,
@@ -12,7 +18,9 @@ import { toast } from 'react-toastify';
 import { getErrorMessage, logError } from '@/utils/errors';
 
 // Create Auth Context
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -90,7 +98,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             // Try to refresh the token if we have a refresh token
             if (storedRefreshToken) {
               try {
-                const response = await authService.refreshToken(storedRefreshToken);
+                const response =
+                  await authService.refreshToken(storedRefreshToken);
                 if (response.success && response.accessToken) {
                   authService.setAccessToken(response.accessToken);
                   setToken(response.accessToken);
@@ -129,15 +138,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.login(credentials);
 
-      if (response.success && response.accessToken && response.refreshToken && response.user) {
-        authService.setAuthData(response.accessToken, response.refreshToken, response.user);
+      if (
+        response.success &&
+        response.accessToken &&
+        response.refreshToken &&
+        response.user
+      ) {
+        authService.setAuthData(
+          response.accessToken,
+          response.refreshToken,
+          response.user
+        );
         setToken(response.accessToken);
         setUser(response.user);
-        toast.success(response.message || 'Welcome back to Pattinambakkam_Fish_World!');
+        toast.success(
+          response.message || 'Welcome back to Pattinambakkam_Fish_World!'
+        );
       }
     } catch (error: unknown) {
       logError(error, 'AuthContext.login');
-      const errorMessage = getErrorMessage(error) || 'Login failed. Please try again.';
+      const errorMessage =
+        getErrorMessage(error) || 'Login failed. Please try again.';
       toast.error(errorMessage, { autoClose: 5000 });
       throw new Error(errorMessage);
     }
@@ -150,11 +171,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.register(data);
 
-      if (response.success && response.accessToken && response.refreshToken && response.user) {
-        authService.setAuthData(response.accessToken, response.refreshToken, response.user);
+      if (
+        response.success &&
+        response.accessToken &&
+        response.refreshToken &&
+        response.user
+      ) {
+        authService.setAuthData(
+          response.accessToken,
+          response.refreshToken,
+          response.user
+        );
         setToken(response.accessToken);
         setUser(response.user);
-        toast.success(response.message || 'Welcome to Pattinambakkam_Fish_World! Please verify your email.');
+        toast.success(
+          response.message ||
+            'Welcome to Pattinambakkam_Fish_World! Please verify your email.'
+        );
       } else {
         // Handle case where response structure is unexpected
         console.error('Unexpected response structure:', response);
@@ -162,7 +195,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     } catch (error: unknown) {
       logError(error, 'AuthContext.register');
-      const errorMessage = getErrorMessage(error) || 'Registration failed. Please try again.';
+      const errorMessage =
+        getErrorMessage(error) || 'Registration failed. Please try again.';
       toast.error(errorMessage, { autoClose: 5000 });
       throw new Error(errorMessage);
     }

@@ -89,13 +89,14 @@ export function getErrorMessage(error: unknown): string {
   // Handle AxiosError
   if (isAxiosError(error)) {
     // Try to get message from response data
-    const responseMessage = error.response?.data?.message;
+    const responseData = error.response?.data as any;
+    const responseMessage = responseData?.message;
     if (typeof responseMessage === 'string') {
       return responseMessage;
     }
 
     // Try to get error from response data
-    const responseError = error.response?.data?.error;
+    const responseError = responseData?.error;
     if (typeof responseError === 'string') {
       return responseError;
     }
@@ -167,13 +168,14 @@ export function handleApiError(
   if (isAxiosError(error)) {
     const message = getErrorMessage(error);
     const statusCode = error.response?.status;
-    const code = error.response?.data?.code || error.code;
+    const responseData = error.response?.data as any;
+    const code = responseData?.code || error.code;
 
     return {
       message: message || fallbackMessage || 'Request failed',
       code,
       statusCode,
-      details: error.response?.data,
+      details: responseData as Record<string, unknown>,
       originalError: error,
     };
   }
@@ -276,7 +278,8 @@ export function getValidationErrors(error: unknown): ValidationError[] | null {
     return null;
   }
 
-  const errors = error.response?.data?.errors;
+  const responseData = error.response?.data as any;
+  const errors = responseData?.errors;
 
   if (Array.isArray(errors) && errors.length > 0) {
     return errors as ValidationError[];

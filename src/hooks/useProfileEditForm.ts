@@ -6,7 +6,7 @@ import { profileUpdateSchema } from '@/validation/schemas';
 import { User } from '@/types';
 
 interface ProfileEditFormCallbacks {
-  onSuccess?: () => void;
+  onSuccess?: (updatedUser: User) => void; // Changed to accept User parameter
   onError?: (errorMessage: string) => void;
   onNoChanges?: () => void;
 }
@@ -51,11 +51,13 @@ export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
 
         const updatedUser = await profileService.updateProfile(changedValues);
         updateUser(updatedUser);
-        callbacks?.onSuccess?.();
+        // Pass updated user to callback
+        callbacks?.onSuccess?.(updatedUser);
       } catch (error) {
-        const message = error instanceof Error
-          ? error.message
-          : 'Failed to update profile. Please try again.';
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'Failed to update profile. Please try again.';
         setError(message);
         callbacks?.onError?.(message);
         console.error('Profile update error:', error);
