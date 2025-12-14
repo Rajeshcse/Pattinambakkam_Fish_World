@@ -25,19 +25,14 @@ export const EmptyCart: React.FC = () => {
           </svg>
         </div>
 
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">
-          Your cart is empty
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">Your cart is empty</h2>
 
         <p className="text-gray-600 mb-8">
-          Looks like you haven't added any fresh seafood to your cart yet. Start shopping to fill it up!
+          Looks like you haven't added any fresh seafood to your cart yet. Start shopping to fill it
+          up!
         </p>
 
-        <Button
-          onClick={() => navigate('/products')}
-          variant="primary"
-          size="lg"
-        >
+        <Button onClick={() => navigate('/products')} variant="primary" size="lg">
           🐟 Browse Products
         </Button>
       </div>

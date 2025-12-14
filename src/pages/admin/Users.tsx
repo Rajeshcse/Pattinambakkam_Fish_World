@@ -38,7 +38,7 @@ export const AdminUsers: React.FC = () => {
       if (search) params.search = search;
 
       const response = await adminService.getAllUsers(params);
-      
+
       // Handle different response structures
       if (response && response.data && response.data.users) {
         setUsers(response.data.users);
@@ -92,13 +92,13 @@ export const AdminUsers: React.FC = () => {
 
   const handleSelectUser = (userId: string) => {
     setSelectedUsers((prev) =>
-      prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
+      prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId],
     );
   };
 
   const handleSelectAll = () => {
     if (!users || users.length === 0) return;
-    
+
     if (selectedUsers.length === users.length && selectedUsers.length > 0) {
       setSelectedUsers([]);
     } else {
@@ -135,7 +135,9 @@ export const AdminUsers: React.FC = () => {
 
     try {
       await adminService.bulkUserAction(action, selectedUsers);
-      toast.success(`Successfully ${action === 'delete' ? 'deleted' : action === 'verify' ? 'verified' : 'unverified'} ${selectedUsers.length} user(s)`);
+      toast.success(
+        `Successfully ${action === 'delete' ? 'deleted' : action === 'verify' ? 'verified' : 'unverified'} ${selectedUsers.length} user(s)`,
+      );
       setSelectedUsers([]);
       fetchUsers();
     } catch (error: unknown) {
@@ -228,25 +230,13 @@ export const AdminUsers: React.FC = () => {
                 <span className="text-sm font-medium text-gray-700">
                   {selectedUsers.length} user(s) selected
                 </span>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => handleBulkAction('verify')}
-                >
+                <Button variant="primary" size="sm" onClick={() => handleBulkAction('verify')}>
                   Verify Selected
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => handleBulkAction('unverify')}
-                >
+                <Button variant="secondary" size="sm" onClick={() => handleBulkAction('unverify')}>
                   Unverify Selected
                 </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleBulkAction('delete')}
-                >
+                <Button variant="danger" size="sm" onClick={() => handleBulkAction('delete')}>
                   Delete Selected
                 </Button>
               </div>
@@ -267,7 +257,9 @@ export const AdminUsers: React.FC = () => {
                           <input
                             type="checkbox"
                             checked={users.length > 0 && selectedUsers.length === users.length}
-                            indeterminate={selectedUsers.length > 0 && selectedUsers.length < users.length}
+                            indeterminate={
+                              selectedUsers.length > 0 && selectedUsers.length < users.length
+                            }
                             onChange={handleSelectAll}
                             className="rounded"
                           />
@@ -293,57 +285,59 @@ export const AdminUsers: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {users && users.length > 0 ? users.map((user) => (
-                        <tr key={user.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4">
-                            <input
-                              type="checkbox"
-                              checked={selectedUsers.includes(user.id)}
-                              onChange={() => handleSelectUser(user.id)}
-                              className="rounded"
-                            />
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">{user.email}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">{user.phone}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                user.role === 'admin'
-                                  ? 'bg-blue-100 text-blue-800'
-                                  : 'bg-gray-100 text-gray-800'
-                              }`}
-                            >
-                              {user.role}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                user.isVerified
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-yellow-100 text-yellow-800'
-                              }`}
-                            >
-                              {user.isVerified ? 'Verified' : 'Unverified'}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button
-                              onClick={() => navigate(`/admin/users/${user.id}`)}
-                              className="text-primary-600 hover:text-primary-900"
-                            >
-                              View
-                            </button>
-                          </td>
-                        </tr>
-                      )) : (
+                      {users && users.length > 0 ? (
+                        users.map((user) => (
+                          <tr key={user.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4">
+                              <input
+                                type="checkbox"
+                                checked={selectedUsers.includes(user.id)}
+                                onChange={() => handleSelectUser(user.id)}
+                                className="rounded"
+                              />
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-500">{user.email}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-500">{user.phone}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span
+                                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                  user.role === 'admin'
+                                    ? 'bg-blue-100 text-blue-800'
+                                    : 'bg-gray-100 text-gray-800'
+                                }`}
+                              >
+                                {user.role}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span
+                                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                  user.isVerified
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-yellow-100 text-yellow-800'
+                                }`}
+                              >
+                                {user.isVerified ? 'Verified' : 'Unverified'}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <button
+                                onClick={() => navigate(`/admin/users/${user.id}`)}
+                                className="text-primary-600 hover:text-primary-900"
+                              >
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
                         <tr>
                           <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
                             {loading ? 'Loading users...' : 'No users found'}

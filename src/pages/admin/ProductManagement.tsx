@@ -20,7 +20,10 @@ const ProductManagement: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | ''>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; product: FishProduct | null }>({
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    show: boolean;
+    product: FishProduct | null;
+  }>({
     show: false,
     product: null,
   });
@@ -125,7 +128,12 @@ const ProductManagement: React.FC = () => {
               className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
               Add New Product
             </button>
@@ -147,7 +155,9 @@ const ProductManagement: React.FC = () => {
             </div>
             <div className="bg-white rounded-lg shadow-sm p-4">
               <div className="text-sm text-gray-600 mb-1">Avg Price</div>
-              <div className="text-2xl font-bold text-purple-600">₹{stats.averagePrice.toFixed(0)}</div>
+              <div className="text-2xl font-bold text-purple-600">
+                ₹{stats.averagePrice.toFixed(0)}
+              </div>
             </div>
           </div>
 

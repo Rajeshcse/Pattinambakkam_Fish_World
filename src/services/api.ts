@@ -21,7 +21,7 @@ apiClient.interceptors.request.use(
   (error) => {
     console.error('Request interceptor error:', error);
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor for debugging
@@ -32,7 +32,7 @@ apiClient.interceptors.response.use(
   (error) => {
     console.error(`API Response Error: ${error.response?.status || 'Network Error'}`);
     return Promise.reject(error);
-  }
+  },
 );
 
 // Flag to prevent multiple refresh requests
@@ -64,7 +64,7 @@ apiClient.interceptors.request.use(
   },
   (error: AxiosError) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor to handle errors globally and auto-refresh tokens
@@ -120,7 +120,7 @@ apiClient.interceptors.response.use(
           // Attempt to refresh the token
           const response = await axios.post<{ success: boolean; accessToken: string }>(
             `${API_BASE_URL}/api/auth/refresh-token`,
-            { refreshToken }
+            { refreshToken },
           );
 
           if (response.data.success && response.data.accessToken) {
@@ -155,7 +155,7 @@ apiClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;

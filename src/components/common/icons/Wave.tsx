@@ -7,11 +7,11 @@ interface WaveProps {
   animated?: boolean;
 }
 
-export const Wave: React.FC<WaveProps> = ({ 
-  size = 24, 
-  color = '#0ea5e9', 
+export const Wave: React.FC<WaveProps> = ({
+  size = 24,
+  color = '#0ea5e9',
   className = '',
-  animated = true
+  animated = true,
 }) => {
   return (
     <svg

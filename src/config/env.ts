@@ -68,27 +68,28 @@ function validateApiBaseUrl(url: string): void {
     if (import.meta.env.PROD && parsed.protocol === 'http:') {
       console.warn(
         '⚠️  WARNING: Using HTTP (not HTTPS) in production environment. ' +
-        'This is insecure and not recommended.'
+          'This is insecure and not recommended.',
       );
     }
 
     // Warn if using localhost/127.0.0.1 in production
-    if (import.meta.env.PROD && (
-      parsed.hostname === 'localhost' ||
-      parsed.hostname === '127.0.0.1' ||
-      parsed.hostname === '0.0.0.0'
-    )) {
+    if (
+      import.meta.env.PROD &&
+      (parsed.hostname === 'localhost' ||
+        parsed.hostname === '127.0.0.1' ||
+        parsed.hostname === '0.0.0.0')
+    ) {
       throw new Error(
         `Invalid API base URL for production: ${url}\n` +
-        'Production builds should not use localhost URLs.\n' +
-        'Please set VITE_API_BASE_URL to your production API URL.'
+          'Production builds should not use localhost URLs.\n' +
+          'Please set VITE_API_BASE_URL to your production API URL.',
       );
     }
   } catch (error) {
     if (error instanceof TypeError) {
       throw new Error(
         `Invalid VITE_API_BASE_URL format: "${url}"\n` +
-        'URL must be a valid HTTP/HTTPS URL (e.g., https://api.example.com)'
+          'URL must be a valid HTTP/HTTPS URL (e.g., https://api.example.com)',
       );
     }
     throw error;

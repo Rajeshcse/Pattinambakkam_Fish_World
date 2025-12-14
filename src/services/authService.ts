@@ -47,12 +47,9 @@ class AuthService {
       if (!password) missingFields.push('password');
       throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
     }
-    
+
     try {
-      const response = await apiClient.post<AuthSuccessResponse>(
-        '/api/auth/register',
-        data
-      );
+      const response = await apiClient.post<AuthSuccessResponse>('/api/auth/register', data);
 
       return response.data;
     } catch (error: unknown) {
@@ -82,10 +79,7 @@ class AuthService {
    * Login user with email/phone and password
    */
   async login(credentials: LoginRequest): Promise<AuthSuccessResponse> {
-    const response = await apiClient.post<AuthSuccessResponse>(
-      '/api/auth/login',
-      credentials
-    );
+    const response = await apiClient.post<AuthSuccessResponse>('/api/auth/login', credentials);
     return response.data;
   }
 
@@ -93,10 +87,9 @@ class AuthService {
    * Refresh access token using refresh token
    */
   async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
-    const response = await apiClient.post<RefreshTokenResponse>(
-      '/api/auth/refresh-token',
-      { refreshToken }
-    );
+    const response = await apiClient.post<RefreshTokenResponse>('/api/auth/refresh-token', {
+      refreshToken,
+    });
     return response.data;
   }
 
@@ -104,10 +97,7 @@ class AuthService {
    * Logout user from current device
    */
   async logout(refreshToken: string): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/logout',
-      { refreshToken }
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/logout', { refreshToken });
     return response.data;
   }
 
@@ -115,9 +105,7 @@ class AuthService {
    * Logout user from all devices
    */
   async logoutAll(): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/logout-all'
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/logout-all');
     return response.data;
   }
 
@@ -128,9 +116,7 @@ class AuthService {
    */
   async sendVerificationEmail(): Promise<MessageResponse> {
     console.log('📧 Sending verification email...');
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/send-verification-email'
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/send-verification-email');
     console.log('📧 OTP Response:', response.data);
     return response.data;
   }
@@ -139,10 +125,7 @@ class AuthService {
    * Verify email with OTP
    */
   async verifyEmail(data: VerifyEmailRequest): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/verify-email',
-      data
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/verify-email', data);
     return response.data;
   }
 
@@ -151,9 +134,7 @@ class AuthService {
    */
   async resendVerificationEmail(): Promise<MessageResponse> {
     console.log('🔄 Resending verification email...');
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/resend-verification-email'
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/resend-verification-email');
     console.log('🔄 Resend OTP Response:', response.data);
     return response.data;
   }
@@ -164,10 +145,7 @@ class AuthService {
    * Request password reset OTP
    */
   async forgotPassword(data: ForgotPasswordRequest): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/forgot-password',
-      data
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/forgot-password', data);
     return response.data;
   }
 
@@ -175,10 +153,7 @@ class AuthService {
    * Reset password with OTP
    */
   async resetPassword(data: ResetPasswordRequest): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/reset-password',
-      data
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/reset-password', data);
     return response.data;
   }
 
@@ -186,10 +161,7 @@ class AuthService {
    * Change password for authenticated user
    */
   async changePassword(data: ChangePasswordRequest): Promise<MessageResponse> {
-    const response = await apiClient.post<MessageResponse>(
-      '/api/auth/change-password',
-      data
-    );
+    const response = await apiClient.post<MessageResponse>('/api/auth/change-password', data);
     return response.data;
   }
 

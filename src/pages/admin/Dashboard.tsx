@@ -19,7 +19,7 @@ export const AdminDashboard: React.FC = () => {
     setLoading(true);
     try {
       const response = await adminService.getDashboardStats();
-      
+
       // Check if response has the expected structure
       if (response && response.data) {
         setStats(response.data);
@@ -61,9 +61,7 @@ export const AdminDashboard: React.FC = () => {
           <div className="max-w-7xl mx-auto">
             <Card>
               <div className="text-center py-8">
-                <div className="text-red-500 text-lg font-medium mb-4">
-                  Error loading dashboard
-                </div>
+                <div className="text-red-500 text-lg font-medium mb-4">Error loading dashboard</div>
                 <p className="text-gray-600 mb-4">
                   Unable to fetch dashboard data. This could be due to:
                 </p>
@@ -74,17 +72,10 @@ export const AdminDashboard: React.FC = () => {
                   <li>• Insufficient admin privileges</li>
                 </ul>
                 <div className="mt-6">
-                  <Button 
-                    onClick={fetchDashboardStats}
-                    variant="primary"
-                    className="mr-3"
-                  >
+                  <Button onClick={fetchDashboardStats} variant="primary" className="mr-3">
                     Retry
                   </Button>
-                  <Button 
-                    onClick={() => navigate('/')}
-                    variant="outline"
-                  >
+                  <Button onClick={() => navigate('/')} variant="outline">
                     Go Home
                   </Button>
                 </div>

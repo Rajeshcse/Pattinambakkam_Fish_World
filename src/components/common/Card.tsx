@@ -13,10 +13,7 @@ export const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   return (
-    <div
-      {...props}
-      className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}
-    >
+    <div {...props} className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}>
       {(title || subtitle) && (
         <div className="px-6 py-4 border-b border-gray-200">
           {title && <h2 className="text-xl font-semibold text-gray-800">{title}</h2>}

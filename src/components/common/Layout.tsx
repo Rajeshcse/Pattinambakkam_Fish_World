@@ -9,19 +9,17 @@ interface LayoutProps {
   fullWidth?: boolean;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ 
-  children, 
+export const Layout: React.FC<LayoutProps> = ({
+  children,
   className = '',
   showNavbar = true,
-  fullWidth = false
+  fullWidth = false,
 }) => {
   return (
     <div className="min-h-screen bg-white">
       {showNavbar && <Navbar />}
-      <main className={`${fullWidth ? '' : ''} ${className}`}>
-        {children}
-      </main>
-      
+      <main className={`${fullWidth ? '' : ''} ${className}`}>{children}</main>
+
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
@@ -36,8 +34,8 @@ export const Layout: React.FC<LayoutProps> = ({
                 </div>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed max-w-md">
-                Connecting you directly with local fishermen in Pattinambakkam for the freshest seafood. 
-                Quality you can trust, convenience you deserve.
+                Connecting you directly with local fishermen in Pattinambakkam for the freshest
+                seafood. Quality you can trust, convenience you deserve.
               </p>
             </div>
 
@@ -45,10 +43,26 @@ export const Layout: React.FC<LayoutProps> = ({
             <div>
               <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><a href="/" className="hover:text-cyan-400 transition-colors">Home</a></li>
-                <li><a href="/products" className="hover:text-cyan-400 transition-colors">Products</a></li>
-                <li><a href="/login" className="hover:text-cyan-400 transition-colors">Login</a></li>
-                <li><a href="/register" className="hover:text-cyan-400 transition-colors">Register</a></li>
+                <li>
+                  <a href="/" className="hover:text-cyan-400 transition-colors">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="/products" className="hover:text-cyan-400 transition-colors">
+                    Products
+                  </a>
+                </li>
+                <li>
+                  <a href="/login" className="hover:text-cyan-400 transition-colors">
+                    Login
+                  </a>
+                </li>
+                <li>
+                  <a href="/register" className="hover:text-cyan-400 transition-colors">
+                    Register
+                  </a>
+                </li>
               </ul>
             </div>
 

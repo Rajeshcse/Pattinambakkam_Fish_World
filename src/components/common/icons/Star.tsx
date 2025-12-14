@@ -7,11 +7,11 @@ interface StarProps {
   filled?: boolean;
 }
 
-export const Star: React.FC<StarProps> = ({ 
-  size = 24, 
-  color = '#fbbf24', 
+export const Star: React.FC<StarProps> = ({
+  size = 24,
+  color = '#fbbf24',
   className = '',
-  filled = true
+  filled = true,
 }) => {
   return (
     <svg

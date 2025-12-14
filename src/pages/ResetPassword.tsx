@@ -40,7 +40,9 @@ export const ResetPassword: React.FC = () => {
       });
 
       if (response.success) {
-        toast.success(response.message || 'Password reset successful! Please login with your new password.');
+        toast.success(
+          response.message || 'Password reset successful! Please login with your new password.',
+        );
         navigate('/login');
       }
     } catch (err: any) {
@@ -53,10 +55,7 @@ export const ResetPassword: React.FC = () => {
   };
 
   return (
-    <AuthLayout
-      title="Pattinambakkam_Fish_World"
-      subtitle="Create your new password"
-    >
+    <AuthLayout title="Pattinambakkam_Fish_World" subtitle="Create your new password">
       <div className="space-y-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900">Reset Password</h2>
@@ -65,9 +64,7 @@ export const ResetPassword: React.FC = () => {
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert message={error} onDismiss={() => setError(null)} />
-        )}
+        {error && <ErrorAlert message={error} onDismiss={() => setError(null)} />}
 
         <Formik
           initialValues={initialValues}
@@ -119,13 +116,7 @@ export const ResetPassword: React.FC = () => {
                 </ul>
               </div>
 
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                loading={isSubmitting}
-              >
+              <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
                 Reset Password
               </Button>
 

@@ -6,11 +6,7 @@ interface LeafProps {
   className?: string;
 }
 
-export const Leaf: React.FC<LeafProps> = ({ 
-  size = 24, 
-  color = '#10b981', 
-  className = ''
-}) => {
+export const Leaf: React.FC<LeafProps> = ({ size = 24, color = '#10b981', className = '' }) => {
   return (
     <svg
       width={size}
@@ -27,12 +23,7 @@ export const Leaf: React.FC<LeafProps> = ({
         opacity="0.8"
       />
       {/* Vein */}
-      <path
-        d="M12 2V22"
-        stroke={color}
-        strokeWidth="1"
-        opacity="0.6"
-      />
+      <path d="M12 2V22" stroke={color} strokeWidth="1" opacity="0.6" />
       {/* Side veins */}
       <path d="M12 8L8 11" stroke={color} strokeWidth="0.8" opacity="0.5" />
       <path d="M12 8L16 11" stroke={color} strokeWidth="0.8" opacity="0.5" />

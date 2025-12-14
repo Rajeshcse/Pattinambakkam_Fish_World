@@ -32,9 +32,8 @@ export const useLoginForm = (callbacks?: LoginFormCallbacks) => {
         await login(credentials);
         callbacks?.onSuccess?.();
       } catch (error) {
-        const message = error instanceof Error 
-          ? error.message 
-          : 'Login failed. Please check your credentials.';
+        const message =
+          error instanceof Error ? error.message : 'Login failed. Please check your credentials.';
         setError(message);
         callbacks?.onError?.(message);
         console.error('Login error:', error);

@@ -87,7 +87,10 @@ const ProductDetail: React.FC = () => {
     if (product.stock === 0) {
       return { text: 'Out of Stock', color: 'text-red-600 bg-red-50 border-red-200' };
     } else if (product.stock < 10) {
-      return { text: `Only ${product.stock} left in stock`, color: 'text-orange-600 bg-orange-50 border-orange-200' };
+      return {
+        text: `Only ${product.stock} left in stock`,
+        color: 'text-orange-600 bg-orange-50 border-orange-200',
+      };
     }
     return { text: 'In Stock', color: 'text-green-600 bg-green-50 border-green-200' };
   };
@@ -124,10 +127,7 @@ const ProductDetail: React.FC = () => {
           <nav className="mb-4">
             <ol className="flex items-center space-x-2 text-sm">
               <li>
-                <button
-                  onClick={() => navigate('/')}
-                  className="text-cyan-600 hover:text-cyan-700"
-                >
+                <button onClick={() => navigate('/')} className="text-cyan-600 hover:text-cyan-700">
                   Home
                 </button>
               </li>
@@ -159,7 +159,8 @@ const ProductDetail: React.FC = () => {
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2Y5ZmJmZiIvPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwMCwzMDApIj4KICAgIDxzdmcgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYTNhM2EzIiBzdHJva2Utd2lkdGg9IjEiPgogICAgICA8cGF0aCBkPSJNMTIgNC41YzEuNSAwIDMuNS43IDQuNSAyLjUgMCAwLS41IDEuNS0yIDJsLS41LS41Yy0uNS0uNS0xLS41LTEuNSAwLS41LjUtLjUgMS0uNSAxLjVsMi41IDJzMS41IDAgMS41LTJjMC0yLjUtMi0yLjUtMy01LS41LTEuNS0yLTItMy0yLTIgMC00IDItNCA0IDAgMiAyIDQgNCA0czQtMiA0LTQtMi00LTQtNC0xIDAtMSAxIDEgMSAxIDFoMnptLTIgOC41Yy0uNSAwLTEtLjUtMS0xczEtMSAxLTFoNWMuNSAwIDEgLjUgMSAxcy0uNSAxLTEgMXptLTIgMmMtLjUgMC0xLS41LTEtMXMuNS0xIDEtMWgzYy41IDAgMSAuNSAxIDFzLS41IDEtMSAxeiIvPgogICAgPC9zdmc+CiAgPC9nPgo8L3N2Zz4=';
+                        target.src =
+                          'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2Y5ZmJmZiIvPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwMCwzMDApIj4KICAgIDxzdmcgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYTNhM2EzIiBzdHJva2Utd2lkdGg9IjEiPgogICAgICA8cGF0aCBkPSJNMTIgNC41YzEuNSAwIDMuNS43IDQuNSAyLjUgMCAwLS41IDEuNS0yIDJsLS41LS41Yy0uNS0uNS0xLS41LTEuNSAwLS41LjUtLjUgMS0uNSAxLjVsMi41IDJzMS41IDAgMS41LTJjMC0yLjUtMi0yLjUtMy01LS41LTEuNS0yLTItMy0yLTIgMC00IDItNCA0IDAgMiAyIDQgNCA0czQtMiA0LTQtMi00LTQtNC0xIDAtMSAxIDEgMSAxIDFoMnptLTIgOC41Yy0uNSAwLTEtLjUtMS0xczEtMSAxLTFoNWMuNSAwIDEgLjUgMSAxcy0uNSAxLTEgMXptLTIgMmMtLjUgMC0xLS41LTEtMXMuNS0xIDEtMWgzYy41IDAgMSAuNSAxIDFzLS41IDEtMSAxeiIvPgogICAgPC9zdmc+CiAgPC9nPgo8L3N2Zz4=';
                       }}
                     />
                   ) : (
@@ -216,7 +217,9 @@ const ProductDetail: React.FC = () => {
               <div className="lg:col-span-3 flex flex-col">
                 {/* Category Badge */}
                 <div className="mb-3">
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getCategoryColor(product.category)}`}>
+                  <span
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getCategoryColor(product.category)}`}
+                  >
                     {product.category}
                   </span>
                 </div>
@@ -236,7 +239,9 @@ const ProductDetail: React.FC = () => {
 
                 {/* Stock Status */}
                 <div className="mb-4">
-                  <span className={`inline-block px-3 py-1.5 rounded-lg text-xs font-semibold border ${stockStatus.color}`}>
+                  <span
+                    className={`inline-block px-3 py-1.5 rounded-lg text-xs font-semibold border ${stockStatus.color}`}
+                  >
                     {stockStatus.text}
                   </span>
                 </div>
@@ -278,9 +283,7 @@ const ProductDetail: React.FC = () => {
                       >
                         +
                       </button>
-                      <span className="text-xs text-gray-500 ml-2">
-                        Max: {product.stock} kg
-                      </span>
+                      <span className="text-xs text-gray-500 ml-2">Max: {product.stock} kg</span>
                     </div>
                   </div>
                 )}
@@ -321,7 +324,14 @@ const ProductDetail: React.FC = () => {
 
                 {!isAuthenticated && isAvailable && (
                   <p className="text-xs text-gray-500 mt-2 text-center">
-                    Please <button onClick={() => navigate('/login')} className="text-cyan-600 hover:underline">login</button> to add items to cart
+                    Please{' '}
+                    <button
+                      onClick={() => navigate('/login')}
+                      className="text-cyan-600 hover:underline"
+                    >
+                      login
+                    </button>{' '}
+                    to add items to cart
                   </p>
                 )}
               </div>

@@ -44,7 +44,7 @@ export const VerifyEmail: React.FC = () => {
       console.log('📤 Calling authService.sendVerificationEmail()...');
       const response = await authService.sendVerificationEmail();
       console.log('✅ OTP Send Response:', response);
-      
+
       if (response.success) {
         setOtpSent(true);
         setResendCooldown(60); // 60 second cooldown
@@ -72,7 +72,7 @@ export const VerifyEmail: React.FC = () => {
       console.log('📤 Calling authService.resendVerificationEmail()...');
       const response = await authService.resendVerificationEmail();
       console.log('✅ Resend OTP Response:', response);
-      
+
       if (response.success) {
         setResendCooldown(60);
         toast.success(response.message || 'New verification OTP sent to your email');
@@ -117,10 +117,7 @@ export const VerifyEmail: React.FC = () => {
   }
 
   return (
-    <AuthLayout
-      title="Verify Email"
-      subtitle="Secure your account with email verification"
-    >
+    <AuthLayout title="Verify Email" subtitle="Secure your account with email verification">
       <div className="space-y-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900">Email Verification</h2>
@@ -129,15 +126,13 @@ export const VerifyEmail: React.FC = () => {
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert message={error} onDismiss={() => setError(null)} />
-        )}
+        {error && <ErrorAlert message={error} onDismiss={() => setError(null)} />}
 
         {!otpSent ? (
           <div className="space-y-4">
             <p className="text-sm text-gray-600">
-              Click the button below to receive a verification code in your email.
-              The code will expire in 10 minutes.
+              Click the button below to receive a verification code in your email. The code will
+              expire in 10 minutes.
             </p>
             <Button
               type="button"
@@ -171,13 +166,7 @@ export const VerifyEmail: React.FC = () => {
                   </p>
                 </div>
 
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  fullWidth
-                  loading={isSubmitting}
-                >
+                <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
                   Verify Email
                 </Button>
 

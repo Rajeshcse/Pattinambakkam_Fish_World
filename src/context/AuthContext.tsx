@@ -1,12 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
 // jwt-decode is avoided here to keep decoding lightweight and avoid import shape issues
-import {
-  User,
-  LoginRequest,
-  RegisterRequest,
-  AuthContextType,
-  DecodedToken,
-} from '@/types';
+import { User, LoginRequest, RegisterRequest, AuthContextType, DecodedToken } from '@/types';
 import { authService } from '@/services';
 import { toast } from 'react-toastify';
 import { getErrorMessage, logError } from '@/utils/errors';
@@ -154,7 +148,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         authService.setAuthData(response.accessToken, response.refreshToken, response.user);
         setToken(response.accessToken);
         setUser(response.user);
-        toast.success(response.message || 'Welcome to Pattinambakkam_Fish_World! Please verify your email.');
+        toast.success(
+          response.message || 'Welcome to Pattinambakkam_Fish_World! Please verify your email.',
+        );
       } else {
         // Handle case where response structure is unexpected
         console.error('Unexpected response structure:', response);
