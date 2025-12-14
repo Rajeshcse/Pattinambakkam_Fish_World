@@ -36,17 +36,23 @@ export const VerifyEmail: React.FC = () => {
   }, [resendCooldown]);
 
   const handleSendOTP = async () => {
+    console.log('🚀 Starting OTP send process...');
     setIsSendingOTP(true);
     setError(null);
 
     try {
+      console.log('📤 Calling authService.sendVerificationEmail()...');
       const response = await authService.sendVerificationEmail();
+      console.log('✅ OTP Send Response:', response);
+      
       if (response.success) {
         setOtpSent(true);
         setResendCooldown(60); // 60 second cooldown
         toast.success(response.message || 'Verification OTP sent to your email');
+        console.log('🎉 OTP sent successfully!');
       }
     } catch (err: any) {
+      console.error('❌ Error sending OTP:', err);
       const errorMessage = err.response?.data?.message || 'Failed to send verification email';
       setError(errorMessage);
       toast.error(errorMessage);
@@ -58,16 +64,22 @@ export const VerifyEmail: React.FC = () => {
   const handleResendOTP = async () => {
     if (resendCooldown > 0) return;
 
+    console.log('🔄 Starting OTP resend process...');
     setIsSendingOTP(true);
     setError(null);
 
     try {
+      console.log('📤 Calling authService.resendVerificationEmail()...');
       const response = await authService.resendVerificationEmail();
+      console.log('✅ Resend OTP Response:', response);
+      
       if (response.success) {
         setResendCooldown(60);
         toast.success(response.message || 'New verification OTP sent to your email');
+        console.log('🎉 OTP resent successfully!');
       }
     } catch (err: any) {
+      console.error('❌ Error resending OTP:', err);
       const errorMessage = err.response?.data?.message || 'Failed to resend verification email';
       setError(errorMessage);
       toast.error(errorMessage);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { FishProduct } from '@/types';
 
 interface ProductCardProps {
@@ -12,24 +13,12 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
-  onBuyNow,
   showAdminActions = false,
   onEdit,
   onDelete,
   onToggleAvailability,
 }) => {
-  const whatsappNumber = '9994072395'; // Replace with your actual WhatsApp number
-
-  const handleBuyNow = () => {
-    if (onBuyNow) {
-      onBuyNow(product);
-    } else {
-      // Default behavior: Open WhatsApp with pre-filled message
-      const message = `Hi, I'm interested in buying *${product.name}* (${product.category}) priced at ₹${product.price}`;
-      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
-    }
-  };
+  const navigate = useNavigate();
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
@@ -63,7 +52,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className="w-full h-full object-cover"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+              target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGM0Y0RjYiLz48cGF0aCBkPSJtMTk1LjY2NyAxMjUuMzMzLTE2LjY2NyAzNS0xNi42NjctMzVoMzMuMzM0eiIgZmlsbD0iIzlDQTNBRiIvPjxwYXRoIGQ9Im0xOTUuNjY3IDEzOS42NjctMTYuNjY3IDM1LTE2LjY2Ny0zNWgzMy4zMzR6IiBmaWxsPSIjOUNBM0FGIi8+PHJlY3QgeD0iMTY1IiB5PSIxNTAiIHdpZHRoPSI3MCIgaGVpZ2h0PSI0IiBmaWxsPSIjOUNBM0FGIi8+PHRleHQgeD0iMjAwIiB5PSIxODUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+';
             }}
           />
         ) : (
@@ -150,15 +139,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         ) : (
           <button
-            onClick={handleBuyNow}
-            disabled={!product.isAvailable || product.stock === 0}
-            className={`w-full py-2 px-4 rounded-md font-semibold transition-colors ${
-              !product.isAvailable || product.stock === 0
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-green-600 text-white hover:bg-green-700'
-            }`}
+            onClick={() => navigate(`/products/${product._id}`)}
+            className="w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700 transition-colors font-semibold"
           >
-            {!product.isAvailable || product.stock === 0 ? 'Not Available' : 'Buy Now via WhatsApp'}
+            View Details
           </button>
         )}
       </div>
