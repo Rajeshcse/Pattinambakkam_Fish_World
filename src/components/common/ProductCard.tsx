@@ -52,7 +52,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className="w-full h-full object-cover"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGM0Y0RjYiLz48cGF0aCBkPSJtMTk1LjY2NyAxMjUuMzMzLTE2LjY2NyAzNS0xNi42NjctMzVoMzMuMzM0eiIgZmlsbD0iIzlDQTNBRiIvPjxwYXRoIGQ9Im0xOTUuNjY3IDEzOS42NjctMTYuNjY3IDM1LTE2LjY2Ny0zNWgzMy4zMzR6IiBmaWxsPSIjOUNBM0FGIi8+PHJlY3QgeD0iMTY1IiB5PSIxNTAiIHdpZHRoPSI3MCIgaGVpZ2h0PSI0IiBmaWxsPSIjOUNBM0FGIi8+PHRleHQgeD0iMjAwIiB5PSIxODUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+';
+              target.src =
+                'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGM0Y0RjYiLz48cGF0aCBkPSJtMTk1LjY2NyAxMjUuMzMzLTE2LjY2NyAzNS0xNi42NjctMzVoMzMuMzM0eiIgZmlsbD0iIzlDQTNBRiIvPjxwYXRoIGQ9Im0xOTUuNjY3IDEzOS42NjctMTYuNjY3IDM1LTE2LjY2Ny0zNWgzMy4zMzR6IiBmaWxsPSIjOUNBM0FGIi8+PHJlY3QgeD0iMTY1IiB5PSIxNTAiIHdpZHRoPSI3MCIgaGVpZ2h0PSI0IiBmaWxsPSIjOUNBM0FGIi8+PHRleHQgeD0iMjAwIiB5PSIxODUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+';
             }}
           />
         ) : (
@@ -82,7 +83,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Category Badge */}
         <div className="absolute bottom-2 right-2">
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(product.category)}`}>
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(product.category)}`}
+          >
             {product.category}
           </span>
         </div>
@@ -90,14 +93,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product Details */}
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">
-          {product.name}
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">{product.name}</h3>
 
         {product.description && (
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-            {product.description}
-          </p>
+          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
         )}
 
         {/* Price and Stock */}
@@ -106,9 +105,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             ₹{product.price}
             <span className="text-sm text-gray-500 font-normal">/kg</span>
           </div>
-          <div className={`text-sm font-semibold ${stockStatus.color}`}>
-            {stockStatus.text}
-          </div>
+          <div className={`text-sm font-semibold ${stockStatus.color}`}>{stockStatus.text}</div>
         </div>
 
         {/* Action Buttons */}

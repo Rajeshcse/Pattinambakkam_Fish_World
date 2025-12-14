@@ -44,17 +44,10 @@ const ProductForm: React.FC = () => {
       .min(2, 'Product name must be at least 2 characters')
       .max(100, 'Product name cannot exceed 100 characters')
       .required('Product name is required'),
-    category: Yup.string()
-      .oneOf(categories, 'Invalid category')
-      .required('Category is required'),
-    price: Yup.number()
-      .min(0.01, 'Price must be greater than 0')
-      .required('Price is required'),
-    stock: Yup.number()
-      .min(0, 'Stock cannot be negative')
-      .required('Stock quantity is required'),
-    description: Yup.string()
-      .max(500, 'Description cannot exceed 500 characters'),
+    category: Yup.string().oneOf(categories, 'Invalid category').required('Category is required'),
+    price: Yup.number().min(0.01, 'Price must be greater than 0').required('Price is required'),
+    stock: Yup.number().min(0, 'Stock cannot be negative').required('Stock quantity is required'),
+    description: Yup.string().max(500, 'Description cannot exceed 500 characters'),
     images: Yup.array().of(Yup.string().url('Must be a valid URL')),
   });
 
@@ -90,7 +83,12 @@ const ProductForm: React.FC = () => {
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
               Back to Products
             </button>
@@ -114,7 +112,10 @@ const ProductForm: React.FC = () => {
                 <Form className="space-y-6">
                   {/* Product Name */}
                   <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
                       Product Name *
                     </label>
                     <Field
@@ -124,12 +125,19 @@ const ProductForm: React.FC = () => {
                       placeholder="e.g., Fresh Pomfret"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <ErrorMessage name="name" component="div" className="mt-1 text-sm text-red-600" />
+                    <ErrorMessage
+                      name="name"
+                      component="div"
+                      className="mt-1 text-sm text-red-600"
+                    />
                   </div>
 
                   {/* Category */}
                   <div>
-                    <label htmlFor="category" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label
+                      htmlFor="category"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
                       Category *
                     </label>
                     <Field
@@ -144,13 +152,20 @@ const ProductForm: React.FC = () => {
                         </option>
                       ))}
                     </Field>
-                    <ErrorMessage name="category" component="div" className="mt-1 text-sm text-red-600" />
+                    <ErrorMessage
+                      name="category"
+                      component="div"
+                      className="mt-1 text-sm text-red-600"
+                    />
                   </div>
 
                   {/* Price and Stock */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="price" className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label
+                        htmlFor="price"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
                         Price (₹ per kg) *
                       </label>
                       <Field
@@ -162,11 +177,18 @@ const ProductForm: React.FC = () => {
                         placeholder="400"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
-                      <ErrorMessage name="price" component="div" className="mt-1 text-sm text-red-600" />
+                      <ErrorMessage
+                        name="price"
+                        component="div"
+                        className="mt-1 text-sm text-red-600"
+                      />
                     </div>
 
                     <div>
-                      <label htmlFor="stock" className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label
+                        htmlFor="stock"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
                         Stock (kg) *
                       </label>
                       <Field
@@ -177,13 +199,20 @@ const ProductForm: React.FC = () => {
                         placeholder="25"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
-                      <ErrorMessage name="stock" component="div" className="mt-1 text-sm text-red-600" />
+                      <ErrorMessage
+                        name="stock"
+                        component="div"
+                        className="mt-1 text-sm text-red-600"
+                      />
                     </div>
                   </div>
 
                   {/* Description */}
                   <div>
-                    <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label
+                      htmlFor="description"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
                       Description
                     </label>
                     <Field
@@ -194,7 +223,11 @@ const ProductForm: React.FC = () => {
                       placeholder="Describe the product..."
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                     />
-                    <ErrorMessage name="description" component="div" className="mt-1 text-sm text-red-600" />
+                    <ErrorMessage
+                      name="description"
+                      component="div"
+                      className="mt-1 text-sm text-red-600"
+                    />
                     <p className="mt-1 text-sm text-gray-500">
                       {values.description?.length || 0}/500 characters
                     </p>

@@ -18,7 +18,7 @@ export const Register: React.FC = () => {
     },
     onError: (errorMessage) => {
       toast.error(errorMessage);
-    }
+    },
   });
 
   // Redirect if already logged in and verified
@@ -32,8 +32,8 @@ export const Register: React.FC = () => {
   }
 
   return (
-    <AuthLayout 
-      title="Pattinambakkam_Fish_World" 
+    <AuthLayout
+      title="Pattinambakkam_Fish_World"
       subtitle="Create your account to start your creative journey"
     >
       <div className="space-y-6">
@@ -47,9 +47,7 @@ export const Register: React.FC = () => {
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert message={error} onDismiss={dismissError} />
-        )}
+        {error && <ErrorAlert message={error} onDismiss={dismissError} />}
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <FormField
@@ -96,13 +94,7 @@ export const Register: React.FC = () => {
             required
           />
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            fullWidth
-            loading={isSubmitting}
-          >
+          <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
             Create Account
           </Button>
 

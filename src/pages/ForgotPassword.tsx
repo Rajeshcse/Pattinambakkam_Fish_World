@@ -37,10 +37,7 @@ export const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <AuthLayout
-      title="Pattinambakkam_Fish_World"
-      subtitle="Reset your password securely"
-    >
+    <AuthLayout title="Pattinambakkam_Fish_World" subtitle="Reset your password securely">
       <div className="space-y-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900">Forgot Password</h2>
@@ -51,9 +48,7 @@ export const ForgotPassword: React.FC = () => {
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert message={error} onDismiss={() => setError(null)} />
-        )}
+        {error && <ErrorAlert message={error} onDismiss={() => setError(null)} />}
 
         {!emailSent ? (
           <Formik
@@ -71,13 +66,7 @@ export const ForgotPassword: React.FC = () => {
                   formik={formik}
                 />
 
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  fullWidth
-                  loading={isSubmitting}
-                >
+                <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
                   Send Reset Code
                 </Button>
 
@@ -97,11 +86,7 @@ export const ForgotPassword: React.FC = () => {
             <div className="bg-green-50 border border-green-200 rounded-md p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg
-                    className="h-5 w-5 text-green-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
+                  <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
                     <path
                       fillRule="evenodd"
                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -110,9 +95,7 @@ export const ForgotPassword: React.FC = () => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm font-medium text-green-800">
-                    Reset code sent!
-                  </p>
+                  <p className="text-sm font-medium text-green-800">Reset code sent!</p>
                   <p className="mt-1 text-sm text-green-700">
                     If an account exists with <strong>{submittedEmail}</strong>, you will receive a
                     6-digit reset code. The code expires in 10 minutes.

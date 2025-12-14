@@ -27,9 +27,8 @@ export const useRegisterForm = (callbacks?: RegisterFormCallbacks) => {
         await register(registerData as RegisterRequest);
         callbacks?.onSuccess?.();
       } catch (error) {
-        const message = error instanceof Error 
-          ? error.message 
-          : 'Registration failed. Please try again.';
+        const message =
+          error instanceof Error ? error.message : 'Registration failed. Please try again.';
         setError(message);
         callbacks?.onError?.(message);
         console.error('Registration error:', error);

@@ -1,10 +1,5 @@
 import apiClient from './api';
-import {
-  OrderResponse,
-  OrderListResponse,
-  OrderStatsResponse,
-  CreateOrderRequest
-} from '@/types';
+import { OrderResponse, OrderListResponse, OrderStatsResponse, CreateOrderRequest } from '@/types';
 
 const ORDER_BASE_URL = '/api/orders';
 
@@ -25,7 +20,7 @@ export const getUserOrders = async (filters?: {
   skip?: number;
 }): Promise<OrderListResponse> => {
   const response = await apiClient.get<OrderListResponse>(ORDER_BASE_URL, {
-    params: filters
+    params: filters,
   });
   return response.data;
 };
@@ -59,7 +54,7 @@ export const getUserOrderStats = async (): Promise<OrderStatsResponse> => {
  */
 export const validateDeliveryTime = (
   deliveryDate: string,
-  deliveryTime: string
+  deliveryTime: string,
 ): { valid: boolean; message: string } => {
   const now = new Date();
   const minimumTime = new Date(now.getTime() + 4 * 60 * 60 * 1000); // 4 hours from now
@@ -74,20 +69,20 @@ export const validateDeliveryTime = (
   if (selectedDeliveryTime < minimumTime) {
     return {
       valid: false,
-      message: `Delivery time must be at least 4 hours from now. Minimum: ${minimumTime.toLocaleString()}`
+      message: `Delivery time must be at least 4 hours from now. Minimum: ${minimumTime.toLocaleString()}`,
     };
   }
 
   if (selectedDate < new Date(now.setHours(0, 0, 0, 0))) {
     return {
       valid: false,
-      message: 'Delivery date cannot be in the past'
+      message: 'Delivery date cannot be in the past',
     };
   }
 
   return {
     valid: true,
-    message: 'Delivery time is valid'
+    message: 'Delivery time is valid',
   };
 };
 
@@ -102,7 +97,7 @@ export const getAvailableTimeSlots = (date: string) => {
   const timeSlots = [
     { slot: '08:00-12:00', start: 8 },
     { slot: '12:00-16:00', start: 12 },
-    { slot: '16:00-20:00', start: 16 }
+    { slot: '16:00-20:00', start: 16 },
   ];
 
   return timeSlots.map(({ slot, start }) => {
@@ -110,9 +105,7 @@ export const getAvailableTimeSlots = (date: string) => {
     slotDateTime.setHours(start, 0, 0, 0);
 
     const available = slotDateTime >= minimumTime;
-    const reason = available
-      ? 'Available'
-      : 'Requires at least 4 hours advance notice';
+    const reason = available ? 'Available' : 'Requires at least 4 hours advance notice';
 
     return { slot, available, reason };
   });

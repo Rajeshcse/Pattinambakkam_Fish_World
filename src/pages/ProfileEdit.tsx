@@ -21,7 +21,7 @@ export const ProfileEdit: React.FC = () => {
     onNoChanges: () => {
       toast.info('No changes made');
       navigate('/profile');
-    }
+    },
   });
 
   const handleCancel = () => {
@@ -37,16 +37,12 @@ export const ProfileEdit: React.FC = () => {
       <div className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-primary-600 mb-2">
-              Edit Profile
-            </h1>
+            <h1 className="text-4xl font-bold text-primary-600 mb-2">Edit Profile</h1>
             <p className="text-gray-600">Update your account information</p>
           </div>
 
           <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">
-            {error && (
-              <ErrorAlert message={error} onDismiss={dismissError} />
-            )}
+            {error && <ErrorAlert message={error} onDismiss={dismissError} />}
 
             <form onSubmit={formik.handleSubmit} className="space-y-6">
               <FormField
@@ -81,13 +77,7 @@ export const ProfileEdit: React.FC = () => {
               />
 
               <div className="flex gap-4 pt-4">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  fullWidth
-                  loading={isSubmitting}
-                >
+                <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
                   Save Changes
                 </Button>
                 <Button

@@ -53,9 +53,8 @@ export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
         updateUser(updatedUser);
         callbacks?.onSuccess?.();
       } catch (error) {
-        const message = error instanceof Error
-          ? error.message
-          : 'Failed to update profile. Please try again.';
+        const message =
+          error instanceof Error ? error.message : 'Failed to update profile. Please try again.';
         setError(message);
         callbacks?.onError?.(message);
         console.error('Profile update error:', error);

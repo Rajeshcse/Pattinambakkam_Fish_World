@@ -7,11 +7,11 @@ interface FishProps {
   variant?: 'mackerel' | 'carp' | 'tilapia' | 'sardine';
 }
 
-export const Fish: React.FC<FishProps> = ({ 
-  size = 24, 
-  color = '#0ea5e9', 
+export const Fish: React.FC<FishProps> = ({
+  size = 24,
+  color = '#0ea5e9',
   className = '',
-  variant = 'mackerel'
+  variant = 'mackerel',
 }) => {
   const variations = {
     mackerel: (
@@ -81,7 +81,7 @@ export const Fish: React.FC<FishProps> = ({
         <line x1="6" y1="5.5" x2="14" y2="5" stroke={color} strokeWidth="0.6" opacity="0.4" />
         <line x1="6" y1="8.5" x2="14" y2="9" stroke={color} strokeWidth="0.6" opacity="0.4" />
       </g>
-    )
+    ),
   };
 
   return (

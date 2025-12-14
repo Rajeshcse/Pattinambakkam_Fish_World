@@ -80,7 +80,7 @@ export const Modal: React.FC<ModalProps> = ({
     if (!modal) return;
 
     const focusableElements = modal.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
 
     const firstElement = focusableElements[0] as HTMLElement;
@@ -151,12 +151,7 @@ export const Modal: React.FC<ModalProps> = ({
                 className="ml-auto text-gray-400 hover:text-gray-600 transition-colors"
                 aria-label="Close modal"
               >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

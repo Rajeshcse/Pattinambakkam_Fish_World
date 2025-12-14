@@ -81,15 +81,22 @@ const OrderDetails: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4">
           {/* Header */}
           <div className="mb-6">
-            <button onClick={() => navigate('/my-orders')} className="text-cyan-600 hover:text-cyan-700 mb-4">
+            <button
+              onClick={() => navigate('/my-orders')}
+              className="text-cyan-600 hover:text-cyan-700 mb-4"
+            >
               ← Back to My Orders
             </button>
             <div className="flex justify-between items-start">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">{order.orderId}</h1>
-                <p className="text-gray-600">Placed on {new Date(order.createdAt).toLocaleString()}</p>
+                <p className="text-gray-600">
+                  Placed on {new Date(order.createdAt).toLocaleString()}
+                </p>
               </div>
-              <span className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusColor(order.status)}`}>
+              <span
+                className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusColor(order.status)}`}
+              >
                 {order.status.toUpperCase()}
               </span>
             </div>
@@ -101,10 +108,19 @@ const OrderDetails: React.FC = () => {
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-3">Delivery Details</h3>
               <div className="space-y-2 text-gray-600">
-                <p><strong>Address:</strong> {order.deliveryDetails.address}</p>
-                <p><strong>Phone:</strong> {order.deliveryDetails.phone}</p>
-                <p><strong>Date:</strong> {new Date(order.deliveryDetails.deliveryDate).toLocaleDateString()}</p>
-                <p><strong>Time:</strong> {order.deliveryDetails.deliveryTime}</p>
+                <p>
+                  <strong>Address:</strong> {order.deliveryDetails.address}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {order.deliveryDetails.phone}
+                </p>
+                <p>
+                  <strong>Date:</strong>{' '}
+                  {new Date(order.deliveryDetails.deliveryDate).toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>Time:</strong> {order.deliveryDetails.deliveryTime}
+                </p>
               </div>
             </div>
 
@@ -116,7 +132,9 @@ const OrderDetails: React.FC = () => {
                   <div key={idx} className="flex justify-between py-2 border-b border-gray-100">
                     <div>
                       <p className="font-semibold">{item.name}</p>
-                      <p className="text-sm text-gray-500">{item.quantity} kg × ₹{item.price}</p>
+                      <p className="text-sm text-gray-500">
+                        {item.quantity} kg × ₹{item.price}
+                      </p>
                     </div>
                     <p className="font-semibold">₹{item.subtotal.toFixed(2)}</p>
                   </div>
@@ -135,7 +153,9 @@ const OrderDetails: React.FC = () => {
             {/* Notes */}
             {order.orderNotes && (
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600"><strong>Notes:</strong> {order.orderNotes}</p>
+                <p className="text-sm text-gray-600">
+                  <strong>Notes:</strong> {order.orderNotes}
+                </p>
               </div>
             )}
           </div>

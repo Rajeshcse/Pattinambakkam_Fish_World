@@ -307,7 +307,13 @@ export interface CartCountResponse {
 }
 
 // Order types
-export type OrderStatus = 'pending' | 'confirmed' | 'preparing' | 'out-for-delivery' | 'delivered' | 'cancelled';
+export type OrderStatus =
+  | 'pending'
+  | 'confirmed'
+  | 'preparing'
+  | 'out-for-delivery'
+  | 'delivered'
+  | 'cancelled';
 export type PaymentStatus = 'pending' | 'paid';
 export type DeliveryTimeSlot = '08:00-12:00' | '12:00-16:00' | '16:00-20:00';
 

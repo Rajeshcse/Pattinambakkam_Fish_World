@@ -30,7 +30,9 @@ export const ChangePassword: React.FC = () => {
       });
 
       if (response.success) {
-        toast.success(response.message || 'Password changed successfully! Other sessions have been logged out.');
+        toast.success(
+          response.message || 'Password changed successfully! Other sessions have been logged out.',
+        );
         navigate('/profile');
       }
     } catch (err: any) {
@@ -56,12 +58,7 @@ export const ChangePassword: React.FC = () => {
             onClick={() => navigate('/profile')}
             className="text-sm font-medium text-primary-600 hover:text-primary-500 flex items-center"
           >
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -78,13 +75,12 @@ export const ChangePassword: React.FC = () => {
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Change Password</h2>
               <p className="mt-1 text-sm text-gray-600">
-                Update your password to keep your account secure. This will log you out from all other devices.
+                Update your password to keep your account secure. This will log you out from all
+                other devices.
               </p>
             </div>
 
-            {error && (
-              <ErrorAlert message={error} onDismiss={() => setError(null)} />
-            )}
+            {error && <ErrorAlert message={error} onDismiss={() => setError(null)} />}
 
             <Formik
               initialValues={changePasswordInitialValues}
@@ -133,11 +129,10 @@ export const ChangePassword: React.FC = () => {
                         </svg>
                       </div>
                       <div className="ml-3">
-                        <h3 className="text-sm font-medium text-yellow-800">
-                          Security Notice
-                        </h3>
+                        <h3 className="text-sm font-medium text-yellow-800">Security Notice</h3>
                         <p className="mt-1 text-sm text-yellow-700">
-                          Changing your password will log you out from all other devices for security reasons.
+                          Changing your password will log you out from all other devices for
+                          security reasons.
                         </p>
                       </div>
                     </div>
@@ -155,18 +150,10 @@ export const ChangePassword: React.FC = () => {
                   </div>
 
                   <div className="flex justify-end space-x-3 pt-4">
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      onClick={() => navigate('/profile')}
-                    >
+                    <Button type="button" variant="secondary" onClick={() => navigate('/profile')}>
                       Cancel
                     </Button>
-                    <Button
-                      type="submit"
-                      variant="primary"
-                      loading={isSubmitting}
-                    >
+                    <Button type="submit" variant="primary" loading={isSubmitting}>
                       Change Password
                     </Button>
                   </div>
