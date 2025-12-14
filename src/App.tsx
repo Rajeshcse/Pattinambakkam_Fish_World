@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
+import { CartProvider } from '@/context/CartContext';
 import { ConfirmProvider } from '@/hooks/useConfirm';
 import { PrivateRoute, PublicRoute } from '@/routes';
 import { AdminRoute } from '@/routes/AdminRoute';
@@ -16,6 +17,13 @@ import {
   ChangePassword,
   Products,
 } from '@/pages';
+import ProductDetail from '@/pages/ProductDetail';
+import Cart from '@/pages/Cart';
+import Checkout from '@/pages/Checkout';
+import PaymentInstructions from '@/pages/PaymentInstructions';
+import OrderConfirmation from '@/pages/orders/OrderConfirmation';
+import MyOrders from '@/pages/orders/MyOrders';
+import OrderDetails from '@/pages/orders/OrderDetails';
 import { AdminDashboard, AdminUsers, AdminUserDetail, AdminTest, ProductManagement, ProductForm } from '@/pages/admin';
 import { ApiTest } from '@/pages/admin/ApiTest';
 import { ToastContainer } from 'react-toastify';
@@ -24,13 +32,15 @@ import 'react-toastify/dist/ReactToastify.css';
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <ConfirmProvider>
-        <Router>
-          <div className="App">
-          <Routes>
+      <CartProvider>
+        <ConfirmProvider>
+          <Router>
+            <div className="App">
+            <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
             <Route
               path="/login"
               element={
@@ -94,6 +104,54 @@ const App: React.FC = () => {
               element={
                 <PrivateRoute>
                   <ChangePassword />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <PrivateRoute>
+                  <Cart />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <PrivateRoute>
+                  <Checkout />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/payment-instructions"
+              element={
+                <PrivateRoute>
+                  <PaymentInstructions />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/my-orders"
+              element={
+                <PrivateRoute>
+                  <MyOrders />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/orders/:orderId"
+              element={
+                <PrivateRoute>
+                  <OrderDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/orders/:orderId/confirmation"
+              element={
+                <PrivateRoute>
+                  <OrderConfirmation />
                 </PrivateRoute>
               }
             />
@@ -182,9 +240,10 @@ const App: React.FC = () => {
             theme="light"
             limit={3}
           />
-          </div>
-        </Router>
-      </ConfirmProvider>
+            </div>
+          </Router>
+        </ConfirmProvider>
+      </CartProvider>
     </AuthProvider>
   );
 };

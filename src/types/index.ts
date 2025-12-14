@@ -266,5 +266,131 @@ export interface ProductListResponse {
 export interface ProductResponse {
   success: boolean;
   message: string;
+  data: FishProduct;
+}
+
+// Cart types
+export interface CartItem {
+  _id: string;
   product: FishProduct;
+  quantity: number;
+  addedAt: string;
+}
+
+export interface Cart {
+  _id?: string;
+  user: string;
+  items: CartItem[];
+  updatedAt: string;
+}
+
+export interface AddToCartRequest {
+  productId: string;
+  quantity: number;
+}
+
+export interface UpdateCartItemRequest {
+  quantity: number;
+}
+
+export interface CartResponse {
+  success: boolean;
+  data: Cart;
+  message?: string;
+}
+
+export interface CartCountResponse {
+  success: boolean;
+  data: {
+    count: number;
+  };
+}
+
+// Order types
+export type OrderStatus = 'pending' | 'confirmed' | 'preparing' | 'out-for-delivery' | 'delivered' | 'cancelled';
+export type PaymentStatus = 'pending' | 'paid';
+export type DeliveryTimeSlot = '08:00-12:00' | '12:00-16:00' | '16:00-20:00';
+
+export interface OrderItem {
+  product: string | FishProduct;
+  name: string;
+  price: number;
+  quantity: number;
+  subtotal: number;
+}
+
+export interface DeliveryDetails {
+  address: string;
+  phone: string;
+  deliveryDate: string;
+  deliveryTime: DeliveryTimeSlot;
+}
+
+export interface Order {
+  _id: string;
+  orderId: string;
+  user: string | User;
+  items: OrderItem[];
+  totalAmount: number;
+  deliveryDetails: DeliveryDetails;
+  orderNotes?: string;
+  status: OrderStatus;
+  paymentStatus: PaymentStatus;
+  paymentMethod: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateOrderRequest {
+  deliveryDetails: DeliveryDetails;
+  orderNotes?: string;
+  paymentMethod?: string;
+}
+
+export interface OrderResponse {
+  success: boolean;
+  data: Order;
+  message?: string;
+}
+
+export interface OrderListResponse {
+  success: boolean;
+  data: Order[];
+  message?: string;
+}
+
+export interface OrderStatsResponse {
+  success: boolean;
+  data: {
+    totalOrders: number;
+    pendingOrders: number;
+    deliveredOrders: number;
+    cancelledOrders: number;
+    totalSpent: number;
+  };
+}
+
+export interface DeliveryTimeValidation {
+  valid: boolean;
+  message: string;
+  minimumTime?: Date;
+}
+
+export interface TimeSlot {
+  slot: DeliveryTimeSlot;
+  available: boolean;
+  reason: string;
+}
+
+// Cart Context types
+export interface CartContextType {
+  cart: Cart | null;
+  itemCount: number;
+  totalAmount: number;
+  loading: boolean;
+  addItem: (productId: string, quantity: number) => Promise<void>;
+  updateQuantity: (itemId: string, quantity: number) => Promise<void>;
+  removeItem: (itemId: string) => Promise<void>;
+  clearCart: () => Promise<void>;
+  refreshCart: () => Promise<void>;
 }

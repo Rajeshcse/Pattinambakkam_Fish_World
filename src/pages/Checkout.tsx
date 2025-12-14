@@ -1,0 +1,449 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Layout, Loading, Button } from '@/components/common';
+import { useCart } from '@/hooks/useCart';
+import { useAuth } from '@/hooks/useAuth';
+import { orderService } from '@/services';
+import type { DeliveryTimeSlot, CreateOrderRequest } from '@/types';
+
+const Checkout: React.FC = () => {
+  const navigate = useNavigate();
+  const { cart, itemCount, totalAmount, loading: cartLoading, clearCart } = useCart();
+  const { isAuthenticated, user } = useAuth();
+
+  const [submitting, setSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'whatsapp' | 'razorpay-link'>('whatsapp');
+  const [formData, setFormData] = useState({
+    address: '',
+    phone: user?.phone || '',
+    deliveryDate: '',
+    deliveryTime: '' as DeliveryTimeSlot | '',
+    orderNotes: '',
+  });
+
+  // Razorpay payment link
+  const RAZORPAY_PAYMENT_LINK = 'https://razorpay.me/@paramanandamrajesh';
+
+  const [availableSlots, setAvailableSlots] = useState<
+    { slot: DeliveryTimeSlot; available: boolean; reason: string }[]
+  >([]);
+
+  // Redirect if not authenticated or cart is empty
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    } else if (!cart || cart.items.length === 0) {
+      toast.error('Your cart is empty');
+      navigate('/cart');
+    }
+  }, [isAuthenticated, cart, navigate]);
+
+  // Update available time slots when date changes
+  useEffect(() => {
+    if (formData.deliveryDate) {
+      const slots = orderService.getAvailableTimeSlots(formData.deliveryDate);
+      setAvailableSlots(slots);
+
+      // Clear selected time if it's no longer available
+      if (formData.deliveryTime) {
+        const selectedSlot = slots.find((s) => s.slot === formData.deliveryTime);
+        if (!selectedSlot?.available) {
+          setFormData((prev) => ({ ...prev, deliveryTime: '' }));
+        }
+      }
+    }
+  }, [formData.deliveryDate]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateForm = (): boolean => {
+    if (!formData.address || formData.address.length < 10) {
+      toast.error('Please enter a valid delivery address (minimum 10 characters)');
+      return false;
+    }
+
+    if (!formData.phone || !/^[6-9]\d{9}$/.test(formData.phone)) {
+      toast.error('Please enter a valid 10-digit phone number');
+      return false;
+    }
+
+    if (!formData.deliveryDate) {
+      toast.error('Please select a delivery date');
+      return false;
+    }
+
+    if (!formData.deliveryTime) {
+      toast.error('Please select a delivery time slot');
+      return false;
+    }
+
+    // Validate 4-hour minimum
+    const validation = orderService.validateDeliveryTime(
+      formData.deliveryDate,
+      formData.deliveryTime
+    );
+
+    if (!validation.valid) {
+      toast.error(validation.message);
+      return false;
+    }
+
+    return true;
+  };
+
+  const generateWhatsAppMessage = (order: any) => {
+    const items = cart?.items.map(item =>
+      `• ${item.product.name} × ${item.quantity}kg - ₹${(item.product.price * item.quantity).toFixed(2)}`
+    ).join('\n') || '';
+
+    const message = `🐟 *New Order from Pattinambakkam Fish World*
+
+*Order ID:* ${order.orderId}
+*Customer:* ${user?.name || 'Customer'}
+*Phone:* ${formData.phone}
+
+*Items:*
+${items}
+
+*Total Amount:* ₹${totalAmount.toFixed(2)}
+
+*Delivery Details:*
+📍 Address: ${formData.address}
+📅 Date: ${new Date(formData.deliveryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+🕐 Time: ${formData.deliveryTime}
+
+${formData.orderNotes ? `*Special Instructions:*\n${formData.orderNotes}\n` : ''}
+_Please confirm this order. Thank you!_`;
+
+    return message;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    try {
+      setSubmitting(true);
+
+      const orderData = {
+        deliveryDetails: {
+          address: formData.address,
+          phone: formData.phone,
+          deliveryDate: formData.deliveryDate,
+          deliveryTime: formData.deliveryTime as DeliveryTimeSlot,
+        },
+        orderNotes: formData.orderNotes,
+        paymentMethod: paymentMethod,
+      };
+
+      // Create order
+      toast.info('Creating your order...');
+      const response = await orderService.createOrder(orderData);
+
+      if (response.success) {
+        const order = response.data;
+
+        if (paymentMethod === 'whatsapp') {
+          // WhatsApp Order & Payment - redirect to WhatsApp
+          toast.success('Order created! Redirecting to WhatsApp...');
+
+          // Generate WhatsApp message
+          const whatsappMessage = generateWhatsAppMessage(order);
+          const encodedMessage = encodeURIComponent(whatsappMessage);
+          const whatsappNumber = '919994072395'; // Business WhatsApp number
+          const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+          // Open WhatsApp in new tab
+          window.open(whatsappURL, '_blank');
+
+          // Navigate to confirmation page
+          setTimeout(() => {
+            navigate(`/orders/${order.orderId}/confirmation`);
+          }, 1000);
+        } else {
+          // Online payment - open Razorpay payment link in new tab
+          toast.success(`Order created! Please pay ₹${order.totalAmount} on the payment page.`, {
+            autoClose: 7000
+          });
+
+          // Store order ID and amount for reference
+          localStorage.setItem('pendingPaymentOrderId', order.orderId);
+          localStorage.setItem('pendingPaymentAmount', order.totalAmount.toString());
+
+          // Open Razorpay payment link in new tab (customer enters amount manually)
+          window.open(RAZORPAY_PAYMENT_LINK, '_blank');
+
+          // Navigate to order confirmation page with payment instructions
+          setTimeout(() => {
+            navigate(`/orders/${order.orderId}/confirmation`);
+          }, 500);
+        }
+      }
+    } catch (error: any) {
+      console.error('Order creation error:', error);
+      toast.error(error.response?.data?.message || 'Failed to create order');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Get minimum date (today)
+  const today = new Date().toISOString().split('T')[0];
+
+  if (cartLoading || !cart) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loading size="lg" text="Loading checkout..." />
+        </div>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <div className="bg-gradient-to-b from-cyan-50 to-white min-h-screen py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Checkout Form (Left) */}
+            <div className="lg:col-span-2">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Delivery Details */}
+                <div className="bg-white rounded-lg border border-gray-200 p-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">Delivery Details</h2>
+
+                  {/* Address */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Delivery Address *
+                    </label>
+                    <textarea
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      required
+                      rows={3}
+                      placeholder="Enter your complete delivery address"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="10-digit phone number"
+                      pattern="[6-9][0-9]{9}"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+
+                  {/* Delivery Date */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Delivery Date *
+                    </label>
+                    <input
+                      type="date"
+                      name="deliveryDate"
+                      value={formData.deliveryDate}
+                      onChange={handleInputChange}
+                      required
+                      min={today}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+
+                  {/* Delivery Time Slot */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Delivery Time Slot * <span className="text-xs text-orange-600">(Minimum 4 hours from now)</span>
+                    </label>
+                    {formData.deliveryDate ? (
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {availableSlots.map(({ slot, available, reason }) => (
+                          <button
+                            key={slot}
+                            type="button"
+                            onClick={() => available && setFormData((prev) => ({ ...prev, deliveryTime: slot as DeliveryTimeSlot }))}
+                            disabled={!available}
+                            className={`p-4 rounded-lg border-2 text-sm font-semibold transition-all ${
+                              formData.deliveryTime === slot
+                                ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
+                                : available
+                                ? 'border-gray-200 hover:border-cyan-300 text-gray-700'
+                                : 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
+                            }`}
+                          >
+                            <div>{slot}</div>
+                            <div className="text-xs mt-1">{reason}</div>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500">Please select a delivery date first</p>
+                    )}
+                  </div>
+
+                  {/* Order Notes */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Special Instructions (Optional)
+                    </label>
+                    <textarea
+                      name="orderNotes"
+                      value={formData.orderNotes}
+                      onChange={handleInputChange}
+                      rows={2}
+                      maxLength={500}
+                      placeholder="E.g., Please clean and cut into medium pieces"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {formData.orderNotes.length}/500 characters
+                    </p>
+                  </div>
+                </div>
+
+                {/* Payment Method */}
+                <div className="bg-white rounded-lg border border-gray-200 p-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">Payment Method</h2>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* WhatsApp Order & Payment */}
+                    <div
+                      onClick={() => setPaymentMethod('whatsapp')}
+                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                        paymentMethod === 'whatsapp'
+                          ? 'border-cyan-500 bg-cyan-50'
+                          : 'border-gray-300 hover:border-cyan-400'
+                      }`}
+                    >
+                      <div className="flex items-start">
+                        <input
+                          type="radio"
+                          checked={paymentMethod === 'whatsapp'}
+                          onChange={() => setPaymentMethod('whatsapp')}
+                          className="mt-1 mr-3"
+                        />
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-800">💬 WhatsApp Order</h4>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Order via WhatsApp & pay using UPI/PhonePe/GPay
+                          </p>
+                          <div className="mt-2 text-sm text-gray-700">
+                            Amount: <span className="font-semibold">₹{totalAmount.toFixed(2)}</span>
+                          </div>
+                          <div className="mt-1 text-xs text-green-600">
+                            ✓ Quick & convenient
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Online Payment */}
+                    <div
+                      onClick={() => setPaymentMethod('razorpay-link')}
+                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                        paymentMethod === 'razorpay-link'
+                          ? 'border-cyan-500 bg-cyan-50'
+                          : 'border-gray-300 hover:border-cyan-400'
+                      }`}
+                    >
+                      <div className="flex items-start">
+                        <input
+                          type="radio"
+                          checked={paymentMethod === 'razorpay-link'}
+                          onChange={() => setPaymentMethod('razorpay-link')}
+                          className="mt-1 mr-3"
+                        />
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-800">💳 Pay Online</h4>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Pay now using UPI, Cards, NetBanking, or Wallets
+                          </p>
+                          <div className="mt-2 flex items-center space-x-1 text-xs">
+                            <span className="text-green-600 font-medium">✓ Instant confirmation</span>
+                          </div>
+                          <div className="mt-1 text-xs text-green-600 font-medium">
+                            ✓ Secure payment
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  disabled={submitting || cart.items.length === 0}
+                  loading={submitting}
+                  variant="primary"
+                  fullWidth
+                  size="lg"
+                >
+                  {submitting
+                    ? 'Creating Order...'
+                    : paymentMethod === 'whatsapp'
+                    ? 'Place Order via WhatsApp'
+                    : 'Continue to Payment'}
+                </Button>
+              </form>
+            </div>
+
+            {/* Order Summary (Right) */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-24">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
+
+                {/* Items */}
+                <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
+                  {cart.items.map((item) => (
+                    <div key={item._id} className="flex justify-between text-sm">
+                      <span className="text-gray-600">
+                        {item.product.name} × {item.quantity}kg
+                      </span>
+                      <span className="font-semibold">₹{(item.product.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="border-t border-gray-200 pt-4 mb-4">
+                  <div className="flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span className="text-green-600">₹{totalAmount.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className="text-xs text-gray-500 space-y-1">
+                  <p>✓ Fresh seafood delivered</p>
+                  <p>✓ WhatsApp/UPI payment accepted</p>
+                  <p>✓ {itemCount} item{itemCount !== 1 ? 's' : ''} in order</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default Checkout;

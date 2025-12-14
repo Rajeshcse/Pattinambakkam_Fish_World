@@ -127,9 +127,11 @@ class AuthService {
    * Send email verification OTP
    */
   async sendVerificationEmail(): Promise<MessageResponse> {
+    console.log('📧 Sending verification email...');
     const response = await apiClient.post<MessageResponse>(
       '/api/auth/send-verification-email'
     );
+    console.log('📧 OTP Response:', response.data);
     return response.data;
   }
 
@@ -148,9 +150,11 @@ class AuthService {
    * Resend email verification OTP
    */
   async resendVerificationEmail(): Promise<MessageResponse> {
+    console.log('🔄 Resending verification email...');
     const response = await apiClient.post<MessageResponse>(
       '/api/auth/resend-verification-email'
     );
+    console.log('🔄 Resend OTP Response:', response.data);
     return response.data;
   }
 
