@@ -6,10 +6,10 @@ interface ShoppingCartProps {
   className?: string;
 }
 
-export const ShoppingCart: React.FC<ShoppingCartProps> = ({ 
-  size = 24, 
-  color = '#0ea5e9', 
-  className = ''
+export const ShoppingCart: React.FC<ShoppingCartProps> = ({
+  size = 24,
+  color = '#0ea5e9',
+  className = '',
 }) => {
   return (
     <svg
@@ -30,12 +30,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
         strokeLinejoin="round"
       />
       {/* Handle */}
-      <path
-        d="M9 2L9 5M15 2L15 5"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
+      <path d="M9 2L9 5M15 2L15 5" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
       {/* Item indicators */}
       <circle cx="8" cy="14" r="1" fill={color} />
       <circle cx="16" cy="14" r="1" fill={color} />

@@ -17,21 +17,21 @@ A complete, production-ready React + TypeScript frontend application for the Pat
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| **React 18** | UI Framework |
-| **TypeScript** | Type Safety |
-| **Vite** | Build Tool & Dev Server |
-| **TailwindCSS** | Styling |
-| **React Router v6** | Routing |
-| **Axios** | HTTP Client |
-| **Formik** | Form Management |
-| **Yup** | Schema Validation |
-| **JWT Decode** | Token Handling |
-| **React Toastify** | Notifications |
-| **Jest** | Testing Framework |
-| **React Testing Library** | Component Testing |
-| **MSW** | API Mocking |
+| Technology                | Purpose                 |
+| ------------------------- | ----------------------- |
+| **React 18**              | UI Framework            |
+| **TypeScript**            | Type Safety             |
+| **Vite**                  | Build Tool & Dev Server |
+| **TailwindCSS**           | Styling                 |
+| **React Router v6**       | Routing                 |
+| **Axios**                 | HTTP Client             |
+| **Formik**                | Form Management         |
+| **Yup**                   | Schema Validation       |
+| **JWT Decode**            | Token Handling          |
+| **React Toastify**        | Notifications           |
+| **Jest**                  | Testing Framework       |
+| **React Testing Library** | Component Testing       |
+| **MSW**                   | API Mocking             |
 
 ## 📁 Project Structure
 
@@ -162,6 +162,7 @@ npm run test:coverage
 ### Base Configuration
 
 The app automatically handles:
+
 - JWT token storage in `localStorage`
 - Token injection in request headers
 - Token expiration detection
@@ -169,19 +170,19 @@ The app automatically handles:
 
 ### Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `VITE_API_BASE_URL` | Backend API URL | `http://localhost:3001` |
-| `VITE_APP_NAME` | Application name | `Pattinambakkam_Fish_World` |
+| Variable            | Description      | Default                     |
+| ------------------- | ---------------- | --------------------------- |
+| `VITE_API_BASE_URL` | Backend API URL  | `http://localhost:3001`     |
+| `VITE_APP_NAME`     | Application name | `Pattinambakkam_Fish_World` |
 
 ### API Endpoints
 
-| Endpoint | Method | Auth Required | Description |
-|----------|--------|---------------|-------------|
-| `/api/auth/register` | POST | No | Register new user |
-| `/api/auth/login` | POST | No | Login user |
-| `/api/auth/profile` | GET | Yes | Get user profile |
-| `/api/auth/profile` | PUT | Yes | Update profile |
+| Endpoint             | Method | Auth Required | Description       |
+| -------------------- | ------ | ------------- | ----------------- |
+| `/api/auth/register` | POST   | No            | Register new user |
+| `/api/auth/login`    | POST   | No            | Login user        |
+| `/api/auth/profile`  | GET    | Yes           | Get user profile  |
+| `/api/auth/profile`  | PUT    | Yes           | Update profile    |
 
 ## 🎨 Component Library
 
@@ -203,7 +204,7 @@ The app automatically handles:
 ```tsx
 <Button
   variant="primary" // primary | secondary | danger | outline
-  size="lg"         // sm | md | lg
+  size="lg" // sm | md | lg
   loading={isSubmitting}
   fullWidth
 >
@@ -222,11 +223,7 @@ The app automatically handles:
 ### Loading Component
 
 ```tsx
-<Loading
-  size="lg"
-  fullScreen
-  text="Loading..."
-/>
+<Loading size="lg" fullScreen text="Loading..." />
 ```
 
 ## 🔒 Authentication Flow
@@ -250,26 +247,31 @@ The app automatically handles:
 ### Protected Routes
 
 Routes wrapped with `<PrivateRoute>` require authentication:
+
 - `/profile` - View user profile
 - `/profile/edit` - Edit profile
 
 Public routes (redirect if authenticated):
+
 - `/login`
 - `/register`
 
 ## 📝 Form Validation Rules
 
 ### Registration
+
 - **Name**: 2-50 characters, letters and spaces only
 - **Email**: Valid email format
 - **Phone**: 10-digit Indian mobile (starts with 6-9)
 - **Password**: Min 6 chars, must include uppercase, lowercase, and number
 
 ### Login
+
 - **Identifier**: Valid email OR 10-digit phone number
 - **Password**: Required
 
 ### Profile Update
+
 - All fields optional
 - Same validation rules as registration
 
@@ -309,6 +311,7 @@ src/tests/
 ### TypeScript
 
 Strict mode enabled with:
+
 - No implicit any
 - Unused locals/parameters detection
 - Path aliases for clean imports
@@ -345,17 +348,16 @@ server: {
 **3. API connection failed:**
 
 Check:
+
 - Backend server is running
 - `.env.development` has correct API URL
 - CORS is enabled on backend
 
-
 **4.Admin :**
 {
-  "email": "admin@Pattinambakkam_Fish_World.com",
-  "password": "Admin123"
+"email": "admin@Pattinambakkam_Fish_World.com",
+"password": "Admin123"
 }
-
 
 ## 📚 Additional Resources
 
@@ -376,6 +378,5 @@ MIT
 Built with ❤️ by the Pattinambakkam_Fish_World Team
 
 ---
-
 
 **Happy Coding! 🚀**

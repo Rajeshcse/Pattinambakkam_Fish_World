@@ -1,10 +1,5 @@
 import apiClient from './api';
-import {
-  CartResponse,
-  CartCountResponse,
-  AddToCartRequest,
-  UpdateCartItemRequest
-} from '@/types';
+import { CartResponse, CartCountResponse, AddToCartRequest, UpdateCartItemRequest } from '@/types';
 
 const CART_BASE_URL = '/api/cart';
 
@@ -37,12 +32,9 @@ export const getCartCount = async (): Promise<CartCountResponse> => {
  */
 export const updateCartItem = async (
   itemId: string,
-  data: UpdateCartItemRequest
+  data: UpdateCartItemRequest,
 ): Promise<CartResponse> => {
-  const response = await apiClient.put<CartResponse>(
-    `${CART_BASE_URL}/update/${itemId}`,
-    data
-  );
+  const response = await apiClient.put<CartResponse>(`${CART_BASE_URL}/update/${itemId}`, data);
   return response.data;
 };
 
@@ -50,9 +42,7 @@ export const updateCartItem = async (
  * Remove item from cart
  */
 export const removeCartItem = async (itemId: string): Promise<CartResponse> => {
-  const response = await apiClient.delete<CartResponse>(
-    `${CART_BASE_URL}/remove/${itemId}`
-  );
+  const response = await apiClient.delete<CartResponse>(`${CART_BASE_URL}/remove/${itemId}`);
   return response.data;
 };
 

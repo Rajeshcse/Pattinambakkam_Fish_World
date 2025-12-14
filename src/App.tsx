@@ -24,7 +24,14 @@ import PaymentInstructions from '@/pages/PaymentInstructions';
 import OrderConfirmation from '@/pages/orders/OrderConfirmation';
 import MyOrders from '@/pages/orders/MyOrders';
 import OrderDetails from '@/pages/orders/OrderDetails';
-import { AdminDashboard, AdminUsers, AdminUserDetail, AdminTest, ProductManagement, ProductForm } from '@/pages/admin';
+import {
+  AdminDashboard,
+  AdminUsers,
+  AdminUserDetail,
+  AdminTest,
+  ProductManagement,
+  ProductForm,
+} from '@/pages/admin';
 import { ApiTest } from '@/pages/admin/ApiTest';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,210 +43,210 @@ const App: React.FC = () => {
         <ConfirmProvider>
           <Router>
             <div className="App">
-            <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <PublicRoute>
-                  <Register />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/forgot-password"
-              element={
-                <PublicRoute>
-                  <ForgotPassword />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/reset-password"
-              element={
-                <PublicRoute>
-                  <ResetPassword />
-                </PublicRoute>
-              }
-            />
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:id" element={<ProductDetail />} />
+                <Route
+                  path="/login"
+                  element={
+                    <PublicRoute>
+                      <Login />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <PublicRoute>
+                      <Register />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/forgot-password"
+                  element={
+                    <PublicRoute>
+                      <ForgotPassword />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/reset-password"
+                  element={
+                    <PublicRoute>
+                      <ResetPassword />
+                    </PublicRoute>
+                  }
+                />
 
-            {/* Protected Routes */}
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <Profile />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile/edit"
-              element={
-                <PrivateRoute>
-                  <ProfileEdit />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/verify-email"
-              element={
-                <PrivateRoute>
-                  <VerifyEmail />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/change-password"
-              element={
-                <PrivateRoute>
-                  <ChangePassword />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/cart"
-              element={
-                <PrivateRoute>
-                  <Cart />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/checkout"
-              element={
-                <PrivateRoute>
-                  <Checkout />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/payment-instructions"
-              element={
-                <PrivateRoute>
-                  <PaymentInstructions />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/my-orders"
-              element={
-                <PrivateRoute>
-                  <MyOrders />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/orders/:orderId"
-              element={
-                <PrivateRoute>
-                  <OrderDetails />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/orders/:orderId/confirmation"
-              element={
-                <PrivateRoute>
-                  <OrderConfirmation />
-                </PrivateRoute>
-              }
-            />
+                {/* Protected Routes */}
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <Profile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/profile/edit"
+                  element={
+                    <PrivateRoute>
+                      <ProfileEdit />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/verify-email"
+                  element={
+                    <PrivateRoute>
+                      <VerifyEmail />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/change-password"
+                  element={
+                    <PrivateRoute>
+                      <ChangePassword />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/cart"
+                  element={
+                    <PrivateRoute>
+                      <Cart />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/checkout"
+                  element={
+                    <PrivateRoute>
+                      <Checkout />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/payment-instructions"
+                  element={
+                    <PrivateRoute>
+                      <PaymentInstructions />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/my-orders"
+                  element={
+                    <PrivateRoute>
+                      <MyOrders />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/orders/:orderId"
+                  element={
+                    <PrivateRoute>
+                      <OrderDetails />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/orders/:orderId/confirmation"
+                  element={
+                    <PrivateRoute>
+                      <OrderConfirmation />
+                    </PrivateRoute>
+                  }
+                />
 
-            {/* Admin Routes */}
-            <Route
-              path="/admin/dashboard"
-              element={
-                <AdminRoute>
-                  <AdminDashboard />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/admin/users"
-              element={
-                <AdminRoute>
-                  <AdminUsers />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/admin/users/:id"
-              element={
-                <AdminRoute>
-                  <AdminUserDetail />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/admin/test"
-              element={
-                <AdminRoute>
-                  <AdminTest />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/admin/api-test"
-              element={
-                <AdminRoute>
-                  <ApiTest />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/admin/products"
-              element={
-                <AdminRoute>
-                  <ProductManagement />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/admin/products/new"
-              element={
-                <AdminRoute>
-                  <ProductForm />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/admin/products/edit/:id"
-              element={
-                <AdminRoute>
-                  <ProductForm />
-                </AdminRoute>
-              }
-            />
+                {/* Admin Routes */}
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <AdminRoute>
+                      <AdminDashboard />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/users"
+                  element={
+                    <AdminRoute>
+                      <AdminUsers />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/users/:id"
+                  element={
+                    <AdminRoute>
+                      <AdminUserDetail />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/test"
+                  element={
+                    <AdminRoute>
+                      <AdminTest />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/api-test"
+                  element={
+                    <AdminRoute>
+                      <ApiTest />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/products"
+                  element={
+                    <AdminRoute>
+                      <ProductManagement />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/products/new"
+                  element={
+                    <AdminRoute>
+                      <ProductForm />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/products/edit/:id"
+                  element={
+                    <AdminRoute>
+                      <ProductForm />
+                    </AdminRoute>
+                  }
+                />
 
-            {/* Catch all - redirect to home */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+                {/* Catch all - redirect to home */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
 
-          {/* Toast notifications */}
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={true}
-            closeOnClick={true}
-            rtl={false}
-            pauseOnFocusLoss={false}
-            draggable={true}
-            pauseOnHover={true}
-            theme="light"
-            limit={3}
-          />
+              {/* Toast notifications */}
+              <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick={true}
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={true}
+                pauseOnHover={true}
+                theme="light"
+                limit={3}
+              />
             </div>
           </Router>
         </ConfirmProvider>

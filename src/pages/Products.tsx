@@ -79,7 +79,6 @@ const Products: React.FC = () => {
       {/* Main Content - Direct to Products */}
       <div className="bg-gradient-to-b from-cyan-50 via-slate-50 to-white min-h-screen pt-4 sm:pt-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          
           {/* Compact Header + Search Bar */}
           <div className="bg-white rounded-2xl shadow-lg shadow-cyan-500/10 border border-slate-100 p-4 sm:p-5 mb-6">
             {/* Top Row: Title + Search */}
@@ -90,7 +89,9 @@ const Products: React.FC = () => {
                 <LogoIcon size={40} className="sm:hidden" />
                 <div>
                   <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Fresh Seafood</h1>
-                  <p className="text-xs sm:text-sm text-slate-500">{totalProducts} products available</p>
+                  <p className="text-xs sm:text-sm text-slate-500">
+                    {totalProducts} products available
+                  </p>
                 </div>
               </div>
 
@@ -98,7 +99,9 @@ const Products: React.FC = () => {
               <form onSubmit={handleSearch} className="flex-1 sm:max-w-md sm:ml-auto">
                 <div className="flex gap-2">
                   <div className="relative flex-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+                      🔍
+                    </span>
                     <input
                       type="text"
                       value={searchQuery}
@@ -148,7 +151,9 @@ const Products: React.FC = () => {
 
               {/* Availability Toggle */}
               <label className="flex items-center gap-2 cursor-pointer">
-                <div className={`relative w-9 h-5 rounded-full transition-colors duration-300 ${showAvailableOnly ? 'bg-green-500' : 'bg-slate-300'}`}>
+                <div
+                  className={`relative w-9 h-5 rounded-full transition-colors duration-300 ${showAvailableOnly ? 'bg-green-500' : 'bg-slate-300'}`}
+                >
                   <input
                     type="checkbox"
                     checked={showAvailableOnly}
@@ -158,7 +163,9 @@ const Products: React.FC = () => {
                     }}
                     className="sr-only"
                   />
-                  <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${showAvailableOnly ? 'translate-x-4' : 'translate-x-0.5'}`} />
+                  <div
+                    className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${showAvailableOnly ? 'translate-x-4' : 'translate-x-0.5'}`}
+                  />
                 </div>
                 <span className="text-xs text-slate-500 hidden sm:inline">In Stock</span>
               </label>
@@ -221,7 +228,12 @@ const Products: React.FC = () => {
                     }`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
                     </svg>
                   </button>
 
@@ -266,7 +278,12 @@ const Products: React.FC = () => {
                     }`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </button>
                 </div>

@@ -6,10 +6,10 @@ interface CheckCircleProps {
   className?: string;
 }
 
-export const CheckCircle: React.FC<CheckCircleProps> = ({ 
-  size = 24, 
-  color = '#22c55e', 
-  className = ''
+export const CheckCircle: React.FC<CheckCircleProps> = ({
+  size = 24,
+  color = '#22c55e',
+  className = '',
 }) => {
   return (
     <svg

@@ -93,7 +93,7 @@ export const AdminUserDetail: React.FC = () => {
         // Refresh user data to get latest state
         await fetchUser();
       }
-      
+
       setIsEditing(false);
       toast.success('User updated successfully');
     } catch (error: unknown) {
@@ -224,9 +224,7 @@ export const AdminUserDetail: React.FC = () => {
             {isEditing ? (
               <form onSubmit={handleUpdateUser} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                   <input
                     type="text"
                     value={editForm.name}
@@ -237,9 +235,7 @@ export const AdminUserDetail: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                   <input
                     type="email"
                     value={editForm.email}
@@ -250,9 +246,7 @@ export const AdminUserDetail: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                   <input
                     type="tel"
                     value={editForm.phone}

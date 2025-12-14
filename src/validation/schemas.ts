@@ -9,23 +9,21 @@ export const registerSchema = Yup.object().shape({
     .max(50, 'Name must not exceed 50 characters')
     .matches(/^[a-zA-Z\s]+$/, 'Name can only contain letters and spaces')
     .required('Name is required'),
-  
-  email: Yup.string()
-    .email('Please provide a valid email')
-    .required('Email is required'),
-  
+
+  email: Yup.string().email('Please provide a valid email').required('Email is required'),
+
   phone: Yup.string()
     .matches(/^[6-9]\d{9}$/, 'Phone must be a 10-digit Indian mobile number starting with 6-9')
     .required('Phone number is required'),
-  
+
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number',
     )
     .required('Password is required'),
-  
+
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Please confirm your password'),
@@ -37,22 +35,25 @@ export const registerSchema = Yup.object().shape({
 export const loginSchema = Yup.object().shape({
   identifier: Yup.string()
     .required('Email or phone number is required')
-    .test('email-or-phone', 'Please provide a valid email or 10-digit phone number', function(value) {
-      if (!value) return false;
-      
-      // Check if it's a valid email
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (emailRegex.test(value)) return true;
-      
-      // Check if it's a valid Indian phone number
-      const phoneRegex = /^[6-9]\d{9}$/;
-      if (phoneRegex.test(value)) return true;
-      
-      return false;
-    }),
-  
-  password: Yup.string()
-    .required('Password is required'),
+    .test(
+      'email-or-phone',
+      'Please provide a valid email or 10-digit phone number',
+      function (value) {
+        if (!value) return false;
+
+        // Check if it's a valid email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(value)) return true;
+
+        // Check if it's a valid Indian phone number
+        const phoneRegex = /^[6-9]\d{9}$/;
+        if (phoneRegex.test(value)) return true;
+
+        return false;
+      },
+    ),
+
+  password: Yup.string().required('Password is required'),
 });
 
 /**
@@ -63,15 +64,15 @@ export const profileUpdateSchema = Yup.object().shape({
     .min(2, 'Name must be at least 2 characters')
     .max(50, 'Name must not exceed 50 characters')
     .matches(/^[a-zA-Z\s]+$/, 'Name can only contain letters and spaces'),
-  
-  email: Yup.string()
-    .email('Please provide a valid email'),
-  
-  phone: Yup.string()
-    .matches(/^[6-9]\d{9}$/, 'Phone must be a 10-digit Indian mobile number starting with 6-9'),
-  
-  avatar: Yup.string()
-    .url('Please provide a valid URL'),
+
+  email: Yup.string().email('Please provide a valid email'),
+
+  phone: Yup.string().matches(
+    /^[6-9]\d{9}$/,
+    'Phone must be a 10-digit Indian mobile number starting with 6-9',
+  ),
+
+  avatar: Yup.string().url('Please provide a valid URL'),
 });
 
 /**
@@ -123,9 +124,7 @@ export const otpInitialValues = {
  * Validation schema for forgot password
  */
 export const forgotPasswordSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Please provide a valid email')
-    .required('Email is required'),
+  email: Yup.string().email('Please provide a valid email').required('Email is required'),
 });
 
 /**
@@ -139,9 +138,7 @@ export const forgotPasswordInitialValues = {
  * Validation schema for reset password
  */
 export const resetPasswordSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Please provide a valid email')
-    .required('Email is required'),
+  email: Yup.string().email('Please provide a valid email').required('Email is required'),
 
   otp: Yup.string()
     .matches(/^\d{6}$/, 'OTP must be exactly 6 digits')
@@ -151,7 +148,7 @@ export const resetPasswordSchema = Yup.object().shape({
     .min(6, 'Password must be at least 6 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number',
     )
     .required('New password is required'),
 
@@ -174,14 +171,13 @@ export const resetPasswordInitialValues = {
  * Validation schema for change password
  */
 export const changePasswordSchema = Yup.object().shape({
-  currentPassword: Yup.string()
-    .required('Current password is required'),
+  currentPassword: Yup.string().required('Current password is required'),
 
   newPassword: Yup.string()
     .min(6, 'Password must be at least 6 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number',
     )
     .notOneOf([Yup.ref('currentPassword')], 'New password must be different from current password')
     .required('New password is required'),

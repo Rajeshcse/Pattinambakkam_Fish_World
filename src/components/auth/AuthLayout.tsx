@@ -9,16 +9,16 @@ interface AuthLayoutProps {
   showNavbar?: boolean;
 }
 
-export const AuthLayout: React.FC<AuthLayoutProps> = ({ 
-  children, 
-  title, 
+export const AuthLayout: React.FC<AuthLayoutProps> = ({
+  children,
+  title,
   subtitle,
-  showNavbar = true
+  showNavbar = true,
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100">
       {showNavbar && <Navbar />}
-      
+
       <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full">
           {/* Header */}
@@ -28,9 +28,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
           </div>
 
           {/* Card Content */}
-          <Card>
-            {children}
-          </Card>
+          <Card>{children}</Card>
         </div>
       </div>
     </div>

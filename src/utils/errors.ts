@@ -159,10 +159,7 @@ export function getErrorMessage(error: unknown): string {
  * }
  * ```
  */
-export function handleApiError(
-  error: unknown,
-  fallbackMessage?: string
-): AppError {
+export function handleApiError(error: unknown, fallbackMessage?: string): AppError {
   // Handle AxiosError
   if (isAxiosError(error)) {
     const message = getErrorMessage(error);

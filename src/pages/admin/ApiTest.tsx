@@ -13,14 +13,14 @@ export const ApiTest: React.FC = () => {
       test,
       success,
       data,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
-    setTestResults(prev => [result, ...prev]);
+    setTestResults((prev) => [result, ...prev]);
   };
 
   const testConnection = async () => {
     setLoading(true);
-    
+
     // Test 1: Basic API connectivity
     try {
       const response = await fetch('http://localhost:3001/api/health');
@@ -38,10 +38,10 @@ export const ApiTest: React.FC = () => {
     // Test 2: Check current user token
     const token = localStorage.getItem('accessToken');
     const user = localStorage.getItem('user');
-    addResult('Auth Token Check', !!token, { 
-      hasToken: !!token, 
+    addResult('Auth Token Check', !!token, {
+      hasToken: !!token,
       user: user ? JSON.parse(user) : null,
-      tokenLength: token?.length 
+      tokenLength: token?.length,
     });
 
     // Test 3: Try dashboard API with current token
@@ -55,7 +55,7 @@ export const ApiTest: React.FC = () => {
           message: appError.message,
           statusCode: appError.statusCode,
           code: appError.code,
-          details: appError.details
+          details: appError.details,
         });
       }
     }
@@ -65,7 +65,7 @@ export const ApiTest: React.FC = () => {
       apiBaseUrl: config.apiBaseUrl,
       isDev: config.isDev,
       isProd: config.isProd,
-      currentOrigin: window.location.origin
+      currentOrigin: window.location.origin,
     });
 
     setLoading(false);
@@ -86,17 +86,10 @@ export const ApiTest: React.FC = () => {
 
           <Card className="mb-6">
             <div className="flex gap-4">
-              <Button 
-                onClick={testConnection} 
-                disabled={loading}
-                variant="primary"
-              >
+              <Button onClick={testConnection} disabled={loading} variant="primary">
                 {loading ? 'Testing...' : 'Run Tests'}
               </Button>
-              <Button 
-                onClick={clearResults}
-                variant="outline"
-              >
+              <Button onClick={clearResults} variant="outline">
                 Clear Results
               </Button>
             </div>
@@ -106,7 +99,9 @@ export const ApiTest: React.FC = () => {
             {testResults.map((result, index) => (
               <Card key={index}>
                 <div className="flex items-start gap-4">
-                  <div className={`w-3 h-3 rounded-full mt-1 ${result.success ? 'bg-green-500' : 'bg-red-500'}`} />
+                  <div
+                    className={`w-3 h-3 rounded-full mt-1 ${result.success ? 'bg-green-500' : 'bg-red-500'}`}
+                  />
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-2">
                       <h3 className="font-medium text-gray-900">{result.test}</h3>
@@ -114,7 +109,9 @@ export const ApiTest: React.FC = () => {
                         {new Date(result.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
-                    <div className={`text-sm ${result.success ? 'text-green-700' : 'text-red-700'}`}>
+                    <div
+                      className={`text-sm ${result.success ? 'text-green-700' : 'text-red-700'}`}
+                    >
                       Status: {result.success ? 'SUCCESS' : 'FAILED'}
                     </div>
                     <pre className="mt-2 text-xs bg-gray-50 p-3 rounded overflow-x-auto">
@@ -129,7 +126,9 @@ export const ApiTest: React.FC = () => {
           {testResults.length === 0 && (
             <Card>
               <div className="text-center py-8">
-                <p className="text-gray-500">No test results yet. Click "Run Tests" to start debugging.</p>
+                <p className="text-gray-500">
+                  No test results yet. Click "Run Tests" to start debugging.
+                </p>
               </div>
             </Card>
           )}

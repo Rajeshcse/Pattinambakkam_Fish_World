@@ -27,11 +27,11 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isHomePage 
-          ? 'bg-transparent' 
-          : 'bg-white/95 backdrop-blur-md shadow-lg'
-      } ${className}`}>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isHomePage ? 'bg-transparent' : 'bg-white/95 backdrop-blur-md shadow-lg'
+        } ${className}`}
+      >
         <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 py-4 max-w-7xl mx-auto">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group" onClick={closeMobileMenu}>
@@ -41,12 +41,17 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
             </div>
             <div className="hidden xs:block">
-              <h1 className={`text-lg sm:text-xl lg:text-2xl font-bold ${
-                isHomePage ? 'text-white' : 'text-gray-800'
-              } group-hover:text-primary-500 transition-colors`}>
+              <h1
+                className={`text-lg sm:text-xl lg:text-2xl font-bold ${
+                  isHomePage ? 'text-white' : 'text-gray-800'
+                } group-hover:text-primary-500 transition-colors`}
+              >
                 <span className="hidden sm:inline">Pattinambakkam</span>
                 <span className="sm:hidden">PFW</span>
-                <span className={`${isHomePage ? 'text-amber-300' : 'text-primary-600'}`}> Fish World</span>
+                <span className={`${isHomePage ? 'text-amber-300' : 'text-primary-600'}`}>
+                  {' '}
+                  Fish World
+                </span>
               </h1>
             </div>
           </Link>
@@ -55,22 +60,30 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           <div className="hidden md:flex items-center gap-6">
             {/* Nav Links */}
             <div className="flex items-center gap-1">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                  location.pathname === '/' 
-                    ? isHomePage ? 'bg-white/20 text-white' : 'bg-primary-100 text-primary-700'
-                    : isHomePage ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                  location.pathname === '/'
+                    ? isHomePage
+                      ? 'bg-white/20 text-white'
+                      : 'bg-primary-100 text-primary-700'
+                    : isHomePage
+                      ? 'text-white/80 hover:text-white hover:bg-white/10'
+                      : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
                 }`}
               >
                 Home
               </Link>
-              <Link 
-                to="/products" 
+              <Link
+                to="/products"
                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                  location.pathname === '/products' 
-                    ? isHomePage ? 'bg-white/20 text-white' : 'bg-primary-100 text-primary-700'
-                    : isHomePage ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                  location.pathname === '/products'
+                    ? isHomePage
+                      ? 'bg-white/20 text-white'
+                      : 'bg-primary-100 text-primary-700'
+                    : isHomePage
+                      ? 'text-white/80 hover:text-white hover:bg-white/10'
+                      : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
                 }`}
               >
                 Products
@@ -83,8 +96,12 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                 to="/cart"
                 className={`relative p-2 rounded-xl transition-all duration-300 ${
                   location.pathname === '/cart'
-                    ? isHomePage ? 'bg-white/20' : 'bg-cyan-100'
-                    : isHomePage ? 'hover:bg-white/10' : 'hover:bg-gray-100'
+                    ? isHomePage
+                      ? 'bg-white/20'
+                      : 'bg-cyan-100'
+                    : isHomePage
+                      ? 'hover:bg-white/10'
+                      : 'hover:bg-gray-100'
                 }`}
               >
                 <svg
@@ -135,7 +152,9 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                     <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                   <div className="hidden lg:block">
-                    <p className={`text-sm font-semibold ${isHomePage ? 'text-white' : 'text-gray-800'}`}>
+                    <p
+                      className={`text-sm font-semibold ${isHomePage ? 'text-white' : 'text-gray-800'}`}
+                    >
                       {user.name}
                     </p>
                     <p className={`text-xs ${isHomePage ? 'text-white/70' : 'text-gray-500'}`}>
@@ -148,8 +167,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                 <button
                   onClick={logout}
                   className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                    isHomePage 
-                      ? 'text-white/80 hover:text-white hover:bg-white/10 border border-white/30' 
+                    isHomePage
+                      ? 'text-white/80 hover:text-white hover:bg-white/10 border border-white/30'
                       : 'text-gray-600 hover:text-red-600 hover:bg-red-50 border border-gray-200'
                   }`}
                 >
@@ -159,11 +178,13 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             ) : (
               <div className="flex items-center gap-3">
                 <Link to="/login">
-                  <button className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 ${
-                    isHomePage 
-                      ? 'text-white border-2 border-white/50 hover:bg-white hover:text-primary-600' 
-                      : 'text-primary-600 border-2 border-primary-500 hover:bg-primary-50'
-                  }`}>
+                  <button
+                    className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 ${
+                      isHomePage
+                        ? 'text-white border-2 border-white/50 hover:bg-white hover:text-primary-600'
+                        : 'text-primary-600 border-2 border-primary-500 hover:bg-primary-50'
+                    }`}
+                  >
                     Login
                   </button>
                 </Link>
@@ -180,19 +201,27 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           <button
             onClick={toggleMobileMenu}
             className={`md:hidden p-2 rounded-xl transition-all duration-300 ${
-              isHomePage 
-                ? 'text-white hover:bg-white/10' 
-                : 'text-gray-700 hover:bg-gray-100'
+              isHomePage ? 'text-white hover:bg-white/10' : 'text-gray-700 hover:bg-gray-100'
             }`}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
               <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             ) : (
               <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             )}
           </button>
@@ -200,7 +229,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div 
+      <div
         className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
           isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
@@ -208,7 +237,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
       />
 
       {/* Mobile Menu Drawer */}
-      <div 
+      <div
         className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
@@ -224,7 +253,12 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -251,8 +285,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             to="/"
             onClick={closeMobileMenu}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-              location.pathname === '/' 
-                ? 'bg-primary-100 text-primary-700' 
+              location.pathname === '/'
+                ? 'bg-primary-100 text-primary-700'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -264,8 +298,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             to="/products"
             onClick={closeMobileMenu}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-              location.pathname === '/products' 
-                ? 'bg-primary-100 text-primary-700' 
+              location.pathname === '/products'
+                ? 'bg-primary-100 text-primary-700'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -279,8 +313,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                 to="/profile"
                 onClick={closeMobileMenu}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-                  location.pathname === '/profile' 
-                    ? 'bg-primary-100 text-primary-700' 
+                  location.pathname === '/profile'
+                    ? 'bg-primary-100 text-primary-700'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -307,11 +341,19 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           {/* Auth Actions */}
           {user ? (
             <button
-              onClick={() => { logout(); closeMobileMenu(); }}
+              onClick={() => {
+                logout();
+                closeMobileMenu();
+              }}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-all"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
               </svg>
               Logout
             </button>

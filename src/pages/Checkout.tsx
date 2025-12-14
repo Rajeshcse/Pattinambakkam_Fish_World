@@ -56,7 +56,7 @@ const Checkout: React.FC = () => {
   }, [formData.deliveryDate]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -86,7 +86,7 @@ const Checkout: React.FC = () => {
     // Validate 4-hour minimum
     const validation = orderService.validateDeliveryTime(
       formData.deliveryDate,
-      formData.deliveryTime
+      formData.deliveryTime,
     );
 
     if (!validation.valid) {
@@ -98,9 +98,13 @@ const Checkout: React.FC = () => {
   };
 
   const generateWhatsAppMessage = (order: any) => {
-    const items = cart?.items.map(item =>
-      `• ${item.product.name} × ${item.quantity}kg - ₹${(item.product.price * item.quantity).toFixed(2)}`
-    ).join('\n') || '';
+    const items =
+      cart?.items
+        .map(
+          (item) =>
+            `• ${item.product.name} × ${item.quantity}kg - ₹${(item.product.price * item.quantity).toFixed(2)}`,
+        )
+        .join('\n') || '';
 
     const message = `🐟 *New Order from Pattinambakkam Fish World*
 
@@ -170,7 +174,7 @@ _Please confirm this order. Thank you!_`;
         } else {
           // Online payment - open Razorpay payment link in new tab
           toast.success(`Order created! Please pay ₹${order.totalAmount} on the payment page.`, {
-            autoClose: 7000
+            autoClose: 7000,
           });
 
           // Store order ID and amount for reference
@@ -273,7 +277,8 @@ _Please confirm this order. Thank you!_`;
                   {/* Delivery Time Slot */}
                   <div className="mb-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Delivery Time Slot * <span className="text-xs text-orange-600">(Minimum 4 hours from now)</span>
+                      Delivery Time Slot *{' '}
+                      <span className="text-xs text-orange-600">(Minimum 4 hours from now)</span>
                     </label>
                     {formData.deliveryDate ? (
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -281,14 +286,20 @@ _Please confirm this order. Thank you!_`;
                           <button
                             key={slot}
                             type="button"
-                            onClick={() => available && setFormData((prev) => ({ ...prev, deliveryTime: slot as DeliveryTimeSlot }))}
+                            onClick={() =>
+                              available &&
+                              setFormData((prev) => ({
+                                ...prev,
+                                deliveryTime: slot as DeliveryTimeSlot,
+                              }))
+                            }
                             disabled={!available}
                             className={`p-4 rounded-lg border-2 text-sm font-semibold transition-all ${
                               formData.deliveryTime === slot
                                 ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
                                 : available
-                                ? 'border-gray-200 hover:border-cyan-300 text-gray-700'
-                                : 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
+                                  ? 'border-gray-200 hover:border-cyan-300 text-gray-700'
+                                  : 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
                             }`}
                           >
                             <div>{slot}</div>
@@ -350,9 +361,7 @@ _Please confirm this order. Thank you!_`;
                           <div className="mt-2 text-sm text-gray-700">
                             Amount: <span className="font-semibold">₹{totalAmount.toFixed(2)}</span>
                           </div>
-                          <div className="mt-1 text-xs text-green-600">
-                            ✓ Quick & convenient
-                          </div>
+                          <div className="mt-1 text-xs text-green-600">✓ Quick & convenient</div>
                         </div>
                       </div>
                     </div>
@@ -379,7 +388,9 @@ _Please confirm this order. Thank you!_`;
                             Pay now using UPI, Cards, NetBanking, or Wallets
                           </p>
                           <div className="mt-2 flex items-center space-x-1 text-xs">
-                            <span className="text-green-600 font-medium">✓ Instant confirmation</span>
+                            <span className="text-green-600 font-medium">
+                              ✓ Instant confirmation
+                            </span>
                           </div>
                           <div className="mt-1 text-xs text-green-600 font-medium">
                             ✓ Secure payment
@@ -402,8 +413,8 @@ _Please confirm this order. Thank you!_`;
                   {submitting
                     ? 'Creating Order...'
                     : paymentMethod === 'whatsapp'
-                    ? 'Place Order via WhatsApp'
-                    : 'Continue to Payment'}
+                      ? 'Place Order via WhatsApp'
+                      : 'Continue to Payment'}
                 </Button>
               </form>
             </div>
@@ -420,7 +431,9 @@ _Please confirm this order. Thank you!_`;
                       <span className="text-gray-600">
                         {item.product.name} × {item.quantity}kg
                       </span>
-                      <span className="font-semibold">₹{(item.product.price * item.quantity).toFixed(2)}</span>
+                      <span className="font-semibold">
+                        ₹{(item.product.price * item.quantity).toFixed(2)}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -435,7 +448,9 @@ _Please confirm this order. Thank you!_`;
                 <div className="text-xs text-gray-500 space-y-1">
                   <p>✓ Fresh seafood delivered</p>
                   <p>✓ WhatsApp/UPI payment accepted</p>
-                  <p>✓ {itemCount} item{itemCount !== 1 ? 's' : ''} in order</p>
+                  <p>
+                    ✓ {itemCount} item{itemCount !== 1 ? 's' : ''} in order
+                  </p>
                 </div>
               </div>
             </div>

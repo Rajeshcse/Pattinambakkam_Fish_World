@@ -84,7 +84,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         setLoading(false);
       }
     },
-    [isAuthenticated]
+    [isAuthenticated],
   );
 
   /**
@@ -112,7 +112,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         setLoading(false);
       }
     },
-    [isAuthenticated]
+    [isAuthenticated],
   );
 
   /**
@@ -140,7 +140,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         setLoading(false);
       }
     },
-    [isAuthenticated]
+    [isAuthenticated],
   );
 
   /**

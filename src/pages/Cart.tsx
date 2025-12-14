@@ -7,7 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
-  const { cart, itemCount, totalAmount, updateQuantity, removeItem, clearCart, loading } = useCart();
+  const { cart, itemCount, totalAmount, updateQuantity, removeItem, clearCart, loading } =
+    useCart();
   const { isAuthenticated } = useAuth();
 
   // Redirect to login if not authenticated
@@ -51,7 +52,9 @@ const Cart: React.FC = () => {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Shopping Cart</h1>
             <p className="text-gray-600">
-              {isEmpty ? 'Your cart is waiting to be filled!' : `${itemCount} item${itemCount !== 1 ? 's' : ''} in your cart`}
+              {isEmpty
+                ? 'Your cart is waiting to be filled!'
+                : `${itemCount} item${itemCount !== 1 ? 's' : ''} in your cart`}
             </p>
           </div>
 
@@ -63,12 +66,7 @@ const Cart: React.FC = () => {
               <div className="lg:col-span-2 space-y-4">
                 {/* Clear Cart Button */}
                 <div className="flex justify-end">
-                  <Button
-                    onClick={handleClearCart}
-                    variant="outline"
-                    size="sm"
-                    disabled={loading}
-                  >
+                  <Button onClick={handleClearCart} variant="outline" size="sm" disabled={loading}>
                     🗑️ Clear Cart
                   </Button>
                 </div>
