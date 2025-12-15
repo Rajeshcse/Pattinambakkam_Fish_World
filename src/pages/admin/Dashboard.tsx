@@ -20,7 +20,7 @@ export const AdminDashboard: React.FC = () => {
     try {
       const response = await adminService.getDashboardStats();
 
-      // Check if response has the expected structure
+      
       if (response && response.data) {
         setStats(response.data);
       } else {
@@ -96,7 +96,7 @@ export const AdminDashboard: React.FC = () => {
             <p className="text-gray-600">Overview of your application</p>
           </div>
 
-          {/* Stats Grid */}
+          {}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card>
               <div className="space-y-2">
@@ -127,7 +127,7 @@ export const AdminDashboard: React.FC = () => {
             </Card>
           </div>
 
-          {/* Quick Actions */}
+          {}
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -167,7 +167,7 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Recent Users */}
+          {}
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Recent Users</h2>
             {!stats.recentUsers || stats.recentUsers.length === 0 ? (

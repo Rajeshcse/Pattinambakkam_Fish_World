@@ -9,12 +9,12 @@ const PaymentInstructions: React.FC = () => {
   const RAZORPAY_LINK = 'https://razorpay.me/@paramanandamrajesh';
 
   useEffect(() => {
-    // Get pending order ID from localStorage
+    
     const pendingOrderId = localStorage.getItem('pendingPaymentOrderId');
     if (pendingOrderId) {
       setOrderId(pendingOrderId);
     } else {
-      // No pending order, redirect to home
+      
       navigate('/');
     }
   }, [navigate]);
@@ -38,7 +38,7 @@ const PaymentInstructions: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-b from-cyan-50 to-white py-8">
         <div className="max-w-2xl mx-auto px-4">
           <div className="bg-white rounded-lg shadow-md p-8">
-            {/* Header */}
+            {}
             <div className="text-center mb-6">
               <div className="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
@@ -63,7 +63,7 @@ const PaymentInstructions: React.FC = () => {
               )}
             </div>
 
-            {/* Important Notice */}
+            {}
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
               <div className="flex items-start">
                 <svg
@@ -84,7 +84,7 @@ const PaymentInstructions: React.FC = () => {
               </div>
             </div>
 
-            {/* Instructions */}
+            {}
             <div className="space-y-4 mb-6">
               <div className="flex items-start">
                 <div className="flex-shrink-0 w-8 h-8 bg-cyan-600 text-white rounded-full flex items-center justify-center font-semibold">
@@ -135,7 +135,7 @@ const PaymentInstructions: React.FC = () => {
               </div>
             </div>
 
-            {/* Action Buttons */}
+            {}
             <div className="space-y-3">
               <Button onClick={handleOpenPaymentLink} variant="primary" fullWidth size="lg">
                 <svg
@@ -167,7 +167,7 @@ const PaymentInstructions: React.FC = () => {
               </Button>
             </div>
 
-            {/* Help Section */}
+            {}
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600">
                 <strong>Need help?</strong> Contact us on WhatsApp:{' '}

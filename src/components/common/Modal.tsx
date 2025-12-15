@@ -1,28 +1,23 @@
-/**
- * Modal Component
- *
- * A reusable modal/dialog component with overlay, animations,
- * and accessibility features.
- */
+
 
 import React, { useEffect, useRef } from 'react';
 
 export interface ModalProps {
-  /** Whether the modal is open */
+  
   isOpen: boolean;
-  /** Callback when modal should close */
+  
   onClose: () => void;
-  /** Modal title */
+  
   title?: string;
-  /** Modal content */
+  
   children: React.ReactNode;
-  /** Width of the modal */
+  
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  /** Whether to show close button */
+  
   showCloseButton?: boolean;
-  /** Whether clicking overlay closes modal */
+  
   closeOnOverlayClick?: boolean;
-  /** Whether pressing Escape closes modal */
+  
   closeOnEscape?: boolean;
 }
 
@@ -45,7 +40,7 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Handle escape key
+  
   useEffect(() => {
     if (!isOpen || !closeOnEscape) return;
 
@@ -59,7 +54,7 @@ export const Modal: React.FC<ModalProps> = ({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, closeOnEscape, onClose]);
 
-  // Prevent body scroll when modal is open
+  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -72,7 +67,7 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen]);
 
-  // Focus trap
+  
   useEffect(() => {
     if (!isOpen) return;
 
@@ -90,13 +85,13 @@ export const Modal: React.FC<ModalProps> = ({
       if (event.key !== 'Tab') return;
 
       if (event.shiftKey) {
-        // Shift + Tab
+        
         if (document.activeElement === firstElement) {
           event.preventDefault();
           lastElement?.focus();
         }
       } else {
-        // Tab
+        
         if (document.activeElement === lastElement) {
           event.preventDefault();
           firstElement?.focus();
@@ -112,7 +107,7 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen]);
 
-  // Handle overlay click
+  
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (closeOnOverlayClick && event.target === event.currentTarget) {
       onClose();
@@ -129,15 +124,15 @@ export const Modal: React.FC<ModalProps> = ({
       aria-modal="true"
       aria-labelledby={title ? 'modal-title' : undefined}
     >
-      {/* Overlay */}
+      {}
       <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity" />
 
-      {/* Modal Content */}
+      {}
       <div
         ref={modalRef}
         className={`relative bg-white rounded-lg shadow-xl ${sizeClasses[size]} w-full animate-slideUp`}
       >
-        {/* Header */}
+        {}
         {(title || showCloseButton) && (
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
             {title && (
@@ -164,7 +159,7 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
         )}
 
-        {/* Body */}
+        {}
         <div className="px-6 py-4">{children}</div>
       </div>
     </div>

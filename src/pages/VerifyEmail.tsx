@@ -19,7 +19,7 @@ export const VerifyEmail: React.FC = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
 
-  // Redirect if user is already verified
+  
   useEffect(() => {
     if (user?.isVerified) {
       toast.info('Your email is already verified');
@@ -27,7 +27,7 @@ export const VerifyEmail: React.FC = () => {
     }
   }, [user, navigate]);
 
-  // Cooldown timer for resend
+  
   useEffect(() => {
     if (resendCooldown > 0) {
       const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
@@ -47,7 +47,7 @@ export const VerifyEmail: React.FC = () => {
 
       if (response.success) {
         setOtpSent(true);
-        setResendCooldown(60); // 60 second cooldown
+        setResendCooldown(60); 
         toast.success(response.message || 'Verification OTP sent to your email');
         console.log('🎉 OTP sent successfully!');
       }
@@ -95,7 +95,7 @@ export const VerifyEmail: React.FC = () => {
     try {
       const response = await authService.verifyEmail({ otp: values.otp });
       if (response.success) {
-        // Update user in context with verified status
+        
         if (user) {
           updateUser({ ...user, isVerified: true });
         }

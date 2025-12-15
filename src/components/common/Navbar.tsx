@@ -14,7 +14,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Check if current page is home for transparent navbar
+  
   const isHomePage = location.pathname === '/';
 
   const toggleMobileMenu = () => {
@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
         } ${className}`}
       >
         <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 py-4 max-w-7xl mx-auto">
-          {/* Logo */}
+          {}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group" onClick={closeMobileMenu}>
             <div className="relative group-hover:scale-110 transition-transform duration-300">
               <LogoIcon size={40} className="sm:hidden" />
@@ -56,9 +56,9 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {}
           <div className="hidden md:flex items-center gap-6">
-            {/* Nav Links */}
+            {}
             <div className="flex items-center gap-1">
               <Link
                 to="/"
@@ -90,7 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               </Link>
             </div>
 
-            {/* Cart Icon */}
+            {}
             {user && (
               <Link
                 to="/cart"
@@ -125,10 +125,10 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               </Link>
             )}
 
-            {/* Auth Section */}
+            {}
             {user ? (
               <div className="flex items-center gap-3">
-                {/* Admin Badge */}
+                {}
                 {user.role === 'admin' && (
                   <Link
                     to="/admin/dashboard"
@@ -138,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                   </Link>
                 )}
 
-                {/* User Profile Dropdown */}
+                {}
                 <Link
                   to="/profile"
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300 group ${
@@ -163,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                   </div>
                 </Link>
 
-                {/* Logout Button */}
+                {}
                 <button
                   onClick={logout}
                   className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
@@ -197,7 +197,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {}
           <button
             onClick={toggleMobileMenu}
             className={`md:hidden p-2 rounded-xl transition-all duration-300 ${
@@ -228,7 +228,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {}
       <div
         className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
           isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
@@ -236,13 +236,13 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
         onClick={closeMobileMenu}
       />
 
-      {/* Mobile Menu Drawer */}
+      {}
       <div
         className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {/* Mobile Menu Header */}
+        {}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
             <LogoIcon size={40} />
@@ -263,9 +263,9 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           </button>
         </div>
 
-        {/* Mobile Menu Content */}
+        {}
         <div className="p-4 space-y-2">
-          {/* User Profile Card (if logged in) */}
+          {}
           {user && (
             <div className="p-4 mb-4 bg-gradient-to-br from-primary-50 to-cyan-50 rounded-2xl border border-primary-100">
               <div className="flex items-center gap-3">
@@ -280,7 +280,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             </div>
           )}
 
-          {/* Navigation Links */}
+          {}
           <Link
             to="/"
             onClick={closeMobileMenu}
@@ -335,10 +335,10 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             </>
           )}
 
-          {/* Divider */}
+          {}
           <div className="my-4 border-t border-gray-100"></div>
 
-          {/* Auth Actions */}
+          {}
           {user ? (
             <button
               onClick={() => {
@@ -373,7 +373,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           )}
         </div>
 
-        {/* Mobile Menu Footer */}
+        {}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-gray-50">
           <div className="text-center">
             <p className="text-sm text-gray-500">🌊 Fresh Fish, Daily Catch</p>
@@ -382,7 +382,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
         </div>
       </div>
 
-      {/* Spacer for fixed navbar */}
+      {}
       <div className={isHomePage ? '' : 'h-20'}></div>
     </>
   );

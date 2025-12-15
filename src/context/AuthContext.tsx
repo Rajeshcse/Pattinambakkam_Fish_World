@@ -1,34 +1,26 @@
 import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
-// jwt-decode is avoided here to keep decoding lightweight and avoid import shape issues
+
 import { User, LoginRequest, RegisterRequest, AuthContextType, DecodedToken } from '@/types';
 import { authService } from '@/services';
 import { toast } from 'react-toastify';
 import { getErrorMessage, logError } from '@/utils/errors';
 
-// Create Auth Context
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-/**
- * AuthProvider Component
- * Manages authentication state and provides auth methods
- */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  /**
-   * Check if token is expired
-   */
   const decodeToken = (token: string): DecodedToken | null => {
     try {
       const parts = token.split('.');
       if (parts.length < 2) return null;
-      // base64url -> base64
+
       const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload) as DecodedToken;
@@ -44,9 +36,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return decoded.exp < currentTime;
   };
 
-  /**
-   * Refresh access token
-   */
   const refreshAccessToken = useCallback(async () => {
     const storedRefreshToken = authService.getRefreshToken();
     if (!storedRefreshToken) {
@@ -68,9 +57,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  /**
-   * Load user from localStorage on mount
-   */
   useEffect(() => {
     const initAuth = async () => {
       try {
@@ -79,9 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedUser = authService.getUser();
 
         if (storedToken && storedUser) {
-          // Check if access token is expired
           if (isTokenExpired(storedToken)) {
-            // Try to refresh the token if we have a refresh token
             if (storedRefreshToken) {
               try {
                 const response = await authService.refreshToken(storedRefreshToken);
@@ -116,9 +100,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initAuth();
   }, []);
 
-  /**
-   * Login user
-   */
   const login = useCallback(async (credentials: LoginRequest) => {
     try {
       const response = await authService.login(credentials);
@@ -137,9 +118,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  /**
-   * Register new user
-   */
   const register = useCallback(async (data: RegisterRequest) => {
     try {
       const response = await authService.register(data);
@@ -152,7 +130,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           response.message || 'Welcome to Pattinambakkam_Fish_World! Please verify your email.',
         );
       } else {
-        // Handle case where response structure is unexpected
         console.error('Unexpected response structure:', response);
         throw new Error('Invalid response from server');
       }
@@ -164,9 +141,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  /**
-   * Logout user from current device
-   */
   const logout = useCallback(async () => {
     try {
       const refreshToken = authService.getRefreshToken();
@@ -175,7 +149,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     } catch (error) {
       console.error('Logout API error:', error);
-      // Continue with local logout even if API call fails
     } finally {
       authService.clearAuthData();
       setToken(null);
@@ -184,9 +157,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  /**
-   * Logout user from all devices
-   */
   const logoutAll = useCallback(async () => {
     try {
       await authService.logoutAll();
@@ -201,9 +171,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  /**
-   * Update user data (after profile update)
-   */
   const updateUser = useCallback((updatedUser: User) => {
     setUser(updatedUser);
     authService.setUser(updatedUser);

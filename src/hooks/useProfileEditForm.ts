@@ -37,7 +37,6 @@ export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
       setIsSubmitting(true);
 
       try {
-        // Only send fields that were changed
         const changedValues: Partial<User> = {};
         if (values.name !== user.name) changedValues.name = values.name;
         if (values.email !== user.email) changedValues.email = values.email;

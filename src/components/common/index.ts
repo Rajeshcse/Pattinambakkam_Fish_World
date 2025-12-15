@@ -4,6 +4,7 @@ export { Card } from './Card';
 export { Loading } from './Loading';
 export { FormField } from './FormField';
 export { ErrorAlert } from './ErrorAlert';
+export { ErrorBoundary } from './ErrorBoundary';
 export { Navbar } from './Navbar';
 export { Layout } from './Layout';
 export { Modal } from './Modal';

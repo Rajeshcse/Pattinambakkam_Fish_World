@@ -22,7 +22,6 @@ export const useRegisterForm = (callbacks?: RegisterFormCallbacks) => {
       setIsSubmitting(true);
 
       try {
-        // Remove confirmPassword before sending to API
         const { confirmPassword, ...registerData } = values;
         await register(registerData as RegisterRequest);
         callbacks?.onSuccess?.();

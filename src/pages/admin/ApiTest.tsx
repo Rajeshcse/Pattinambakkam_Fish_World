@@ -21,7 +21,7 @@ export const ApiTest: React.FC = () => {
   const testConnection = async () => {
     setLoading(true);
 
-    // Test 1: Basic API connectivity
+    
     try {
       const response = await fetch('http://localhost:3001/api/health');
       if (response.ok) {
@@ -35,7 +35,7 @@ export const ApiTest: React.FC = () => {
       addResult('Backend Health Check', false, `Connection failed: ${errorMessage}`);
     }
 
-    // Test 2: Check current user token
+    
     const token = localStorage.getItem('accessToken');
     const user = localStorage.getItem('user');
     addResult('Auth Token Check', !!token, {
@@ -44,7 +44,7 @@ export const ApiTest: React.FC = () => {
       tokenLength: token?.length,
     });
 
-    // Test 3: Try dashboard API with current token
+    
     if (token) {
       try {
         const response = await apiClient.get('/api/admin/dashboard');
@@ -60,7 +60,7 @@ export const ApiTest: React.FC = () => {
       }
     }
 
-    // Test 4: Check environment variables
+    
     addResult('Environment Check', true, {
       apiBaseUrl: config.apiBaseUrl,
       isDev: config.isDev,

@@ -15,7 +15,7 @@ export const ResetPassword: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Get email from navigation state if available
+  
   const emailFromState = (location.state as { email?: string })?.email || '';
 
   const initialValues = {

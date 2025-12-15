@@ -22,7 +22,6 @@ export const useLoginForm = (callbacks?: LoginFormCallbacks) => {
       setIsSubmitting(true);
 
       try {
-        // Determine if identifier is email or phone
         const isEmail = values.identifier.includes('@');
         const credentials: LoginRequest = {
           password: values.password,

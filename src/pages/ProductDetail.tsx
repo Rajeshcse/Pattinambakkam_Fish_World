@@ -54,9 +54,9 @@ const ProductDetail: React.FC = () => {
 
     try {
       await addItem(product._id, quantity);
-      // Toast is shown by CartContext
+      
     } catch (error) {
-      // Error toast is shown by CartContext
+      
     }
   };
 
@@ -123,7 +123,7 @@ const ProductDetail: React.FC = () => {
     <Layout>
       <div className="bg-gradient-to-b from-cyan-50 to-white min-h-screen py-6">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Breadcrumb */}
+          {}
           <nav className="mb-4">
             <ol className="flex items-center space-x-2 text-sm">
               <li>
@@ -145,12 +145,12 @@ const ProductDetail: React.FC = () => {
             </ol>
           </nav>
 
-          {/* Product Detail */}
+          {}
           <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
             <div className="grid lg:grid-cols-5 gap-6 p-6">
-              {/* Left: Image Gallery */}
+              {}
               <div className="lg:col-span-2">
-                {/* Main Image */}
+                {}
                 <div className="mb-4 rounded-xl overflow-hidden bg-gray-100 aspect-[4/3] max-w-md mx-auto lg:max-w-none">
                   {product.images && product.images.length > 0 ? (
                     <img
@@ -181,7 +181,7 @@ const ProductDetail: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Availability Overlay */}
+                  {}
                   {!product.isAvailable && (
                     <div className="absolute inset-0 bg-red-600/90 flex items-center justify-center">
                       <span className="text-white text-2xl font-bold">Not Available</span>
@@ -189,7 +189,7 @@ const ProductDetail: React.FC = () => {
                   )}
                 </div>
 
-                {/* Thumbnail Images */}
+                {}
                 {product.images && product.images.length > 1 && (
                   <div className="flex gap-2 overflow-x-auto">
                     {product.images.map((image, index) => (
@@ -213,9 +213,9 @@ const ProductDetail: React.FC = () => {
                 )}
               </div>
 
-              {/* Right: Product Info */}
+              {}
               <div className="lg:col-span-3 flex flex-col">
-                {/* Category Badge */}
+                {}
                 <div className="mb-3">
                   <span
                     className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getCategoryColor(product.category)}`}
@@ -224,12 +224,12 @@ const ProductDetail: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Product Name */}
+                {}
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
                   {product.name}
                 </h1>
 
-                {/* Price */}
+                {}
                 <div className="mb-4">
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl font-bold text-green-600">₹{product.price}</span>
@@ -237,7 +237,7 @@ const ProductDetail: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Stock Status */}
+                {}
                 <div className="mb-4">
                   <span
                     className={`inline-block px-3 py-1.5 rounded-lg text-xs font-semibold border ${stockStatus.color}`}
@@ -246,7 +246,7 @@ const ProductDetail: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Description */}
+                {}
                 {product.description && (
                   <div className="mb-4">
                     <h3 className="text-base font-semibold text-gray-800 mb-2">Description</h3>
@@ -254,7 +254,7 @@ const ProductDetail: React.FC = () => {
                   </div>
                 )}
 
-                {/* Quantity Selector */}
+                {}
                 {isAvailable && (
                   <div className="mb-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -288,7 +288,7 @@ const ProductDetail: React.FC = () => {
                   </div>
                 )}
 
-                {/* Subtotal */}
+                {}
                 {isAvailable && (
                   <div className="mb-4 p-3 bg-gray-50 rounded-lg">
                     <div className="flex justify-between items-center">
@@ -300,7 +300,7 @@ const ProductDetail: React.FC = () => {
                   </div>
                 )}
 
-                {/* Action Buttons */}
+                {}
                 <div className="flex gap-3 mt-auto pt-2">
                   <Button
                     onClick={handleAddToCart}

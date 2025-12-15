@@ -38,7 +38,7 @@ export const AdminUserDetail: React.FC = () => {
     try {
       const response = await adminService.getUserById(id);
 
-      // Handle different response structures
+      
       if (response && response.data) {
         setUser(response.data);
         setEditForm({
@@ -47,7 +47,7 @@ export const AdminUserDetail: React.FC = () => {
           phone: response.data.phone,
         });
       } else if (response && response.user) {
-        // Handle direct user property
+        
         setUser(response.user);
         setEditForm({
           name: response.user.name,
@@ -83,14 +83,14 @@ export const AdminUserDetail: React.FC = () => {
     try {
       const response = await adminService.updateUser(id, editForm);
 
-      // Handle different response structures
+      
       if (response && response.data) {
         setUser(response.data);
       } else if (response && response.user) {
         setUser(response.user);
       } else {
         console.warn('Unexpected update response structure:', response);
-        // Refresh user data to get latest state
+        
         await fetchUser();
       }
 
@@ -279,7 +279,7 @@ export const AdminUserDetail: React.FC = () => {
               </form>
             ) : (
               <div className="space-y-6">
-                {/* Profile Picture */}
+                {}
                 <div className="flex justify-center">
                   <div className="relative">
                     {user.avatar ? (
@@ -298,7 +298,7 @@ export const AdminUserDetail: React.FC = () => {
                   </div>
                 </div>
 
-                {/* User Information */}
+                {}
                 <div className="space-y-4">
                   <div className="border-b pb-4">
                     <h3 className="text-sm font-medium text-gray-500">User ID</h3>
@@ -362,7 +362,7 @@ export const AdminUserDetail: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {}
                 <div className="space-y-4 pt-4">
                   <div className="flex gap-4">
                     <Button

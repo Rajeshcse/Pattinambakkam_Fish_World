@@ -76,14 +76,14 @@ const Products: React.FC = () => {
 
   return (
     <Layout>
-      {/* Main Content - Direct to Products */}
+      {}
       <div className="bg-gradient-to-b from-cyan-50 via-slate-50 to-white min-h-screen pt-4 sm:pt-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          {/* Compact Header + Search Bar */}
+          {}
           <div className="bg-white rounded-2xl shadow-lg shadow-cyan-500/10 border border-slate-100 p-4 sm:p-5 mb-6">
-            {/* Top Row: Title + Search */}
+            {}
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
-              {/* Title */}
+              {}
               <div className="flex items-center gap-3">
                 <LogoIcon size={48} className="hidden sm:flex" />
                 <LogoIcon size={40} className="sm:hidden" />
@@ -95,7 +95,7 @@ const Products: React.FC = () => {
                 </div>
               </div>
 
-              {/* Search */}
+              {}
               <form onSubmit={handleSearch} className="flex-1 sm:max-w-md sm:ml-auto">
                 <div className="flex gap-2">
                   <div className="relative flex-1">
@@ -120,7 +120,7 @@ const Products: React.FC = () => {
               </form>
             </div>
 
-            {/* Category Pills Row */}
+            {}
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => handleCategoryChange('')}
@@ -146,10 +146,10 @@ const Products: React.FC = () => {
                 </button>
               ))}
 
-              {/* Spacer */}
+              {}
               <div className="flex-1" />
 
-              {/* Availability Toggle */}
+              {}
               <label className="flex items-center gap-2 cursor-pointer">
                 <div
                   className={`relative w-9 h-5 rounded-full transition-colors duration-300 ${showAvailableOnly ? 'bg-green-500' : 'bg-slate-300'}`}
@@ -172,7 +172,7 @@ const Products: React.FC = () => {
             </div>
           </div>
 
-          {/* Products Grid */}
+          {}
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <div className="text-center">
@@ -208,14 +208,14 @@ const Products: React.FC = () => {
             </div>
           ) : (
             <>
-              {/* Products Grid */}
+              {}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
                 {products?.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </div>
 
-              {/* Pagination */}
+              {}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 py-8">
                   <button

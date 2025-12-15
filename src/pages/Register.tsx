@@ -13,7 +13,7 @@ export const Register: React.FC = () => {
   const navigate = useNavigate();
   const { formik, isSubmitting, error, dismissError } = useRegisterForm({
     onSuccess: () => {
-      // Redirect to email verification instead of home
+      
       navigate('/verify-email');
     },
     onError: (errorMessage) => {
@@ -21,12 +21,12 @@ export const Register: React.FC = () => {
     },
   });
 
-  // Redirect if already logged in and verified
+  
   if (user && user.isVerified) {
     return <Navigate to="/profile" replace />;
   }
 
-  // Redirect to verify email if logged in but not verified
+  
   if (user && !user.isVerified) {
     return <Navigate to="/verify-email" replace />;
   }

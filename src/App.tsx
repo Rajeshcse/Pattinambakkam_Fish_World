@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ErrorBoundary } from '@/components/common';
 import { AuthProvider } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
 import { ConfirmProvider } from '@/hooks/useConfirm';
@@ -38,13 +39,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <ConfirmProvider>
-          <Router>
-            <div className="App">
+    <ErrorBoundary>
+      <AuthProvider>
+        <CartProvider>
+          <ConfirmProvider>
+            <Router>
+              <div className="App">
               <Routes>
-                {/* Public Routes */}
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:id" element={<ProductDetail />} />
@@ -81,7 +82,6 @@ const App: React.FC = () => {
                   }
                 />
 
-                {/* Protected Routes */}
                 <Route
                   path="/profile"
                   element={
@@ -163,7 +163,6 @@ const App: React.FC = () => {
                   }
                 />
 
-                {/* Admin Routes */}
                 <Route
                   path="/admin/dashboard"
                   element={
@@ -229,11 +228,9 @@ const App: React.FC = () => {
                   }
                 />
 
-                {/* Catch all - redirect to home */}
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
 
-              {/* Toast notifications */}
               <ToastContainer
                 position="top-center"
                 autoClose={5000}
@@ -247,11 +244,12 @@ const App: React.FC = () => {
                 theme="light"
                 limit={3}
               />
-            </div>
-          </Router>
-        </ConfirmProvider>
-      </CartProvider>
-    </AuthProvider>
+              </div>
+            </Router>
+          </ConfirmProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 };
 
