@@ -79,7 +79,7 @@ const OrderDetails: React.FC = () => {
     <Layout>
       <div className="bg-gradient-to-b from-cyan-50 to-white min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4">
-          {/* Header */}
+          {}
           <div className="mb-6">
             <button
               onClick={() => navigate('/my-orders')}
@@ -102,9 +102,9 @@ const OrderDetails: React.FC = () => {
             </div>
           </div>
 
-          {/* Order Details */}
+          {}
           <div className="bg-white rounded-2xl shadow-lg border p-8 mb-6">
-            {/* Delivery Details */}
+            {}
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-3">Delivery Details</h3>
               <div className="space-y-2 text-gray-600">
@@ -124,7 +124,7 @@ const OrderDetails: React.FC = () => {
               </div>
             </div>
 
-            {/* Order Items */}
+            {}
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-3">Order Items</h3>
               <div className="space-y-3">
@@ -142,7 +142,7 @@ const OrderDetails: React.FC = () => {
               </div>
             </div>
 
-            {/* Total */}
+            {}
             <div className="pt-4 border-t">
               <div className="flex justify-between text-xl font-bold">
                 <span>Total Amount</span>
@@ -150,7 +150,7 @@ const OrderDetails: React.FC = () => {
               </div>
             </div>
 
-            {/* Notes */}
+            {}
             {order.orderNotes && (
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                 <p className="text-sm text-gray-600">
@@ -160,7 +160,7 @@ const OrderDetails: React.FC = () => {
             )}
           </div>
 
-          {/* Actions */}
+          {}
           {canCancel && (
             <Button onClick={handleCancelOrder} loading={cancelling} variant="outline" fullWidth>
               Cancel Order

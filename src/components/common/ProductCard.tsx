@@ -43,7 +43,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      {/* Product Image */}
+      {}
       <div className="relative h-48 bg-gray-200 overflow-hidden">
         {product.images && product.images.length > 0 ? (
           <img
@@ -74,14 +74,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
-        {/* Availability Badge */}
+        {}
         {!product.isAvailable && (
           <div className="absolute top-0 left-0 right-0 bg-red-600 text-white text-center py-1 text-sm font-semibold">
             Not Available
           </div>
         )}
 
-        {/* Category Badge */}
+        {}
         <div className="absolute bottom-2 right-2">
           <span
             className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(product.category)}`}
@@ -91,7 +91,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
 
-      {/* Product Details */}
+      {}
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">{product.name}</h3>
 
@@ -99,7 +99,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
         )}
 
-        {/* Price and Stock */}
+        {}
         <div className="flex items-center justify-between mb-4">
           <div className="text-2xl font-bold text-green-600">
             ₹{product.price}
@@ -108,7 +108,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className={`text-sm font-semibold ${stockStatus.color}`}>{stockStatus.text}</div>
         </div>
 
-        {/* Action Buttons */}
+        {}
         {showAdminActions ? (
           <div className="flex gap-2">
             <button

@@ -11,7 +11,7 @@ const Cart: React.FC = () => {
     useCart();
   const { isAuthenticated } = useAuth();
 
-  // Redirect to login if not authenticated
+  
   React.useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
@@ -27,7 +27,7 @@ const Cart: React.FC = () => {
       try {
         await clearCart();
       } catch (error) {
-        // Error handled by context
+        
       }
     }
   };
@@ -48,7 +48,7 @@ const Cart: React.FC = () => {
     <Layout>
       <div className="bg-gradient-to-b from-cyan-50 to-white min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          {/* Header */}
+          {}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Shopping Cart</h1>
             <p className="text-gray-600">
@@ -62,16 +62,16 @@ const Cart: React.FC = () => {
             <EmptyCart />
           ) : (
             <div className="grid lg:grid-cols-3 gap-8">
-              {/* Cart Items (Left Side) */}
+              {}
               <div className="lg:col-span-2 space-y-4">
-                {/* Clear Cart Button */}
+                {}
                 <div className="flex justify-end">
                   <Button onClick={handleClearCart} variant="outline" size="sm" disabled={loading}>
                     🗑️ Clear Cart
                   </Button>
                 </div>
 
-                {/* Cart Items List */}
+                {}
                 <div className="space-y-4">
                   {cart.items.map((item) => (
                     <CartItem
@@ -85,7 +85,7 @@ const Cart: React.FC = () => {
                 </div>
               </div>
 
-              {/* Order Summary (Right Side) */}
+              {}
               <div className="lg:col-span-1">
                 <CartSummary
                   itemCount={itemCount}

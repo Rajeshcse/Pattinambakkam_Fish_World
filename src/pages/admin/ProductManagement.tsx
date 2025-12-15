@@ -117,7 +117,7 @@ const ProductManagement: React.FC = () => {
     <Layout>
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
+          {}
           <div className="mb-8 flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Product Management</h1>
@@ -139,7 +139,7 @@ const ProductManagement: React.FC = () => {
             </button>
           </div>
 
-          {/* Stats Cards */}
+          {}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-white rounded-lg shadow-sm p-4">
               <div className="text-sm text-gray-600 mb-1">Total Products</div>
@@ -161,10 +161,10 @@ const ProductManagement: React.FC = () => {
             </div>
           </div>
 
-          {/* Filters */}
+          {}
           <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Search */}
+              {}
               <form onSubmit={handleSearch} className="md:col-span-2">
                 <div className="flex gap-2">
                   <input
@@ -183,7 +183,7 @@ const ProductManagement: React.FC = () => {
                 </div>
               </form>
 
-              {/* Availability Toggle */}
+              {}
               <div className="flex items-center">
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -200,7 +200,7 @@ const ProductManagement: React.FC = () => {
               </div>
             </div>
 
-            {/* Category Filters */}
+            {}
             <div className="mt-4 flex flex-wrap gap-2">
               <button
                 onClick={() => {
@@ -234,7 +234,7 @@ const ProductManagement: React.FC = () => {
             </div>
           </div>
 
-          {/* Products Grid */}
+          {}
           {loading ? (
             <Loading fullScreen={false} text="Loading products..." />
           ) : products.length === 0 ? (
@@ -276,7 +276,7 @@ const ProductManagement: React.FC = () => {
                 ))}
               </div>
 
-              {/* Pagination */}
+              {}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2">
                   <button
@@ -339,7 +339,7 @@ const ProductManagement: React.FC = () => {
           )}
         </div>
 
-        {/* Delete Confirmation Dialog */}
+        {}
         <ConfirmDialog
           isOpen={deleteConfirm.show}
           title="Delete Product"

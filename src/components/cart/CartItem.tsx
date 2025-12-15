@@ -28,7 +28,7 @@ export const CartItem: React.FC<CartItemProps> = ({
       setUpdating(true);
       await onUpdateQuantity(item._id, newQuantity);
     } catch (error) {
-      // Error handled by context
+      
     } finally {
       setUpdating(false);
     }
@@ -39,7 +39,7 @@ export const CartItem: React.FC<CartItemProps> = ({
       setUpdating(true);
       await onRemove(item._id);
     } catch (error) {
-      // Error handled by context
+      
     } finally {
       setUpdating(false);
     }
@@ -54,7 +54,7 @@ export const CartItem: React.FC<CartItemProps> = ({
       }`}
     >
       <div className="flex gap-4">
-        {/* Product Image */}
+        {}
         <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-gray-100">
           {item.product.images && item.product.images[0] ? (
             <img
@@ -85,7 +85,7 @@ export const CartItem: React.FC<CartItemProps> = ({
           )}
         </div>
 
-        {/* Product Info */}
+        {}
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start mb-2">
             <div>
@@ -109,15 +109,15 @@ export const CartItem: React.FC<CartItemProps> = ({
             </button>
           </div>
 
-          {/* Price */}
+          {}
           <div className="mb-3">
             <span className="text-lg font-bold text-green-600">₹{item.product.price}</span>
             <span className="text-sm text-gray-500">/kg</span>
           </div>
 
-          {/* Quantity Controls & Subtotal */}
+          {}
           <div className="flex items-center justify-between">
-            {/* Quantity Selector */}
+            {}
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleQuantityChange(item.quantity - 1)}
@@ -145,14 +145,14 @@ export const CartItem: React.FC<CartItemProps> = ({
               <span className="text-xs text-gray-500 ml-1">(Max: {item.product.stock})</span>
             </div>
 
-            {/* Subtotal */}
+            {}
             <div className="text-right">
               <div className="text-xs text-gray-500">Subtotal</div>
               <div className="text-lg font-bold text-gray-900">₹{subtotal.toFixed(2)}</div>
             </div>
           </div>
 
-          {/* Stock Warning */}
+          {}
           {item.product.stock < 10 && (
             <div className="mt-2 text-xs text-orange-600">
               ⚠️ Only {item.product.stock} kg left in stock

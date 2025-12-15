@@ -69,7 +69,6 @@ class AdminService {
 
     const data = response.data;
 
-    // Handle case where data is the users array directly with pagination at top level
     if (Array.isArray(data.data) && data.pagination) {
       const transformedUsers = data.data.map((user: any) => ({
         id: user._id || user.id,
@@ -77,7 +76,7 @@ class AdminService {
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
+        isVerified: user.isVerified,
         avatar: user.avatar,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
@@ -91,7 +90,6 @@ class AdminService {
         },
       };
     }
-    // Handle case where users is a property alongside pagination
     else if (data.users && data.pagination) {
       const transformedUsers = data.users.map((user: any) => ({
         id: user._id || user.id,
@@ -99,7 +97,7 @@ class AdminService {
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
+        isVerified: user.isVerified,
         avatar: user.avatar,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
@@ -113,7 +111,6 @@ class AdminService {
         },
       };
     }
-    // Handle nested data structure
     else if (data.data && data.data.users) {
       const transformedUsers = data.data.users.map((user: any) => ({
         id: user._id || user.id,
@@ -121,7 +118,7 @@ class AdminService {
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        isVerified: user.isEmailVerified !== undefined ? user.isEmailVerified : user.isVerified,
+        isVerified: user.isVerified,
         avatar: user.avatar,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,

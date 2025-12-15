@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 
-// Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
@@ -15,7 +14,6 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-// Mock localStorage
 const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),

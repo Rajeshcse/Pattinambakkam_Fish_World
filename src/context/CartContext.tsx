@@ -5,39 +5,28 @@ import { toast } from 'react-toastify';
 import { getErrorMessage, logError } from '@/utils/errors';
 import { useAuth } from '@/hooks/useAuth';
 
-// Create Cart Context
 export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 interface CartProviderProps {
   children: ReactNode;
 }
 
-/**
- * CartProvider Component
- * Manages shopping cart state and provides cart methods
- */
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
 
-  /**
-   * Calculate total item count
-   */
+  
   const itemCount = cart?.items.reduce((total, item) => total + item.quantity, 0) || 0;
 
-  /**
-   * Calculate total amount
-   */
+  
   const totalAmount =
     cart?.items.reduce((total, item) => {
       const price = item.product?.price || 0;
       return total + price * item.quantity;
     }, 0) || 0;
 
-  /**
-   * Refresh cart from server
-   */
+  
   const refreshCart = useCallback(async () => {
     if (!isAuthenticated) {
       setCart(null);
@@ -52,16 +41,14 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       }
     } catch (error: unknown) {
       logError(error, 'CartContext.refreshCart');
-      // Don't show error toast for cart refresh failures
+      
       console.error('Failed to refresh cart:', getErrorMessage(error));
     } finally {
       setLoading(false);
     }
   }, [isAuthenticated]);
 
-  /**
-   * Add item to cart
-   */
+  
   const addItem = useCallback(
     async (productId: string, quantity: number) => {
       if (!isAuthenticated) {
@@ -87,9 +74,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     [isAuthenticated],
   );
 
-  /**
-   * Update item quantity
-   */
+  
   const updateQuantity = useCallback(
     async (itemId: string, quantity: number) => {
       if (!isAuthenticated) {
@@ -115,9 +100,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     [isAuthenticated],
   );
 
-  /**
-   * Remove item from cart
-   */
+  
   const removeItem = useCallback(
     async (itemId: string) => {
       if (!isAuthenticated) {
@@ -143,9 +126,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     [isAuthenticated],
   );
 
-  /**
-   * Clear cart
-   */
+  
   const clearCart = useCallback(async () => {
     if (!isAuthenticated) {
       return;
@@ -167,9 +148,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-  /**
-   * Load cart on mount and when auth status changes
-   */
+  
   useEffect(() => {
     if (isAuthenticated) {
       refreshCart();

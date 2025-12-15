@@ -1,10 +1,3 @@
-/**
- * Environment Configuration & Validation
- *
- * This module validates required environment variables at app initialization
- * and provides a type-safe configuration object.
- */
-
 interface EnvironmentConfig {
   apiBaseUrl: string;
   isDev: boolean;
@@ -12,15 +5,8 @@ interface EnvironmentConfig {
   isTest: boolean;
 }
 
-/**
- * List of required environment variables
- */
 const REQUIRED_ENV_VARS = ['VITE_API_BASE_URL'] as const;
 
-/**
- * Validates that all required environment variables are set
- * @throws {Error} If any required environment variables are missing
- */
 function validateEnvironment(): void {
   const missing: string[] = [];
 
@@ -55,16 +41,10 @@ environment variable configuration.
   }
 }
 
-/**
- * Validates the API base URL format
- * @param url - The URL to validate
- * @throws {Error} If the URL is invalid
- */
 function validateApiBaseUrl(url: string): void {
   try {
     const parsed = new URL(url);
 
-    // Warn if using http in production
     if (import.meta.env.PROD && parsed.protocol === 'http:') {
       console.warn(
         '⚠️  WARNING: Using HTTP (not HTTPS) in production environment. ' +
@@ -72,7 +52,6 @@ function validateApiBaseUrl(url: string): void {
       );
     }
 
-    // Warn if using localhost/127.0.0.1 in production
     if (
       import.meta.env.PROD &&
       (parsed.hostname === 'localhost' ||
@@ -96,16 +75,11 @@ function validateApiBaseUrl(url: string): void {
   }
 }
 
-/**
- * Initialize and validate environment configuration
- */
 function initializeConfig(): EnvironmentConfig {
-  // Validate all required environment variables are present
   validateEnvironment();
 
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL!;
 
-  // Validate API base URL format
   validateApiBaseUrl(apiBaseUrl);
 
   return {
@@ -116,23 +90,6 @@ function initializeConfig(): EnvironmentConfig {
   };
 }
 
-/**
- * Validated and type-safe environment configuration
- *
- * @example
- * ```typescript
- * import { config } from '@/config/env';
- *
- * const response = await fetch(`${config.apiBaseUrl}/api/users`);
- *
- * if (config.isDev) {
- *   console.log('Running in development mode');
- * }
- * ```
- */
 export const config = initializeConfig();
 
-/**
- * Type for environment configuration
- */
 export type { EnvironmentConfig };

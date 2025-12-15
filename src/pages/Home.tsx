@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from '@/components/common';
 import { useAuth } from '@/hooks/useAuth';
-import { Fish, Truck, Leaf, CheckCircle, Star } from '@/components/common/icons';
+import {  Truck, Leaf, CheckCircle, Star } from '@/components/common/icons';
 import { Link } from 'react-router-dom';
 
 export const Home: React.FC = () => {
@@ -9,11 +9,9 @@ export const Home: React.FC = () => {
 
   return (
     <Layout>
-      {/* ============================================
-          HERO SECTION - Full Screen Ocean Experience
-          ============================================ */}
+      {}
       <div className="relative min-h-[90vh] overflow-hidden ocean-gradient">
-        {/* Animated Bubbles Background */}
+        {}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(15)].map((_, i) => (
             <div
@@ -30,9 +28,9 @@ export const Home: React.FC = () => {
           ))}
         </div>
 
-        {/* Swimming Fish and Prawns - Enhanced Ocean Life */}
+        {}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Large Fish Swimming Right */}
+          {}
           <div
             className="absolute top-[15%] animate-swim opacity-60"
             style={{ animationDuration: '22s', animationDelay: '0s' }}
@@ -70,7 +68,7 @@ export const Home: React.FC = () => {
             <div className="text-6xl drop-shadow-lg">🐟</div>
           </div>
 
-          {/* Fish Swimming Left (reverse direction) */}
+          {}
           <div
             className="absolute top-[18%] animate-swim-reverse opacity-50"
             style={{ animationDuration: '25s', animationDelay: '4s' }}
@@ -96,7 +94,7 @@ export const Home: React.FC = () => {
             <div className="text-5xl drop-shadow-lg transform scale-x-[-1]">🐠</div>
           </div>
 
-          {/* Prawns Swimming */}
+          {}
           <div
             className="absolute top-[22%] animate-swim opacity-70"
             style={{ animationDuration: '18s', animationDelay: '2s' }}
@@ -116,7 +114,7 @@ export const Home: React.FC = () => {
             <div className="text-5xl drop-shadow-lg">🦐</div>
           </div>
 
-          {/* Prawns Swimming Left */}
+          {}
           <div
             className="absolute top-[30%] animate-swim-reverse opacity-65"
             style={{ animationDuration: '17s', animationDelay: '3s' }}
@@ -130,7 +128,7 @@ export const Home: React.FC = () => {
             <div className="text-6xl drop-shadow-lg transform scale-x-[-1]">🦐</div>
           </div>
 
-          {/* Small Fish Schools (faster movement) */}
+          {}
           <div
             className="absolute top-[28%] animate-swim opacity-40"
             style={{ animationDuration: '15s', animationDelay: '1s' }}
@@ -151,9 +149,9 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* Hero Content */}
+        {}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 flex flex-col items-center justify-center min-h-[90vh]">
-          {/* Sparkle Effect - Hidden on mobile */}
+          {}
           <div className="hidden sm:block absolute top-20 right-20 text-4xl animate-sparkle">
             ✨
           </div>
@@ -164,16 +162,16 @@ export const Home: React.FC = () => {
             ✨
           </div>
 
-          {/* Main Hero Text */}
+          {}
           <div className="text-center space-y-5 sm:space-y-8 max-w-4xl w-full">
-            {/* Fresh Badge */}
+            {}
             <div className="inline-flex items-center gap-2 px-6 py-3 fresh-badge rounded-full text-white font-bold text-sm uppercase tracking-wider animate-bounce-gentle">
               <span className="text-xl">🐟</span>
               <span>Fresh Catch Daily</span>
               <span className="text-xl">🌊</span>
             </div>
 
-            {/* Main Headline */}
+            {}
             <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-tight px-2">
               <span className="block glow-text">Pattinambakkam</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 glow-text-gold animate-gradient">
@@ -181,14 +179,14 @@ export const Home: React.FC = () => {
               </span>
             </h1>
 
-            {/* Subheadline */}
+            {}
             <p className="text-base sm:text-xl md:text-2xl lg:text-3xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed px-2">
               <span className="font-semibold text-cyan-200">Fresh seafood</span> from local
               fishermen, delivered to your doorstep in hours!{' '}
               <span className="font-semibold text-amber-300"> across Chennai</span>
             </p>
 
-            {/* Trust Stats */}
+            {}
             <div className="flex flex-wrap justify-center gap-3 sm:gap-6 lg:gap-8 py-4 sm:py-6">
               <div className="glass rounded-xl sm:rounded-2xl px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-center min-w-[100px] sm:min-w-[120px]">
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-white">500+</div>
@@ -204,7 +202,7 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* CTA Buttons */}
+            {}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4 px-4 sm:px-0 w-full sm:w-auto">
               {!isAuthenticated ? (
                 <>
@@ -234,7 +232,7 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Scroll Indicator - Hidden on very small screens */}
+          {}
           <div className="hidden xs:flex absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 text-white/70 animate-bounce">
             <div className="flex flex-col items-center gap-1 sm:gap-2">
               <span className="text-xs sm:text-sm">Scroll to explore</span>
@@ -256,11 +254,9 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* ============================================
-          FEATURED FISH - Mouth-Watering Display
-          ============================================ */}
+      {}
       <div className="relative py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-        {/* Section Header */}
+        {}
         <div className="text-center mb-8 sm:mb-12 lg:mb-16 px-4 sm:px-6">
           <span className="inline-block px-3 sm:px-4 py-2 bg-cyan-500/20 text-cyan-400 rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
             🔥 TODAY'S FRESH CATCH
@@ -277,10 +273,10 @@ export const Home: React.FC = () => {
           </p>
         </div>
 
-        {/* Fish Grid */}
+        {}
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-8">
-            {/* Fish Card 1 - Seer Fish */}
+            {}
             <div className="fish-card group bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl sm:rounded-3xl overflow-hidden">
               <div className="relative h-28 sm:h-36 lg:h-48 bg-gradient-to-br from-cyan-600/30 to-blue-800/30 flex items-center justify-center">
                 <div className="text-5xl sm:text-6xl lg:text-8xl group-hover:scale-110 transition-transform duration-500">
@@ -316,7 +312,7 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Fish Card 2 - Pomfret */}
+            {}
             <div className="fish-card group bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl sm:rounded-3xl overflow-hidden">
               <div className="relative h-28 sm:h-36 lg:h-48 bg-gradient-to-br from-teal-600/30 to-emerald-800/30 flex items-center justify-center">
                 <div className="text-5xl sm:text-6xl lg:text-8xl group-hover:scale-110 transition-transform duration-500">
@@ -352,7 +348,7 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Fish Card 3 - Prawns */}
+            {}
             <div className="fish-card group bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl sm:rounded-3xl overflow-hidden">
               <div className="relative h-28 sm:h-36 lg:h-48 bg-gradient-to-br from-orange-600/30 to-red-800/30 flex items-center justify-center">
                 <div className="text-5xl sm:text-6xl lg:text-8xl group-hover:scale-110 transition-transform duration-500">
@@ -388,7 +384,7 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Fish Card 4 - Crab */}
+            {}
             <div className="fish-card group bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl sm:rounded-3xl overflow-hidden">
               <div className="relative h-28 sm:h-36 lg:h-48 bg-gradient-to-br from-amber-600/30 to-orange-800/30 flex items-center justify-center">
                 <div className="text-5xl sm:text-6xl lg:text-8xl group-hover:scale-110 transition-transform duration-500">
@@ -425,7 +421,7 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* View All Button */}
+          {}
           <div className="text-center mt-8 sm:mt-10 lg:mt-12 px-4">
             <Link to="/products">
               <button className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-base sm:text-lg rounded-xl sm:rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/30">
@@ -436,9 +432,7 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* ============================================
-          WHY CHOOSE US - Benefits Section
-          ============================================ */}
+      {}
       <div className="py-12 sm:py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12 lg:mb-16">
@@ -454,7 +448,7 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {/* Benefit 1 */}
+            {}
             <div className="group p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-100 hover:border-emerald-300 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-100">
               <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-emerald-200">
                 <Leaf size={28} color="#ffffff" className="sm:w-8 sm:h-8 lg:w-10 lg:h-10" />
@@ -471,7 +465,7 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Benefit 2 */}
+            {}
             <div className="group p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-100">
               <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-200">
                 <Truck size={28} color="#ffffff" className="sm:w-8 sm:h-8 lg:w-10 lg:h-10" />
@@ -488,7 +482,7 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Benefit 3 */}
+            {}
             <div className="group p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-100 hover:border-amber-300 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-100 sm:col-span-2 lg:col-span-1">
               <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-amber-200">
                 <span className="text-2xl sm:text-3xl">💰</span>
@@ -508,9 +502,7 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* ============================================
-          HOW IT WORKS - Simple Steps
-          ============================================ */}
+      {}
       <div className="py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12 lg:mb-16">
@@ -523,11 +515,11 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="relative">
-            {/* Connection Line */}
+            {}
             <div className="hidden lg:block absolute top-16 lg:top-24 left-1/4 right-1/4 h-1 bg-gradient-to-r from-primary-300 via-primary-500 to-primary-300 rounded-full"></div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
-              {/* Step 1 */}
+              {}
               <div className="relative text-center group">
                 <div className="relative inline-block mb-4 sm:mb-6 lg:mb-8">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-gradient-to-br from-primary-500 to-cyan-600 rounded-full flex items-center justify-center shadow-2xl shadow-primary-200 group-hover:scale-110 transition-transform duration-300">
@@ -547,7 +539,7 @@ export const Home: React.FC = () => {
                 </p>
               </div>
 
-              {/* Step 2 */}
+              {}
               <div className="relative text-center group">
                 <div className="relative inline-block mb-4 sm:mb-6 lg:mb-8">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-gradient-to-br from-primary-500 to-cyan-600 rounded-full flex items-center justify-center shadow-2xl shadow-primary-200 group-hover:scale-110 transition-transform duration-300">
@@ -567,7 +559,7 @@ export const Home: React.FC = () => {
                 </p>
               </div>
 
-              {/* Step 3 */}
+              {}
               <div className="relative text-center group">
                 <div className="relative inline-block mb-4 sm:mb-6 lg:mb-8">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-gradient-to-br from-primary-500 to-cyan-600 rounded-full flex items-center justify-center shadow-2xl shadow-primary-200 group-hover:scale-110 transition-transform duration-300">
@@ -591,9 +583,7 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* ============================================
-          TESTIMONIALS - Social Proof
-          ============================================ */}
+      {}
       <div className="py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-slate-900 to-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12 lg:mb-16">
@@ -610,7 +600,7 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {/* Testimonial 1 */}
+            {}
             <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-slate-600 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2">
               <div className="flex gap-0.5 sm:gap-1 mb-3 sm:mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -631,7 +621,7 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Testimonial 2 */}
+            {}
             <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-slate-600 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2">
               <div className="flex gap-0.5 sm:gap-1 mb-3 sm:mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -654,7 +644,7 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Testimonial 3 */}
+            {}
             <div className="bg-gradient-to-br from-slate-800 to-slate-700 p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-slate-600 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-2 sm:col-span-2 lg:col-span-1">
               <div className="flex gap-0.5 sm:gap-1 mb-3 sm:mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -681,11 +671,9 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* ============================================
-          FINAL CTA - Conversion Section
-          ============================================ */}
+      {}
       <div className="relative py-12 sm:py-16 lg:py-24 ocean-gradient overflow-hidden">
-        {/* Background Decoration */}
+        {}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
           {[...Array(8)].map((_, i) => (
             <div

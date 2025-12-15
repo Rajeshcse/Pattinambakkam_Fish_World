@@ -54,7 +54,7 @@ const OrderConfirmation: React.FC = () => {
     <Layout>
       <div className="bg-gradient-to-b from-green-50 to-white min-h-screen py-12">
         <div className="max-w-3xl mx-auto px-4">
-          {/* Success Icon */}
+          {}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
               <svg
@@ -77,14 +77,14 @@ const OrderConfirmation: React.FC = () => {
             </p>
           </div>
 
-          {/* Order Details Card */}
+          {}
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mb-6">
             <div className="mb-6 pb-6 border-b border-gray-200">
               <h2 className="text-lg font-semibold text-gray-700 mb-1">Order ID</h2>
               <p className="text-2xl font-bold text-gray-900">{order.orderId}</p>
             </div>
 
-            {/* Delivery Details */}
+            {}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Delivery Details</h3>
               <div className="space-y-2 text-gray-600">
@@ -104,7 +104,7 @@ const OrderConfirmation: React.FC = () => {
               </div>
             </div>
 
-            {/* Order Items */}
+            {}
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Order Items</h3>
               <div className="space-y-2">
@@ -119,7 +119,7 @@ const OrderConfirmation: React.FC = () => {
               </div>
             </div>
 
-            {/* Total */}
+            {}
             <div className="pt-4 border-t border-gray-200">
               <div className="flex justify-between text-xl font-bold">
                 <span>Total Amount</span>
@@ -127,7 +127,7 @@ const OrderConfirmation: React.FC = () => {
               </div>
             </div>
 
-            {/* Payment Info */}
+            {}
             <div className="mt-6">
               {order.payment?.method === 'razorpay-link' && order.payment?.status === 'pending' && (
                 <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6">
@@ -152,7 +152,7 @@ const OrderConfirmation: React.FC = () => {
                         confirm your order.
                       </p>
 
-                      {/* Amount to Pay - Prominently displayed */}
+                      {}
                       <div className="bg-white border-2 border-yellow-400 rounded-lg p-4 mb-4">
                         <p className="text-xs text-yellow-700 mb-1">AMOUNT TO PAY:</p>
                         <p className="text-3xl font-bold text-yellow-900">
@@ -244,7 +244,7 @@ const OrderConfirmation: React.FC = () => {
                         your order.
                       </p>
 
-                      {/* Payment Amount */}
+                      {}
                       <div className="bg-white border-2 border-green-300 rounded-lg p-3 mb-3">
                         <p className="text-xs text-green-700 mb-1">AMOUNT TO PAY:</p>
                         <p className="text-2xl font-bold text-green-900">
@@ -252,7 +252,7 @@ const OrderConfirmation: React.FC = () => {
                         </p>
                       </div>
 
-                      {/* Payment Instructions */}
+                      {}
                       <div className="bg-green-100 rounded-lg p-3 border border-green-300">
                         <p className="text-xs font-semibold text-green-800 mb-2">
                           📱 Payment Methods:
@@ -271,7 +271,7 @@ const OrderConfirmation: React.FC = () => {
                         </p>
                       </div>
 
-                      {/* WhatsApp Button */}
+                      {}
                       <a
                         href="https://wa.me/919994072395"
                         target="_blank"
@@ -287,7 +287,7 @@ const OrderConfirmation: React.FC = () => {
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {}
           <div className="flex gap-4">
             <Button onClick={() => navigate('/my-orders')} variant="primary" fullWidth>
               View My Orders

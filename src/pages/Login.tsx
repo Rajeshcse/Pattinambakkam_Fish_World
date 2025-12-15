@@ -20,7 +20,7 @@ export const Login: React.FC = () => {
     },
   });
 
-  // Redirect if already logged in
+  
   if (user) {
     return <Navigate to="/home" replace />;
   }

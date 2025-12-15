@@ -8,7 +8,7 @@ export const EmptyCart: React.FC = () => {
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
       <div className="max-w-md mx-auto">
-        {/* Empty Cart Icon */}
+        {}
         <div className="mb-6">
           <svg
             className="w-32 h-32 mx-auto text-gray-300"

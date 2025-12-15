@@ -39,12 +39,12 @@ export const AdminUsers: React.FC = () => {
 
       const response = await adminService.getAllUsers(params);
 
-      // Handle different response structures
+      
       if (response && response.data && response.data.users) {
         setUsers(response.data.users);
         setPagination(response.data.pagination);
       } else if (response && response.users) {
-        // Handle direct users property
+        
         setUsers(response.users);
         setPagination(response.pagination);
       } else {
@@ -165,7 +165,7 @@ export const AdminUsers: React.FC = () => {
             </Button>
           </div>
 
-          {/* Filters and Search */}
+          {}
           <Card className="mb-6">
             <div className="space-y-4">
               <form onSubmit={handleSearch} className="flex gap-2">
@@ -223,7 +223,7 @@ export const AdminUsers: React.FC = () => {
             </div>
           </Card>
 
-          {/* Bulk Actions */}
+          {}
           {selectedUsers.length > 0 && (
             <Card className="mb-6 bg-blue-50 border-blue-200">
               <div className="flex gap-4 items-center">
@@ -243,7 +243,7 @@ export const AdminUsers: React.FC = () => {
             </Card>
           )}
 
-          {/* Users Table */}
+          {}
           <Card>
             {users.length === 0 ? (
               <p className="text-gray-500 text-center py-8">No users found</p>
@@ -348,7 +348,7 @@ export const AdminUsers: React.FC = () => {
                   </table>
                 </div>
 
-                {/* Pagination */}
+                {}
                 {pagination && pagination.totalPages > 1 && (
                   <div className="mt-6 flex justify-between items-center">
                     <div className="text-sm text-gray-700">

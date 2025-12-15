@@ -1,10 +1,8 @@
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import { config } from '@/config/env';
 
-// Get validated API base URL from environment configuration
 const API_BASE_URL = config.apiBaseUrl;
 
-// Create axios instance
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -13,7 +11,6 @@ const apiClient: AxiosInstance = axios.create({
   timeout: 10000,
 });
 
-// Request interceptor for debugging
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     return config;
@@ -24,7 +21,6 @@ apiClient.interceptors.request.use(
   },
 );
 
-// Response interceptor for debugging
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;
@@ -35,7 +31,6 @@ apiClient.interceptors.response.use(
   },
 );
 
-// Flag to prevent multiple refresh requests
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value: unknown) => void;
@@ -53,7 +48,6 @@ const processQueue = (error: AxiosError | null, token: string | null = null) => 
   failedQueue = [];
 };
 
-// Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem('accessToken');
@@ -67,7 +61,6 @@ apiClient.interceptors.request.use(
   },
 );
 
-// Response interceptor to handle errors globally and auto-refresh tokens
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
@@ -76,7 +69,6 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
       const requestUrl = originalRequest.url ?? '';
 
-      // Don't retry for auth endpoints or refresh token endpoint
       const isAuthEndpoint = [
         '/api/auth/login',
         '/api/auth/register',
@@ -87,7 +79,6 @@ apiClient.interceptors.response.use(
 
       if (!isAuthEndpoint) {
         if (isRefreshing) {
-          // If already refreshing, queue this request
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject });
           })
@@ -108,7 +99,6 @@ apiClient.interceptors.response.use(
         const refreshToken = localStorage.getItem('refreshToken');
 
         if (!refreshToken) {
-          // No refresh token - clear storage and redirect to login
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           localStorage.removeItem('user');
@@ -117,7 +107,6 @@ apiClient.interceptors.response.use(
         }
 
         try {
-          // Attempt to refresh the token
           const response = await axios.post<{ success: boolean; accessToken: string }>(
             `${API_BASE_URL}/api/auth/refresh-token`,
             { refreshToken },
@@ -127,7 +116,6 @@ apiClient.interceptors.response.use(
             const newAccessToken = response.data.accessToken;
             localStorage.setItem('accessToken', newAccessToken);
 
-            // Update the authorization header
             if (originalRequest.headers) {
               originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
             }
@@ -141,7 +129,6 @@ apiClient.interceptors.response.use(
         } catch (refreshError) {
           processQueue(refreshError as AxiosError, null);
 
-          // Refresh failed - clear storage and redirect to login
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           localStorage.removeItem('user');

@@ -114,7 +114,7 @@ export const Profile: React.FC = () => {
             <p className="text-gray-600">Manage your account information</p>
           </div>
 
-          {/* Email Verification Banner */}
+          {}
           {!user.isVerified && (
             <div className="mb-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               <div className="flex">
@@ -144,7 +144,7 @@ export const Profile: React.FC = () => {
 
           <Card>
             <div className="space-y-6">
-              {/* Profile Picture */}
+              {}
               <div className="flex justify-center">
                 <div className="relative">
                   {user.avatar ? (
@@ -163,7 +163,7 @@ export const Profile: React.FC = () => {
                 </div>
               </div>
 
-              {/* User Information */}
+              {}
               <div className="space-y-4">
                 <div className="border-b pb-4">
                   <h3 className="text-sm font-medium text-gray-500">Full Name</h3>
@@ -223,7 +223,7 @@ export const Profile: React.FC = () => {
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {}
               <div className="space-y-4 pt-4">
                 <div className="flex gap-4">
                   <Button variant="primary" size="md" fullWidth onClick={handleEditProfile}>

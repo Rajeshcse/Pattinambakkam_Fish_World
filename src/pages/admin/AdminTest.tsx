@@ -4,11 +4,6 @@ import { adminService } from '@/services';
 import { useAuth } from '@/hooks/useAuth';
 import { getErrorMessage, handleApiError } from '@/utils/errors';
 
-/**
- * Admin Test Component
- * Use this to diagnose admin API connection issues
- * Access at: /admin/test
- */
 export const AdminTest: React.FC = () => {
   const { user, token } = useAuth();
   const [results, setResults] = useState<any[]>([]);
@@ -25,7 +20,7 @@ export const AdminTest: React.FC = () => {
     setResults([]);
     setTesting(true);
 
-    // Test 1: Check user authentication
+    
     addResult(
       'Authentication',
       user ? 'success' : 'error',
@@ -33,7 +28,7 @@ export const AdminTest: React.FC = () => {
       { user, token },
     );
 
-    // Test 2: Check admin role
+    
     if (user) {
       addResult(
         'Admin Role',
@@ -43,7 +38,7 @@ export const AdminTest: React.FC = () => {
       );
     }
 
-    // Test 3: Check localStorage
+    
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('accessToken');
     addResult(
@@ -57,7 +52,7 @@ export const AdminTest: React.FC = () => {
       },
     );
 
-    // Test 4: Test dashboard API
+    
     try {
       const response = await adminService.getDashboardStats();
       addResult('Dashboard API', 'success', 'Dashboard endpoint responded', response);
@@ -70,7 +65,7 @@ export const AdminTest: React.FC = () => {
       });
     }
 
-    // Test 5: Test users API
+    
     try {
       const response = await adminService.getAllUsers({ page: 1, limit: 1 });
       addResult('Users API', 'success', 'Users endpoint responded', response);

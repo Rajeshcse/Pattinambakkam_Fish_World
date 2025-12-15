@@ -1,4 +1,4 @@
-// User types based on Swagger schema
+
 export interface User {
   id: string;
   name: string;
@@ -11,7 +11,6 @@ export interface User {
   updatedAt?: string;
 }
 
-// Request types
 export interface RegisterRequest {
   name: string;
   email: string;
@@ -32,7 +31,6 @@ export interface ProfileUpdateRequest {
   avatar?: string;
 }
 
-// Response types
 export interface AuthSuccessResponse {
   success: boolean;
   message: string;
@@ -60,12 +58,10 @@ export interface MessageResponse {
   expiresIn?: string;
 }
 
-// Email Verification types
 export interface VerifyEmailRequest {
   otp: string;
 }
 
-// Password Management types
 export interface ForgotPasswordRequest {
   email: string;
 }
@@ -111,10 +107,8 @@ export interface ErrorResponse {
   message: string;
 }
 
-// API Response union type
 export type ApiResponse<T = any> = T | ErrorResponse | ValidationErrorResponse;
 
-// Auth context types
 export interface AuthContextType {
   user: User | null;
   token: string | null;
@@ -128,7 +122,6 @@ export interface AuthContextType {
   isAuthenticated: boolean;
 }
 
-// Decoded JWT token
 export interface DecodedToken {
   id: string;
   email: string;
@@ -137,7 +130,6 @@ export interface DecodedToken {
   exp: number;
 }
 
-// Admin Dashboard Types
 export interface DashboardStats {
   totalUsers: number;
   verifiedUsers: number;
@@ -151,7 +143,6 @@ export interface DashboardResponse {
   data: DashboardStats;
 }
 
-// Admin User Management Types
 export interface UserListQueryParams {
   page?: number;
   limit?: number;
@@ -195,7 +186,6 @@ export interface BulkActionRequest {
   userIds: string[];
 }
 
-// Product types
 export type ProductCategory = 'Fish' | 'Prawn' | 'Crab' | 'Squid';
 
 export interface FishProduct {
@@ -269,7 +259,6 @@ export interface ProductResponse {
   data: FishProduct;
 }
 
-// Cart types
 export interface CartItem {
   _id: string;
   product: FishProduct;
@@ -306,7 +295,6 @@ export interface CartCountResponse {
   };
 }
 
-// Order types
 export type OrderStatus =
   | 'pending'
   | 'confirmed'
@@ -388,7 +376,6 @@ export interface TimeSlot {
   reason: string;
 }
 
-// Cart Context types
 export interface CartContextType {
   cart: Cart | null;
   itemCount: number;

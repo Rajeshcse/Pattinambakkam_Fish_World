@@ -3,17 +3,11 @@ import { OrderResponse, OrderListResponse, OrderStatsResponse, CreateOrderReques
 
 const ORDER_BASE_URL = '/api/orders';
 
-/**
- * Create order from cart
- */
 export const createOrder = async (data: CreateOrderRequest): Promise<OrderResponse> => {
   const response = await apiClient.post<OrderResponse>(`${ORDER_BASE_URL}/create`, data);
   return response.data;
 };
 
-/**
- * Get user's orders
- */
 export const getUserOrders = async (filters?: {
   status?: string;
   limit?: number;
@@ -25,39 +19,27 @@ export const getUserOrders = async (filters?: {
   return response.data;
 };
 
-/**
- * Get order details by order ID
- */
 export const getOrderById = async (orderId: string): Promise<OrderResponse> => {
   const response = await apiClient.get<OrderResponse>(`${ORDER_BASE_URL}/${orderId}`);
   return response.data;
 };
 
-/**
- * Cancel order
- */
 export const cancelOrder = async (orderId: string): Promise<OrderResponse> => {
   const response = await apiClient.put<OrderResponse>(`${ORDER_BASE_URL}/${orderId}/cancel`);
   return response.data;
 };
 
-/**
- * Get user order statistics
- */
 export const getUserOrderStats = async (): Promise<OrderStatsResponse> => {
   const response = await apiClient.get<OrderStatsResponse>(`${ORDER_BASE_URL}/stats`);
   return response.data;
 };
 
-/**
- * Validate delivery time (client-side check)
- */
 export const validateDeliveryTime = (
   deliveryDate: string,
   deliveryTime: string,
 ): { valid: boolean; message: string } => {
   const now = new Date();
-  const minimumTime = new Date(now.getTime() + 4 * 60 * 60 * 1000); // 4 hours from now
+  const minimumTime = new Date(now.getTime() + 4 * 60 * 60 * 1000);
 
   const selectedDate = new Date(deliveryDate);
   const [startTime] = deliveryTime.split('-');
@@ -86,9 +68,6 @@ export const validateDeliveryTime = (
   };
 };
 
-/**
- * Get available time slots for a date
- */
 export const getAvailableTimeSlots = (date: string) => {
   const now = new Date();
   const minimumTime = new Date(now.getTime() + 4 * 60 * 60 * 1000);

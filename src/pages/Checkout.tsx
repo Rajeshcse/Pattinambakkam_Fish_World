@@ -22,14 +22,14 @@ const Checkout: React.FC = () => {
     orderNotes: '',
   });
 
-  // Razorpay payment link
+  
   const RAZORPAY_PAYMENT_LINK = 'https://razorpay.me/@paramanandamrajesh';
 
   const [availableSlots, setAvailableSlots] = useState<
     { slot: DeliveryTimeSlot; available: boolean; reason: string }[]
   >([]);
 
-  // Redirect if not authenticated or cart is empty
+  
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
@@ -39,13 +39,13 @@ const Checkout: React.FC = () => {
     }
   }, [isAuthenticated, cart, navigate]);
 
-  // Update available time slots when date changes
+  
   useEffect(() => {
     if (formData.deliveryDate) {
       const slots = orderService.getAvailableTimeSlots(formData.deliveryDate);
       setAvailableSlots(slots);
 
-      // Clear selected time if it's no longer available
+      
       if (formData.deliveryTime) {
         const selectedSlot = slots.find((s) => s.slot === formData.deliveryTime);
         if (!selectedSlot?.available) {
@@ -83,7 +83,7 @@ const Checkout: React.FC = () => {
       return false;
     }
 
-    // Validate 4-hour minimum
+    
     const validation = orderService.validateDeliveryTime(
       formData.deliveryDate,
       formData.deliveryTime,
@@ -147,7 +147,7 @@ _Please confirm this order. Thank you!_`;
         paymentMethod: paymentMethod,
       };
 
-      // Create order
+      
       toast.info('Creating your order...');
       const response = await orderService.createOrder(orderData);
 
@@ -155,36 +155,36 @@ _Please confirm this order. Thank you!_`;
         const order = response.data;
 
         if (paymentMethod === 'whatsapp') {
-          // WhatsApp Order & Payment - redirect to WhatsApp
+          
           toast.success('Order created! Redirecting to WhatsApp...');
 
-          // Generate WhatsApp message
+          
           const whatsappMessage = generateWhatsAppMessage(order);
           const encodedMessage = encodeURIComponent(whatsappMessage);
-          const whatsappNumber = '919994072395'; // Business WhatsApp number
+          const whatsappNumber = '919994072395';
           const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-          // Open WhatsApp in new tab
+          
           window.open(whatsappURL, '_blank');
 
-          // Navigate to confirmation page
+          
           setTimeout(() => {
             navigate(`/orders/${order.orderId}/confirmation`);
           }, 1000);
         } else {
-          // Online payment - open Razorpay payment link in new tab
+          
           toast.success(`Order created! Please pay ₹${order.totalAmount} on the payment page.`, {
             autoClose: 7000,
           });
 
-          // Store order ID and amount for reference
+          
           localStorage.setItem('pendingPaymentOrderId', order.orderId);
           localStorage.setItem('pendingPaymentAmount', order.totalAmount.toString());
 
-          // Open Razorpay payment link in new tab (customer enters amount manually)
+          
           window.open(RAZORPAY_PAYMENT_LINK, '_blank');
 
-          // Navigate to order confirmation page with payment instructions
+          
           setTimeout(() => {
             navigate(`/orders/${order.orderId}/confirmation`);
           }, 500);
@@ -198,7 +198,7 @@ _Please confirm this order. Thank you!_`;
     }
   };
 
-  // Get minimum date (today)
+  
   const today = new Date().toISOString().split('T')[0];
 
   if (cartLoading || !cart) {
@@ -218,14 +218,14 @@ _Please confirm this order. Thank you!_`;
           <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Checkout Form (Left) */}
+            {}
             <div className="lg:col-span-2">
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Delivery Details */}
+                {}
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                   <h2 className="text-xl font-bold text-gray-900 mb-4">Delivery Details</h2>
 
-                  {/* Address */}
+                  {}
                   <div className="mb-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Delivery Address *
@@ -241,7 +241,7 @@ _Please confirm this order. Thank you!_`;
                     />
                   </div>
 
-                  {/* Phone */}
+                  {}
                   <div className="mb-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Phone Number *
@@ -258,7 +258,7 @@ _Please confirm this order. Thank you!_`;
                     />
                   </div>
 
-                  {/* Delivery Date */}
+                  {}
                   <div className="mb-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Delivery Date *
@@ -274,7 +274,7 @@ _Please confirm this order. Thank you!_`;
                     />
                   </div>
 
-                  {/* Delivery Time Slot */}
+                  {}
                   <div className="mb-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Delivery Time Slot *{' '}
@@ -312,7 +312,7 @@ _Please confirm this order. Thank you!_`;
                     )}
                   </div>
 
-                  {/* Order Notes */}
+                  {}
                   <div className="mb-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Special Instructions (Optional)
@@ -332,12 +332,12 @@ _Please confirm this order. Thank you!_`;
                   </div>
                 </div>
 
-                {/* Payment Method */}
+                {}
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                   <h2 className="text-xl font-bold text-gray-900 mb-4">Payment Method</h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* WhatsApp Order & Payment */}
+                    {}
                     <div
                       onClick={() => setPaymentMethod('whatsapp')}
                       className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
@@ -366,7 +366,7 @@ _Please confirm this order. Thank you!_`;
                       </div>
                     </div>
 
-                    {/* Online Payment */}
+                    {}
                     <div
                       onClick={() => setPaymentMethod('razorpay-link')}
                       className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
@@ -401,7 +401,7 @@ _Please confirm this order. Thank you!_`;
                   </div>
                 </div>
 
-                {/* Submit Button */}
+                {}
                 <Button
                   type="submit"
                   disabled={submitting || cart.items.length === 0}
@@ -419,12 +419,12 @@ _Please confirm this order. Thank you!_`;
               </form>
             </div>
 
-            {/* Order Summary (Right) */}
+            {}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-24">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
 
-                {/* Items */}
+                {}
                 <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                   {cart.items.map((item) => (
                     <div key={item._id} className="flex justify-between text-sm">
