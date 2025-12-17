@@ -14,7 +14,6 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  
   const isHomePage = location.pathname === '/';
 
   const toggleMobileMenu = () => {
@@ -68,8 +67,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       ? 'bg-white/20 text-white'
                       : 'bg-primary-100 text-primary-700'
                     : isHomePage
-                      ? 'text-white/80 hover:text-white hover:bg-white/10'
-                      : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                    ? 'text-white/80 hover:text-white hover:bg-white/10'
+                    : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
                 }`}
               >
                 Home
@@ -82,8 +81,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       ? 'bg-white/20 text-white'
                       : 'bg-primary-100 text-primary-700'
                     : isHomePage
-                      ? 'text-white/80 hover:text-white hover:bg-white/10'
-                      : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                    ? 'text-white/80 hover:text-white hover:bg-white/10'
+                    : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
                 }`}
               >
                 Products
@@ -100,8 +99,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       ? 'bg-white/20'
                       : 'bg-cyan-100'
                     : isHomePage
-                      ? 'hover:bg-white/10'
-                      : 'hover:bg-gray-100'
+                    ? 'hover:bg-white/10'
+                    : 'hover:bg-gray-100'
                 }`}
               >
                 <svg
@@ -153,7 +152,9 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                   </div>
                   <div className="hidden lg:block">
                     <p
-                      className={`text-sm font-semibold ${isHomePage ? 'text-white' : 'text-gray-800'}`}
+                      className={`text-sm font-semibold ${
+                        isHomePage ? 'text-white' : 'text-gray-800'
+                      }`}
                     >
                       {user.name}
                     </p>
@@ -198,33 +199,71 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           </div>
 
           {}
-          <button
-            onClick={toggleMobileMenu}
-            className={`md:hidden p-2 rounded-xl transition-all duration-300 ${
-              isHomePage ? 'text-white hover:bg-white/10' : 'text-gray-700 hover:bg-gray-100'
-            }`}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? (
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+          <div className="flex items-center gap-2 md:hidden">
+            {}
+            {user && (
+              <Link
+                to="/cart"
+                className={`relative p-2 rounded-xl transition-all duration-300 ${
+                  location.pathname === '/cart'
+                    ? isHomePage
+                      ? 'bg-white/20'
+                      : 'bg-cyan-100'
+                    : isHomePage
+                    ? 'hover:bg-white/10'
+                    : 'hover:bg-gray-100'
+                }`}
+              >
+                <svg
+                  className={`w-6 h-6 ${isHomePage ? 'text-white' : 'text-gray-700'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
+              </Link>
             )}
-          </button>
+
+            {}
+            <button
+              onClick={toggleMobileMenu}
+              className={`p-2 rounded-xl transition-all duration-300 ${
+                isHomePage ? 'text-white hover:bg-white/10' : 'text-gray-700 hover:bg-gray-100'
+              }`}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -306,6 +345,26 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             <span className="text-xl">🐟</span>
             Products
           </Link>
+
+          {user && (
+            <Link
+              to="/cart"
+              onClick={closeMobileMenu}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                location.pathname === '/cart'
+                  ? 'bg-primary-100 text-primary-700'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <span className="text-xl">🛒</span>
+              My Cart
+              {itemCount > 0 && (
+                <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">
+                  {itemCount}
+                </span>
+              )}
+            </Link>
+          )}
 
           {user && (
             <>
