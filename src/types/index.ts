@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   name: string;
@@ -53,6 +52,7 @@ export interface LogoutRequest {
 }
 
 export interface MessageResponse {
+  method: 'email' | 'phone';
   success: boolean;
   message: string;
   expiresIn?: string;
@@ -63,11 +63,11 @@ export interface VerifyEmailRequest {
 }
 
 export interface ForgotPasswordRequest {
-  email: string;
+  identifier: string;
 }
 
 export interface ResetPasswordRequest {
-  email: string;
+  identifier: string;
   otp: string;
   newPassword: string;
 }

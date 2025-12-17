@@ -15,16 +15,16 @@ export const ResetPassword: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  
-  const emailFromState = (location.state as { email?: string })?.email || '';
+
+  const identifierFromState = (location.state as { identifier?: string })?.identifier || '';
 
   const initialValues = {
     ...resetPasswordInitialValues,
-    email: emailFromState,
+    identifier: identifierFromState,
   };
 
   const handleSubmit = async (values: {
-    email: string;
+    identifier: string;
     otp: string;
     newPassword: string;
     confirmPassword: string;
@@ -34,7 +34,7 @@ export const ResetPassword: React.FC = () => {
 
     try {
       const response = await authService.resetPassword({
-        email: values.email,
+        identifier: values.identifier,
         otp: values.otp,
         newPassword: values.newPassword,
       });
@@ -60,7 +60,7 @@ export const ResetPassword: React.FC = () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900">Reset Password</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Enter the code sent to your email and create a new password
+            Enter the code sent to your email or phone and create a new password
           </p>
         </div>
 
@@ -75,10 +75,10 @@ export const ResetPassword: React.FC = () => {
           {(formik) => (
             <Form className="space-y-4">
               <FormField
-                name="email"
-                label="Email Address"
-                type="email"
-                placeholder="Enter your email"
+                name="identifier"
+                label="Email or Phone Number"
+                type="text"
+                placeholder="Enter your email or phone number"
                 formik={formik}
               />
 

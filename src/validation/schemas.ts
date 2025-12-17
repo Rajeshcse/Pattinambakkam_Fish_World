@@ -50,22 +50,22 @@ export const otpInitialValues = {
 };
 
 export const forgotPasswordSchema = Yup.object().shape({
-  email: validationFields.email(),
+  identifier: identifierValidator(),
 });
 
 export const forgotPasswordInitialValues = {
-  email: '',
+  identifier: '',
 };
 
 export const resetPasswordSchema = Yup.object().shape({
-  email: validationFields.email(),
+  identifier: identifierValidator(),
   otp: validationFields.otp(),
   newPassword: validationFields.password(),
   confirmPassword: validationFields.confirmPassword('newPassword'),
 });
 
 export const resetPasswordInitialValues = {
-  email: '',
+  identifier: '',
   otp: '',
   newPassword: '',
   confirmPassword: '',
