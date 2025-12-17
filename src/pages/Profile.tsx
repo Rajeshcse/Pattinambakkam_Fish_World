@@ -217,9 +217,6 @@ export const Profile: React.FC = () => {
                 <div className="pb-4">
                   <h3 className="text-sm font-medium text-gray-500">Member Since</h3>
                   <p className="mt-1 text-lg text-gray-900">{formatMemberSince(user.createdAt)}</p>
-                  <p className="text-xs text-gray-400">
-                    Debug: {JSON.stringify({ createdAt: user.createdAt })}
-                  </p>
                 </div>
               </div>
 
