@@ -16,17 +16,14 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
 
-  
-  const itemCount = cart?.items.reduce((total, item) => total + item.quantity, 0) || 0;
+  const itemCount = cart?.items.length || 0;
 
-  
   const totalAmount =
     cart?.items.reduce((total, item) => {
       const price = item.product?.price || 0;
       return total + price * item.quantity;
     }, 0) || 0;
 
-  
   const refreshCart = useCallback(async () => {
     if (!isAuthenticated) {
       setCart(null);
@@ -41,14 +38,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       }
     } catch (error: unknown) {
       logError(error, 'CartContext.refreshCart');
-      
+
       console.error('Failed to refresh cart:', getErrorMessage(error));
     } finally {
       setLoading(false);
     }
   }, [isAuthenticated]);
 
-  
   const addItem = useCallback(
     async (productId: string, quantity: number) => {
       if (!isAuthenticated) {
@@ -74,7 +70,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     [isAuthenticated],
   );
 
-  
   const updateQuantity = useCallback(
     async (itemId: string, quantity: number) => {
       if (!isAuthenticated) {
@@ -100,7 +95,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     [isAuthenticated],
   );
 
-  
   const removeItem = useCallback(
     async (itemId: string) => {
       if (!isAuthenticated) {
@@ -126,7 +120,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     [isAuthenticated],
   );
 
-  
   const clearCart = useCallback(async () => {
     if (!isAuthenticated) {
       return;
@@ -148,7 +141,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-  
   useEffect(() => {
     if (isAuthenticated) {
       refreshCart();
