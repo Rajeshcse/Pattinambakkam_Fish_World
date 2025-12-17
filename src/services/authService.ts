@@ -102,6 +102,25 @@ class AuthService {
     return response.data;
   }
 
+  async sendVerificationSMS(): Promise<MessageResponse> {
+    console.log('📱 Sending verification SMS...');
+    const response = await apiClient.post<MessageResponse>('/api/auth/send-verification-sms');
+    console.log('📱 SMS OTP Response:', response.data);
+    return response.data;
+  }
+
+  async verifyPhone(data: VerifyEmailRequest): Promise<MessageResponse> {
+    const response = await apiClient.post<MessageResponse>('/api/auth/verify-phone', data);
+    return response.data;
+  }
+
+  async resendVerificationSMS(): Promise<MessageResponse> {
+    console.log('🔄 Resending verification SMS...');
+    const response = await apiClient.post<MessageResponse>('/api/auth/resend-verification-sms');
+    console.log('🔄 Resend SMS OTP Response:', response.data);
+    return response.data;
+  }
+
   async forgotPassword(data: ForgotPasswordRequest): Promise<MessageResponse> {
     const response = await apiClient.post<MessageResponse>('/api/auth/forgot-password', data);
     return response.data;
