@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import type { CartItem as CartItemType } from '@/types';
+import { formatQuantityToWeight } from '@/utils/formatters';
 
 interface CartItemProps {
   item: CartItemType;
@@ -20,7 +21,8 @@ export const CartItem: React.FC<CartItemProps> = ({
   const handleQuantityChange = async (newQuantity: number) => {
     if (newQuantity < 1) return;
     if (newQuantity > item.product.stock) {
-      toast.warning(`Only ${item.product.stock} kg available`);
+      const weight = formatQuantityToWeight(item.product.stock);
+      toast.warning(`Only ${weight} available`);
       return;
     }
 
@@ -28,7 +30,7 @@ export const CartItem: React.FC<CartItemProps> = ({
       setUpdating(true);
       await onUpdateQuantity(item._id, newQuantity);
     } catch (error) {
-      
+
     } finally {
       setUpdating(false);
     }
@@ -112,7 +114,7 @@ export const CartItem: React.FC<CartItemProps> = ({
           {}
           <div className="mb-3">
             <span className="text-lg font-bold text-green-600">₹{item.product.price}</span>
-            <span className="text-sm text-gray-500">/kg</span>
+            <span className="text-sm text-gray-500">/250g</span>
           </div>
 
           {}
@@ -142,7 +144,9 @@ export const CartItem: React.FC<CartItemProps> = ({
               >
                 +
               </button>
-              <span className="text-xs text-gray-500 ml-1">(Max: {item.product.stock})</span>
+              <span className="text-xs text-gray-500 ml-1">
+                ({formatQuantityToWeight(item.quantity)}, Max: {formatQuantityToWeight(item.product.stock)})
+              </span>
             </div>
 
             {}
@@ -155,7 +159,7 @@ export const CartItem: React.FC<CartItemProps> = ({
           {}
           {item.product.stock < 10 && (
             <div className="mt-2 text-xs text-orange-600">
-              ⚠️ Only {item.product.stock} kg left in stock
+              ⚠️ Only {formatQuantityToWeight(item.product.stock)} left in stock
             </div>
           )}
         </div>

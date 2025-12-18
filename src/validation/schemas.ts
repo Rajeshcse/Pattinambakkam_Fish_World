@@ -19,6 +19,15 @@ export const profileUpdateSchema = Yup.object().shape({
   email: validationFields.optionalEmail(),
   phone: validationFields.optionalPhone(),
   avatar: validationFields.url(),
+  street: Yup.string()
+    .min(10, 'Street address must be at least 10 characters')
+    .max(300, 'Street address cannot exceed 300 characters'),
+  city: Yup.string()
+    .min(2, 'City name must be at least 2 characters')
+    .max(50, 'City name cannot exceed 50 characters'),
+  state: Yup.string().max(50, 'State name cannot exceed 50 characters'),
+  pincode: Yup.string().matches(/^\d{6}$/, 'Pincode must be a valid 6-digit number'),
+  landmark: Yup.string().max(100, 'Landmark cannot exceed 100 characters'),
 });
 
 export const registerInitialValues = {
