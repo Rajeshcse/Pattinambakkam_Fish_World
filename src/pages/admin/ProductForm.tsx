@@ -33,7 +33,7 @@ const ProductForm: React.FC = () => {
         name: productFromState.name,
         category: productFromState.category,
         price: productFromState.price,
-        stock: productFromState.stock,
+        stock: productFromState.stock / 4, // Convert units to kg for display
         description: productFromState.description || '',
         images: productFromState.images || [],
       });
@@ -44,7 +44,7 @@ const ProductForm: React.FC = () => {
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
     currentImages: string[],
-    setFieldValue: (field: string, value: any) => void
+    setFieldValue: (field: string, value: any) => void,
   ) => {
     const newImages = await uploadImages(event.target.files, currentImages);
     setFieldValue('images', newImages);
@@ -52,7 +52,11 @@ const ProductForm: React.FC = () => {
     event.target.value = '';
   };
 
-  const removeImage = (index: number, currentImages: string[], setFieldValue: (field: string, value: any) => void) => {
+  const removeImage = (
+    index: number,
+    currentImages: string[],
+    setFieldValue: (field: string, value: any) => void,
+  ) => {
     const newImages = currentImages.filter((_, i) => i !== index);
     setFieldValue('images', newImages);
     setImagePreviews(newImages);
@@ -61,14 +65,21 @@ const ProductForm: React.FC = () => {
   const handleSubmit = async (values: CreateProductRequest) => {
     try {
       setLoading(true);
-      console.log('Submitting product with values:', values);
+
+      // Convert stock from kg to units (1 kg = 4 units of 250g)
+      const productData = {
+        ...values,
+        stock: values.stock * 4
+      };
+
+      console.log('Submitting product with values:', productData);
 
       if (isEditMode && id) {
-        const response = await productService.updateProduct(id, values);
+        const response = await productService.updateProduct(id, productData);
         console.log('Update response:', response);
         toast.success('Product updated successfully!');
       } else {
-        const response = await productService.createProduct(values);
+        const response = await productService.createProduct(productData);
         console.log('Create response:', response);
         toast.success('Product created successfully!');
       }
@@ -181,7 +192,7 @@ const ProductForm: React.FC = () => {
                         htmlFor="price"
                         className="block text-sm font-semibold text-gray-700 mb-2"
                       >
-                        Price (₹ per kg) *
+                        Price (₹ per 250g) *
                       </label>
                       <Field
                         type="number"
@@ -189,9 +200,12 @@ const ProductForm: React.FC = () => {
                         id="price"
                         min="0"
                         step="0.01"
-                        placeholder="400"
+                        placeholder="100"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
+                      <p className="mt-1 text-xs text-gray-500">
+                        Enter price for 250 grams (e.g., ₹100 for 250g = ₹400 per kg)
+                      </p>
                       <ErrorMessage
                         name="price"
                         component="div"
@@ -211,9 +225,13 @@ const ProductForm: React.FC = () => {
                         name="stock"
                         id="stock"
                         min="0"
+                        step="0.25"
                         placeholder="25"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
+                      <p className="mt-1 text-xs text-gray-500">
+                        Enter stock in kilograms (e.g., 25 kg available)
+                      </p>
                       <ErrorMessage
                         name="stock"
                         component="div"
@@ -260,7 +278,9 @@ const ProductForm: React.FC = () => {
                             type="file"
                             accept="image/*"
                             multiple
-                            onChange={(e) => handleImageUpload(e, values.images || [], setFieldValue)}
+                            onChange={(e) =>
+                              handleImageUpload(e, values.images || [], setFieldValue)
+                            }
                             disabled={uploading}
                             className="hidden"
                           />
@@ -329,7 +349,9 @@ const ProductForm: React.FC = () => {
                               />
                               <button
                                 type="button"
-                                onClick={() => removeImage(index, values.images || [], setFieldValue)}
+                                onClick={() =>
+                                  removeImage(index, values.images || [], setFieldValue)
+                                }
                                 className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full hover:bg-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
                               >
                                 <svg

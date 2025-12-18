@@ -6,6 +6,7 @@ import { productService } from '@/services';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import type { FishProduct } from '@/types';
+import { formatQuantityToWeight, getStockStatus as formatStockStatus } from '@/utils/formatters';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -54,10 +55,7 @@ const ProductDetail: React.FC = () => {
 
     try {
       await addItem(product._id, quantity);
-      
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const handleQuantityChange = (newQuantity: number) => {
@@ -65,7 +63,8 @@ const ProductDetail: React.FC = () => {
       setQuantity(1);
     } else if (product && newQuantity > product.stock) {
       setQuantity(product.stock);
-      toast.warning(`Only ${product.stock} items available`);
+      const weight = formatQuantityToWeight(product.stock);
+      toast.warning(`Only ${weight} available`);
     } else {
       setQuantity(newQuantity);
     }
@@ -82,17 +81,20 @@ const ProductDetail: React.FC = () => {
   };
 
   const getStockStatus = () => {
-    if (!product) return { text: '', color: '' };
+    if (!product) return { text: '', color: 'text-gray-600 bg-gray-50 border-gray-200' };
 
-    if (product.stock === 0) {
-      return { text: 'Out of Stock', color: 'text-red-600 bg-red-50 border-red-200' };
-    } else if (product.stock < 10) {
-      return {
-        text: `Only ${product.stock} left in stock`,
-        color: 'text-orange-600 bg-orange-50 border-orange-200',
-      };
+    const status = formatStockStatus(product.stock);
+    // Add background and border colors for ProductDetail display
+    let colorClasses = 'text-gray-600 bg-gray-50 border-gray-200';
+    if (status.color.includes('red')) {
+      colorClasses = 'text-red-600 bg-red-50 border-red-200';
+    } else if (status.color.includes('orange')) {
+      colorClasses = 'text-orange-600 bg-orange-50 border-orange-200';
+    } else if (status.color.includes('green')) {
+      colorClasses = 'text-green-600 bg-green-50 border-green-200';
     }
-    return { text: 'In Stock', color: 'text-green-600 bg-green-50 border-green-200' };
+
+    return { text: status.text, color: colorClasses };
   };
 
   if (loading) {
@@ -218,7 +220,9 @@ const ProductDetail: React.FC = () => {
                 {}
                 <div className="mb-3">
                   <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getCategoryColor(product.category)}`}
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getCategoryColor(
+                      product.category,
+                    )}`}
                   >
                     {product.category}
                   </span>
@@ -233,7 +237,7 @@ const ProductDetail: React.FC = () => {
                 <div className="mb-4">
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl font-bold text-green-600">₹{product.price}</span>
-                    <span className="text-base text-gray-500">/kg</span>
+                    <span className="text-base text-gray-500">/250g</span>
                   </div>
                 </div>
 
@@ -258,7 +262,7 @@ const ProductDetail: React.FC = () => {
                 {isAvailable && (
                   <div className="mb-4">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Quantity (kg)
+                      Quantity
                     </label>
                     <div className="flex items-center gap-3">
                       <button
@@ -283,7 +287,12 @@ const ProductDetail: React.FC = () => {
                       >
                         +
                       </button>
-                      <span className="text-xs text-gray-500 ml-2">Max: {product.stock} kg</span>
+                      <span className="text-xs text-gray-500 ml-2">
+                        {quantity} × 250g = {formatQuantityToWeight(quantity)}
+                      </span>
+                      <span className="text-xs text-gray-400 ml-2">
+                        (Max: {formatQuantityToWeight(product.stock)})
+                      </span>
                     </div>
                   </div>
                 )}

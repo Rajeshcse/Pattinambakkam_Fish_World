@@ -6,6 +6,7 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { orderService } from '@/services';
 import type { DeliveryTimeSlot, CreateOrderRequest } from '@/types';
+import { formatQuantityToWeight } from '@/utils/formatters';
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Checkout: React.FC = () => {
 
   const [submitting, setSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'whatsapp' | 'razorpay-link'>('whatsapp');
+  const [addressLocked, setAddressLocked] = useState(false);
   const [formData, setFormData] = useState({
     address: '',
     phone: user?.phone || '',
@@ -29,7 +31,7 @@ const Checkout: React.FC = () => {
     { slot: DeliveryTimeSlot; available: boolean; reason: string }[]
   >([]);
 
-  
+
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
@@ -38,6 +40,37 @@ const Checkout: React.FC = () => {
       navigate('/cart');
     }
   }, [isAuthenticated, cart, navigate]);
+
+  // Check if user has saved address and auto-populate
+  useEffect(() => {
+    if (user) {
+      // Check if user has a saved address
+      if (user.address && user.address.street) {
+        // Build full address string
+        const fullAddress = [
+          user.address.street,
+          user.address.landmark && `Landmark: ${user.address.landmark}`,
+          user.address.city,
+          user.address.state,
+          user.address.pincode && `PIN: ${user.address.pincode}`,
+        ]
+          .filter(Boolean)
+          .join(', ');
+
+        setFormData((prev) => ({
+          ...prev,
+          address: fullAddress,
+        }));
+        setAddressLocked(true);
+      } else {
+        // No address saved - redirect to profile edit
+        toast.warning('Please add your delivery address first', {
+          autoClose: 5000,
+        });
+        navigate('/profile/edit');
+      }
+    }
+  }, [user, navigate]);
 
   
   useEffect(() => {
@@ -102,7 +135,7 @@ const Checkout: React.FC = () => {
       cart?.items
         .map(
           (item) =>
-            `• ${item.product.name} × ${item.quantity}kg - ₹${(item.product.price * item.quantity).toFixed(2)}`,
+            `• ${item.product.name} × ${formatQuantityToWeight(item.quantity)} - ₹${(item.product.price * item.quantity).toFixed(2)}`,
         )
         .join('\n') || '';
 
@@ -227,9 +260,20 @@ _Please confirm this order. Thank you!_`;
 
                   {}
                   <div className="mb-4">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Delivery Address *
-                    </label>
+                    <div className="flex justify-between items-center mb-2">
+                      <label className="block text-sm font-semibold text-gray-700">
+                        Delivery Address *
+                      </label>
+                      {addressLocked && (
+                        <button
+                          type="button"
+                          onClick={() => navigate('/profile/edit')}
+                          className="text-sm text-cyan-600 hover:text-cyan-700 font-medium"
+                        >
+                          Edit in Profile →
+                        </button>
+                      )}
+                    </div>
                     <textarea
                       name="address"
                       value={formData.address}
@@ -237,8 +281,16 @@ _Please confirm this order. Thank you!_`;
                       required
                       rows={3}
                       placeholder="Enter your complete delivery address"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                      readOnly={addressLocked}
+                      className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500 ${
+                        addressLocked ? 'bg-gray-50 cursor-not-allowed' : ''
+                      }`}
                     />
+                    {addressLocked && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        This address is from your profile. Click "Edit in Profile" to update it.
+                      </p>
+                    )}
                   </div>
 
                   {}
@@ -429,7 +481,7 @@ _Please confirm this order. Thank you!_`;
                   {cart.items.map((item) => (
                     <div key={item._id} className="flex justify-between text-sm">
                       <span className="text-gray-600">
-                        {item.product.name} × {item.quantity}kg
+                        {item.product.name} × {formatQuantityToWeight(item.quantity)}
                       </span>
                       <span className="font-semibold">
                         ₹{(item.product.price * item.quantity).toFixed(2)}

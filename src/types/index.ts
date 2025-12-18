@@ -1,3 +1,11 @@
+export interface Address {
+  street?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  landmark?: string;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -6,6 +14,7 @@ export interface User {
   role: 'user' | 'admin';
   isVerified: boolean;
   avatar?: string;
+  address?: Address;
   createdAt: string;
   updatedAt?: string;
 }
@@ -28,6 +37,7 @@ export interface ProfileUpdateRequest {
   email?: string;
   phone?: string;
   avatar?: string;
+  address?: Address;
 }
 
 export interface AuthSuccessResponse {
@@ -192,8 +202,8 @@ export interface FishProduct {
   _id: string;
   name: string;
   category: ProductCategory;
-  price: number;
-  stock: number;
+  price: number; // Price per 250g unit
+  stock: number; // Stock in 250g units (e.g., 100 units = 25kg)
   description: string;
   images: string[];
   createdBy: string;
@@ -205,8 +215,8 @@ export interface FishProduct {
 export interface CreateProductRequest {
   name: string;
   category: ProductCategory;
-  price: number;
-  stock: number;
+  price: number; // Price per 250g unit
+  stock: number; // Stock in 250g units
   description?: string;
   images?: string[];
 }
@@ -262,7 +272,7 @@ export interface ProductResponse {
 export interface CartItem {
   _id: string;
   product: FishProduct;
-  quantity: number;
+  quantity: number; // Quantity in 250g units (e.g., 4 = 1kg)
   addedAt: string;
 }
 

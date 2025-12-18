@@ -195,6 +195,28 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="border-b pb-4">
+                  <h3 className="text-sm font-medium text-gray-500">Delivery Address</h3>
+                  {user.address && user.address.street ? (
+                    <div className="mt-1 text-lg text-gray-900">
+                      <p>{user.address.street}</p>
+                      {user.address.landmark && <p className="text-sm text-gray-600">Landmark: {user.address.landmark}</p>}
+                      <p className="text-sm">
+                        {user.address.city && `${user.address.city}, `}
+                        {user.address.state && user.address.state}
+                        {user.address.pincode && ` - ${user.address.pincode}`}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="mt-1">
+                      <p className="text-gray-500 italic mb-2">No address saved</p>
+                      <Button variant="secondary" size="sm" onClick={handleEditProfile}>
+                        Add Address
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="border-b pb-4">
                   <h3 className="text-sm font-medium text-gray-500">Role</h3>
                   <p className="mt-1 text-lg text-gray-900 capitalize">{user.role}</p>
                 </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { OceanBackground } from './OceanBackground';
 
 interface HeroSectionProps {
   isAuthenticated: boolean;
@@ -8,140 +9,9 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated }) => {
   return (
     <div className="relative min-h-[90vh] overflow-hidden ocean-gradient">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white/10 animate-bubble"
-            style={{
-              width: `${Math.random() * 20 + 10}px`,
-              height: `${Math.random() * 20 + 10}px`,
-              left: `${Math.random() * 100}%`,
-              animationDuration: `${Math.random() * 5 + 5}s`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute top-[15%] animate-swim opacity-60"
-          style={{ animationDuration: '22s', animationDelay: '0s' }}
-        >
-          <div className="text-6xl drop-shadow-lg">🐟</div>
-        </div>
-        <div
-          className="absolute top-[25%] animate-swim opacity-50"
-          style={{ animationDuration: '28s', animationDelay: '3s' }}
-        >
-          <div className="text-7xl drop-shadow-lg">🐠</div>
-        </div>
-        <div
-          className="absolute top-[40%] animate-swim opacity-55"
-          style={{ animationDuration: '24s', animationDelay: '7s' }}
-        >
-          <div className="text-8xl drop-shadow-lg">🐡</div>
-        </div>
-        <div
-          className="absolute top-[55%] animate-swim opacity-60"
-          style={{ animationDuration: '26s', animationDelay: '2s' }}
-        >
-          <div className="text-6xl drop-shadow-lg">🐟</div>
-        </div>
-        <div
-          className="absolute top-[70%] animate-swim opacity-50"
-          style={{ animationDuration: '30s', animationDelay: '9s' }}
-        >
-          <div className="text-7xl drop-shadow-lg">🐠</div>
-        </div>
-        <div
-          className="absolute top-[80%] animate-swim opacity-55"
-          style={{ animationDuration: '20s', animationDelay: '5s' }}
-        >
-          <div className="text-6xl drop-shadow-lg">🐟</div>
-        </div>
-
-        <div
-          className="absolute top-[18%] animate-swim-reverse opacity-50"
-          style={{ animationDuration: '25s', animationDelay: '4s' }}
-        >
-          <div className="text-5xl drop-shadow-lg transform scale-x-[-1]">🐠</div>
-        </div>
-        <div
-          className="absolute top-[35%] animate-swim-reverse opacity-55"
-          style={{ animationDuration: '27s', animationDelay: '8s' }}
-        >
-          <div className="text-6xl drop-shadow-lg transform scale-x-[-1]">🐟</div>
-        </div>
-        <div
-          className="absolute top-[60%] animate-swim-reverse opacity-60"
-          style={{ animationDuration: '23s', animationDelay: '1s' }}
-        >
-          <div className="text-7xl drop-shadow-lg transform scale-x-[-1]">🐡</div>
-        </div>
-        <div
-          className="absolute top-[75%] animate-swim-reverse opacity-50"
-          style={{ animationDuration: '29s', animationDelay: '6s' }}
-        >
-          <div className="text-5xl drop-shadow-lg transform scale-x-[-1]">🐠</div>
-        </div>
-
-        <div
-          className="absolute top-[22%] animate-swim opacity-70"
-          style={{ animationDuration: '18s', animationDelay: '2s' }}
-        >
-          <div className="text-4xl drop-shadow-lg">🦐</div>
-        </div>
-        <div
-          className="absolute top-[45%] animate-swim opacity-65"
-          style={{ animationDuration: '21s', animationDelay: '6s' }}
-        >
-          <div className="text-5xl drop-shadow-lg">🦀</div>
-        </div>
-        <div
-          className="absolute top-[65%] animate-swim opacity-60"
-          style={{ animationDuration: '19s', animationDelay: '4s' }}
-        >
-          <div className="text-4xl drop-shadow-lg">🦑</div>
-        </div>
-        <div
-          className="absolute top-[50%] animate-swim-reverse opacity-70"
-          style={{ animationDuration: '22s', animationDelay: '10s' }}
-        >
-          <div className="text-4xl drop-shadow-lg transform scale-x-[-1]">🦐</div>
-        </div>
-        <div
-          className="absolute top-[30%] animate-swim-reverse opacity-65"
-          style={{ animationDuration: '24s', animationDelay: '3s' }}
-        >
-          <div className="text-5xl drop-shadow-lg transform scale-x-[-1]">🦀</div>
-        </div>
-        <div
-          className="absolute top-[10%] animate-swim opacity-60"
-          style={{ animationDuration: '26s', animationDelay: '7s' }}
-        >
-          <div className="text-4xl drop-shadow-lg">🐙</div>
-        </div>
-        <div
-          className="absolute top-[85%] animate-swim-reverse opacity-55"
-          style={{ animationDuration: '28s', animationDelay: '5s' }}
-        >
-          <div className="text-4xl drop-shadow-lg transform scale-x-[-1]">🦑</div>
-        </div>
-      </div>
+      <OceanBackground bubbleCount={15} includeSparkles={true} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 flex flex-col items-center justify-center min-h-[90vh]">
-        <div className="hidden sm:block absolute top-20 right-20 text-4xl animate-sparkle">
-          ✨
-        </div>
-        <div className="hidden sm:block absolute top-40 left-20 text-3xl animate-sparkle delay-500">
-          ✨
-        </div>
-        <div className="hidden sm:block absolute bottom-40 right-32 text-2xl animate-sparkle delay-300">
-          ✨
-        </div>
-
         <div className="text-center space-y-5 sm:space-y-8 max-w-4xl w-full">
           <div className="inline-flex items-center gap-2 px-6 py-3 fresh-badge rounded-full text-white font-bold text-sm uppercase tracking-wider animate-bounce-gentle">
             <span className="text-xl">🐟</span>
@@ -157,8 +27,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated }) => 
           </h1>
 
           <p className="text-base sm:text-xl md:text-2xl lg:text-3xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed px-2">
-            <span className="font-semibold text-cyan-200">Fresh seafood</span> from local
-            fishermen, delivered to your doorstep in hours!{' '}
+            <span className="font-semibold text-cyan-200">Fresh seafood</span> from local fishermen,
+            delivered to your doorstep in hours!{' '}
             <span className="font-semibold text-amber-300"> across Chennai</span>
           </p>
 
