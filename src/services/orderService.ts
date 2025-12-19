@@ -1,5 +1,5 @@
 import apiClient from './api';
-import { OrderResponse, OrderListResponse, OrderStatsResponse, CreateOrderRequest } from '@/types';
+import { OrderResponse, OrderListResponse, OrderStatsResponse, CreateOrderRequest, DeliveryTimeSlot } from '@/types';
 
 const ORDER_BASE_URL = '/api/orders';
 
@@ -68,12 +68,12 @@ export const validateDeliveryTime = (
   };
 };
 
-export const getAvailableTimeSlots = (date: string) => {
+export const getAvailableTimeSlots = (date: string): { slot: DeliveryTimeSlot; available: boolean; reason: string }[] => {
   const now = new Date();
   const minimumTime = new Date(now.getTime() + 4 * 60 * 60 * 1000);
   const selectedDate = new Date(date);
 
-  const timeSlots = [
+  const timeSlots: { slot: DeliveryTimeSlot; start: number }[] = [
     { slot: '08:00-12:00', start: 8 },
     { slot: '12:00-16:00', start: 12 },
     { slot: '16:00-20:00', start: 16 },

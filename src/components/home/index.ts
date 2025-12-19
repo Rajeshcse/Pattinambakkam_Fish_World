@@ -1,2 +1,10 @@
+export { AnimatedFish } from './AnimatedFish';
+export { OceanBackground } from './OceanBackground';
 export { HeroSection } from './HeroSection';
+export { FeaturedProductCard } from './FeaturedProductCard';
+export { FeaturedProductsSection } from './FeaturedProductsSection';
 export { WhyChooseUsSection } from './WhyChooseUsSection';
+export { HowItWorksSection } from './HowItWorksSection';
+export { TestimonialCard } from './TestimonialCard';
+export { TestimonialsSection } from './TestimonialsSection';
+export { CTASection } from './CTASection';
