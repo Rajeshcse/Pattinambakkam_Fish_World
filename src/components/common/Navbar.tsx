@@ -93,6 +93,22 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               >
                 Products
               </Link>
+              {user && (
+                <Link
+                  to="/my-orders"
+                  className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
+                    location.pathname === '/my-orders'
+                      ? isHomePage
+                        ? 'bg-white/20 text-white'
+                        : 'bg-primary-100 text-primary-700'
+                      : isHomePage
+                      ? 'text-white/80 hover:text-white hover:bg-white/10'
+                      : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                  }`}
+                >
+                  My Orders
+                </Link>
+              )}
             </div>
 
             {}
@@ -376,6 +392,19 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
 
           {isSignedIn && (
             <>
+              <Link
+                to="/my-orders"
+                onClick={closeMobileMenu}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                  location.pathname === '/my-orders'
+                    ? 'bg-primary-100 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span className="text-xl">📦</span>
+                My Orders
+              </Link>
+
               <Link
                 to="/profile"
                 onClick={closeMobileMenu}

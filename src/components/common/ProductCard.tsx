@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { FishProduct } from '@/types';
+import { getStockStatus as formatStockStatus } from '@/utils/formatters';
 
 interface ProductCardProps {
   product: FishProduct;
@@ -30,16 +31,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     return colors[category] || 'bg-gray-100 text-gray-800';
   };
 
-  const getStockStatus = () => {
-    if (product.stock === 0) {
-      return { text: 'Out of Stock', color: 'text-red-600' };
-    } else if (product.stock < 10) {
-      return { text: `Only ${product.stock} left`, color: 'text-orange-600' };
-    }
-    return { text: 'In Stock', color: 'text-green-600' };
-  };
-
-  const stockStatus = getStockStatus();
+  const stockStatus = formatStockStatus(product.stock);
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -103,7 +95,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex items-center justify-between mb-4">
           <div className="text-2xl font-bold text-green-600">
             ₹{product.price}
-            <span className="text-sm text-gray-500 font-normal">/kg</span>
+            <span className="text-sm text-gray-500 font-normal">/250g</span>
           </div>
           <div className={`text-sm font-semibold ${stockStatus.color}`}>{stockStatus.text}</div>
         </div>

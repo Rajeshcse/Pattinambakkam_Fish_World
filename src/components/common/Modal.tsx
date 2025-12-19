@@ -1,23 +1,20 @@
-
-
 import React, { useEffect, useRef } from 'react';
 
 export interface ModalProps {
-  
   isOpen: boolean;
-  
+
   onClose: () => void;
-  
+
   title?: string;
-  
+
   children: React.ReactNode;
-  
+
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  
+
   showCloseButton?: boolean;
-  
+
   closeOnOverlayClick?: boolean;
-  
+
   closeOnEscape?: boolean;
 }
 
@@ -40,7 +37,6 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  
   useEffect(() => {
     if (!isOpen || !closeOnEscape) return;
 
@@ -54,7 +50,6 @@ export const Modal: React.FC<ModalProps> = ({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, closeOnEscape, onClose]);
 
-  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -67,7 +62,6 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen]);
 
-  
   useEffect(() => {
     if (!isOpen) return;
 
@@ -85,13 +79,11 @@ export const Modal: React.FC<ModalProps> = ({
       if (event.key !== 'Tab') return;
 
       if (event.shiftKey) {
-        
         if (document.activeElement === firstElement) {
           event.preventDefault();
           lastElement?.focus();
         }
       } else {
-        
         if (document.activeElement === lastElement) {
           event.preventDefault();
           firstElement?.focus();
@@ -107,7 +99,6 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen]);
 
-  
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (closeOnOverlayClick && event.target === event.currentTarget) {
       onClose();
