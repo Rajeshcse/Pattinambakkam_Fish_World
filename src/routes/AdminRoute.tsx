@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@clerk/clerk-react';
 import { Loading } from '@/components/common';
 
 interface AdminRouteProps {
@@ -8,17 +8,19 @@ interface AdminRouteProps {
 }
 
 export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
-  const { isAuthenticated, loading, user } = useAuth();
+  const { isSignedIn, isLoaded, user } = useAuth();
 
-  if (loading) {
+  if (!isLoaded) {
     return <Loading fullScreen text="Verifying admin access..." />;
   }
 
-  if (!isAuthenticated) {
+  if (!isSignedIn) {
     return <Navigate to="/login" replace />;
   }
 
-  if (user?.role !== 'admin') {
+  // Check if user has admin role (you'll need to set this in Clerk metadata or backend)
+  const userRole = (user?.publicMetadata as any)?.role;
+  if (userRole !== 'admin') {
     return <Navigate to="/" replace />;
   }
 

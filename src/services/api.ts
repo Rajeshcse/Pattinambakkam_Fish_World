@@ -11,8 +11,26 @@ const apiClient: AxiosInstance = axios.create({
   timeout: 10000,
 });
 
+// Store token setter function
+let getTokenFn: (() => Promise<string | null>) | null = null;
+
+export const setTokenGetter = (fn: () => Promise<string | null>) => {
+  getTokenFn = fn;
+};
+
 apiClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  async (config: InternalAxiosRequestConfig) => {
+    // Get Clerk token if setter is available
+    if (getTokenFn) {
+      try {
+        const token = await getTokenFn();
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (error) {
+        console.log('Token retrieval failed:', error);
+      }
+    }
     return config;
   },
   (error) => {

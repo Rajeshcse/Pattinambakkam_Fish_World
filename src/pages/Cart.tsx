@@ -1,22 +1,20 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
 import { Layout, Loading, Button } from '@/components/common';
 import { CartItem, CartSummary, EmptyCart } from '@/components/cart';
 import { useCart } from '@/hooks/useCart';
-import { useAuth } from '@/hooks/useAuth';
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
+  const { isSignedIn, isLoaded } = useAuth();
   const { cart, itemCount, totalAmount, updateQuantity, removeItem, clearCart, loading } =
     useCart();
-  const { isAuthenticated } = useAuth();
 
-  
-  React.useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
+  // Check auth before rendering
+  if (isLoaded && !isSignedIn) {
+    return <Navigate to="/login" replace />;
+  }
 
   const handleCheckout = () => {
     navigate('/checkout');
@@ -26,9 +24,7 @@ const Cart: React.FC = () => {
     if (window.confirm('Are you sure you want to clear your cart?')) {
       try {
         await clearCart();
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   };
 
