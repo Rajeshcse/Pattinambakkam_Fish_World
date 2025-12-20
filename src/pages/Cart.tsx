@@ -4,12 +4,14 @@ import { Layout, Loading, Button } from '@/components/common';
 import { CartItem, CartSummary, EmptyCart } from '@/components/cart';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
+import { useConfirm } from '@/hooks/useConfirm';
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
   const { cart, itemCount, totalAmount, updateQuantity, removeItem, clearCart, loading } =
     useCart();
   const { isAuthenticated } = useAuth();
+  const { confirm } = useConfirm();
 
   React.useEffect(() => {
     if (!isAuthenticated) {
@@ -22,7 +24,15 @@ const Cart: React.FC = () => {
   };
 
   const handleClearCart = async () => {
-    if (window.confirm('Are you sure you want to clear your cart?')) {
+    const confirmed = await confirm({
+      title: 'Clear Cart',
+      message: 'Are you sure you want to clear your cart?',
+      confirmText: 'Clear',
+      cancelText: 'Cancel',
+      variant: 'danger',
+    });
+
+    if (confirmed) {
       try {
         await clearCart();
       } catch (error) {}
@@ -46,14 +56,6 @@ const Cart: React.FC = () => {
       <div className="bg-gradient-to-b from-cyan-50 to-white min-h-screen py-6 sm:py-8">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
           {}
-          <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Shopping Cart</h1>
-            <p className="text-sm sm:text-base text-gray-600">
-              {isEmpty
-                ? 'Your cart is waiting to be filled!'
-                : `${itemCount} item${itemCount !== 1 ? 's' : ''} in your cart`}
-            </p>
-          </div>
 
           {isEmpty ? (
             <EmptyCart />
