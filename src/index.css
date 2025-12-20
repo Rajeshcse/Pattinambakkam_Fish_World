@@ -168,14 +168,10 @@ select:focus {
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow:
-      0 0 20px rgba(14, 165, 233, 0.3),
-      0 0 40px rgba(14, 165, 233, 0.1);
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.3), 0 0 40px rgba(14, 165, 233, 0.1);
   }
   50% {
-    box-shadow:
-      0 0 40px rgba(14, 165, 233, 0.5),
-      0 0 80px rgba(14, 165, 233, 0.2);
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.5), 0 0 80px rgba(14, 165, 233, 0.2);
   }
 }
 
@@ -352,16 +348,12 @@ select:focus {
 
 /* Glowing Text Effect */
 .glow-text {
-  text-shadow:
-    0 0 10px rgba(14, 165, 233, 0.5),
-    0 0 20px rgba(14, 165, 233, 0.3),
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.5), 0 0 20px rgba(14, 165, 233, 0.3),
     0 0 30px rgba(14, 165, 233, 0.2);
 }
 
 .glow-text-gold {
-  text-shadow:
-    0 0 10px rgba(251, 191, 36, 0.5),
-    0 0 20px rgba(251, 191, 36, 0.3);
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3);
 }
 
 /* Fresh Badge */
@@ -405,9 +397,7 @@ select:focus {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   transform: translate(-50%, -50%);
-  transition:
-    width 0.6s,
-    height 0.6s;
+  transition: width 0.6s, height 0.6s;
 }
 
 .water-ripple:hover::after {
@@ -426,4 +416,11 @@ select:focus {
   inset: 0;
   background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
   pointer-events: none;
+}
+
+/* Hide toast notifications on mobile devices */
+@media (max-width: 767px) {
+  .Toastify__toast-container {
+    display: none !important;
+  }
 }

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { LogoIcon } from './icons/LogoIcon';
+import { productService } from '@/services';
 
 interface NavbarProps {
   className?: string;
@@ -13,8 +14,28 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
   const { itemCount } = useCart();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [productCount, setProductCount] = useState(0);
 
   const isHomePage = location.pathname === '/';
+
+  // Fetch product count
+  useEffect(() => {
+    const fetchProductCount = async () => {
+      try {
+        const response = await productService.getAllProducts({
+          page: 1,
+          limit: 1,
+          isAvailable: true,
+        });
+        if (response.success) {
+          setProductCount(response.pagination.totalProducts);
+        }
+      } catch (error) {
+        console.error('Error fetching product count:', error);
+      }
+    };
+    fetchProductCount();
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -42,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             <div className="hidden xs:block">
               <h1
                 className={`text-lg sm:text-xl lg:text-2xl font-bold ${
-                  isHomePage ? 'text-white' : 'text-gray-800'
+                  isHomePage ? 'text-white' : 'text-black'
                 } group-hover:text-primary-500 transition-colors`}
               >
                 <span className="hidden sm:inline">Pattinambakkam</span>
@@ -53,6 +74,12 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                 </span>
               </h1>
             </div>
+            {location.pathname === '/products' && (
+              <div className="ml-2 flex flex-col">
+                <p className="text-sm sm:text-base font-bold text-black">Fresh Seafood</p>
+                <p className="text-xs text-black">{productCount} products</p>
+              </div>
+            )}
           </Link>
 
           {}
