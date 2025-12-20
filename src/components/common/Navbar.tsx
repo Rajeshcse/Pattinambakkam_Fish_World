@@ -230,16 +230,11 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                     : 'hover:bg-gray-100'
                 }`}
               >
-                <svg
-                  className={`w-6 h-6 ${isHomePage ? 'text-white' : 'text-gray-700'}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-6 h-6" fill="none" stroke="#2d3748" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
@@ -260,20 +255,20 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7" fill="none" stroke="#2d3748" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               ) : (
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7" fill="none" stroke="#2d3748" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
@@ -446,7 +441,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               Logout
             </button>
           ) : (
-            <div className="space-y-3">
+            <div className="mb-32 flex flex-col gap-8">
               <Link to="/login" onClick={closeMobileMenu}>
                 <button className="w-full px-4 py-3 rounded-xl font-semibold text-primary-600 border-2 border-primary-500 hover:bg-primary-50 transition-all">
                   Login
