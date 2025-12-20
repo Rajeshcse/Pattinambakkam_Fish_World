@@ -9,6 +9,8 @@ import {
   ToggleVerificationRequest,
   BulkActionRequest,
   ProfileUpdateRequest,
+  Order,
+  OrderStatus,
 } from '@/types';
 
 class AdminService {
@@ -205,6 +207,19 @@ class AdminService {
       userIds,
     } as BulkActionRequest);
     return response.data;
+  }
+
+  async getAllOrders(): Promise<Order[]> {
+    const response = await apiClient.get('/api/admin/orders');
+    return response.data.data || response.data;
+  }
+
+  async updateOrderStatus(orderId: string, status: OrderStatus): Promise<any> {
+    const response = await apiClient.put(
+      `/api/admin/orders/${orderId}/status`,
+      { status },
+    );
+    return response.data.data || response.data;
   }
 }
 

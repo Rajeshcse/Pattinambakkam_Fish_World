@@ -149,6 +149,15 @@ export const AdminDashboard: React.FC = () => {
                 Manage Products
               </Button>
               <Button
+                variant="primary"
+                size="lg"
+                fullWidth
+                onClick={() => navigate('/admin/orders')}
+                className="bg-purple-600 hover:bg-purple-700"
+              >
+                📦 Manage Orders
+              </Button>
+              <Button
                 variant="secondary"
                 size="lg"
                 fullWidth

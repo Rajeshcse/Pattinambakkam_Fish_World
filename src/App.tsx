@@ -32,6 +32,7 @@ import {
   AdminTest,
   ProductManagement,
   ProductForm,
+  OrderManagement,
 } from '@/pages/admin';
 import { ApiTest } from '@/pages/admin/ApiTest';
 import { ToastContainer } from 'react-toastify';
@@ -168,6 +169,14 @@ const App: React.FC = () => {
                   element={
                     <AdminRoute>
                       <AdminDashboard />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/orders"
+                  element={
+                    <AdminRoute>
+                      <OrderManagement />
                     </AdminRoute>
                   }
                 />

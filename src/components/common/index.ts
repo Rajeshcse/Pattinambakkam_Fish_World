@@ -10,3 +10,4 @@ export { Layout } from './Layout';
 export { Modal } from './Modal';
 export { ConfirmDialog } from './ConfirmDialog';
 export { ProductCard } from './ProductCard';
+export { StatusBadge } from './StatusBadge';
