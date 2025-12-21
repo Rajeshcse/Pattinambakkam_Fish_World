@@ -24,13 +24,11 @@ const Checkout: React.FC = () => {
     orderNotes: '',
   });
 
-  
   const RAZORPAY_PAYMENT_LINK = 'https://razorpay.me/@paramanandamrajesh';
 
   const [availableSlots, setAvailableSlots] = useState<
     { slot: DeliveryTimeSlot; available: boolean; reason: string }[]
   >([]);
-
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -72,13 +70,11 @@ const Checkout: React.FC = () => {
     }
   }, [user, navigate]);
 
-  
   useEffect(() => {
     if (formData.deliveryDate) {
       const slots = orderService.getAvailableTimeSlots(formData.deliveryDate);
       setAvailableSlots(slots);
 
-      
       if (formData.deliveryTime) {
         const selectedSlot = slots.find((s) => s.slot === formData.deliveryTime);
         if (!selectedSlot?.available) {
@@ -116,7 +112,6 @@ const Checkout: React.FC = () => {
       return false;
     }
 
-    
     const validation = orderService.validateDeliveryTime(
       formData.deliveryDate,
       formData.deliveryTime,
@@ -135,7 +130,9 @@ const Checkout: React.FC = () => {
       cart?.items
         .map(
           (item) =>
-            `• ${item.product.name} × ${formatQuantityToWeight(item.quantity)} - ₹${(item.product.price * item.quantity).toFixed(2)}`,
+            `• ${item.product.name} × ${formatQuantityToWeight(item.quantity)} - ₹${(
+              item.product.price * item.quantity
+            ).toFixed(2)}`,
         )
         .join('\n') || '';
 
@@ -152,7 +149,11 @@ ${items}
 
 *Delivery Details:*
 📍 Address: ${formData.address}
-📅 Date: ${new Date(formData.deliveryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+📅 Date: ${new Date(formData.deliveryDate).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    })}
 🕐 Time: ${formData.deliveryTime}
 
 ${formData.orderNotes ? `*Special Instructions:*\n${formData.orderNotes}\n` : ''}
@@ -180,44 +181,38 @@ _Please confirm this order. Thank you!_`;
         paymentMethod: paymentMethod,
       };
 
-      
       toast.info('Creating your order...');
       const response = await orderService.createOrder(orderData);
 
       if (response.success) {
         const order = response.data;
 
+        // Clear the cart after successful order
+        clearCart();
+
         if (paymentMethod === 'whatsapp') {
-          
           toast.success('Order created! Redirecting to WhatsApp...');
 
-          
           const whatsappMessage = generateWhatsAppMessage(order);
           const encodedMessage = encodeURIComponent(whatsappMessage);
           const whatsappNumber = '919994072395';
           const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-          
           window.open(whatsappURL, '_blank');
 
-          
           setTimeout(() => {
             navigate(`/orders/${order.orderId}/confirmation`);
           }, 1000);
         } else {
-          
           toast.success(`Order created! Please pay ₹${order.totalAmount} on the payment page.`, {
             autoClose: 7000,
           });
 
-          
           localStorage.setItem('pendingPaymentOrderId', order.orderId);
           localStorage.setItem('pendingPaymentAmount', order.totalAmount.toString());
 
-          
           window.open(RAZORPAY_PAYMENT_LINK, '_blank');
 
-          
           setTimeout(() => {
             navigate(`/orders/${order.orderId}/confirmation`);
           }, 500);
@@ -231,7 +226,6 @@ _Please confirm this order. Thank you!_`;
     }
   };
 
-  
   const today = new Date().toISOString().split('T')[0];
 
   if (cartLoading || !cart) {
@@ -350,8 +344,8 @@ _Please confirm this order. Thank you!_`;
                               formData.deliveryTime === slot
                                 ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
                                 : available
-                                  ? 'border-gray-200 hover:border-cyan-300 text-gray-700'
-                                  : 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
+                                ? 'border-gray-200 hover:border-cyan-300 text-gray-700'
+                                : 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
                             }`}
                           >
                             <div>{slot}</div>
@@ -465,8 +459,8 @@ _Please confirm this order. Thank you!_`;
                   {submitting
                     ? 'Creating Order...'
                     : paymentMethod === 'whatsapp'
-                      ? 'Place Order via WhatsApp'
-                      : 'Continue to Payment'}
+                    ? 'Place Order via WhatsApp'
+                    : 'Continue to Payment'}
                 </Button>
               </form>
             </div>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { LogoIcon } from './icons/LogoIcon';
+import { productService } from '@/services';
 
 interface NavbarProps {
   className?: string;
@@ -13,8 +14,28 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
   const { itemCount } = useCart();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [productCount, setProductCount] = useState(0);
 
   const isHomePage = location.pathname === '/';
+
+  // Fetch product count
+  useEffect(() => {
+    const fetchProductCount = async () => {
+      try {
+        const response = await productService.getAllProducts({
+          page: 1,
+          limit: 1,
+          isAvailable: true,
+        });
+        if (response.success) {
+          setProductCount(response.pagination.totalProducts);
+        }
+      } catch (error) {
+        console.error('Error fetching product count:', error);
+      }
+    };
+    fetchProductCount();
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -42,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             <div className="hidden xs:block">
               <h1
                 className={`text-lg sm:text-xl lg:text-2xl font-bold ${
-                  isHomePage ? 'text-white' : 'text-gray-800'
+                  isHomePage ? 'text-white' : 'text-black'
                 } group-hover:text-primary-500 transition-colors`}
               >
                 <span className="hidden sm:inline">Pattinambakkam</span>
@@ -53,6 +74,12 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                 </span>
               </h1>
             </div>
+            {location.pathname === '/products' && (
+              <div className="ml-2 flex flex-col">
+                <p className="text-sm sm:text-base font-bold text-black">Fresh Seafood</p>
+                <p className="text-xs text-black">{productCount} products</p>
+              </div>
+            )}
           </Link>
 
           {}
@@ -220,18 +247,20 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             {user && (
               <Link
                 to="/cart"
-                className={`relative p-2 rounded-xl transition-all duration-300 ${
-                  location.pathname === '/cart'
-                    ? isHomePage
-                      ? 'bg-white/20'
-                      : 'bg-cyan-100'
-                    : isHomePage
-                    ? 'hover:bg-white/10'
-                    : 'hover:bg-gray-100'
+                className={`relative transition-all duration-300 ${
+                  isHomePage
+                    ? `rounded-full p-2.5 ${
+                        location.pathname === '/cart'
+                          ? 'bg-blue-900/90'
+                          : 'bg-blue-900/70 hover:bg-blue-900'
+                      }`
+                    : `p-2 rounded-xl ${
+                        location.pathname === '/cart' ? 'bg-cyan-100' : 'hover:bg-gray-100'
+                      }`
                 }`}
               >
                 <svg
-                  className={`w-6 h-6 ${isHomePage ? 'text-white' : 'text-gray-700'}`}
+                  className={`${isHomePage ? 'w-6 h-6 text-white' : 'w-6 h-6 text-black'}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -254,13 +283,20 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             {}
             <button
               onClick={toggleMobileMenu}
-              className={`p-2 rounded-xl transition-all duration-300 ${
-                isHomePage ? 'text-white hover:bg-white/10' : 'text-gray-700 hover:bg-gray-100'
+              className={`transition-all duration-300 ${
+                isHomePage
+                  ? 'rounded-full p-2.5 bg-blue-900/70 hover:bg-blue-900'
+                  : 'p-2 rounded-xl text-gray-700 hover:bg-gray-100'
               }`}
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className={`${isHomePage ? 'w-7 h-7 text-white' : 'w-7 h-7 text-black'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -269,7 +305,12 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                   />
                 </svg>
               ) : (
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className={`${isHomePage ? 'w-7 h-7 text-white' : 'w-7 h-7 text-black'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -446,7 +487,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               Logout
             </button>
           ) : (
-            <div className="space-y-3">
+            <div className="mb-32 flex flex-col gap-8">
               <Link to="/login" onClick={closeMobileMenu}>
                 <button className="w-full px-4 py-3 rounded-xl font-semibold text-primary-600 border-2 border-primary-500 hover:bg-primary-50 transition-all">
                   Login

@@ -11,7 +11,7 @@ export const EmptyCart: React.FC = () => {
         {}
         <div className="mb-6">
           <svg
-            className="w-32 h-32 mx-auto text-gray-300"
+            className="w-32 h-32 mx-auto text-blue-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
