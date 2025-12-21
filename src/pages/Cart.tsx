@@ -11,7 +11,6 @@ const Cart: React.FC = () => {
     useCart();
   const { isAuthenticated } = useAuth();
 
-  
   React.useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
@@ -26,9 +25,7 @@ const Cart: React.FC = () => {
     if (window.confirm('Are you sure you want to clear your cart?')) {
       try {
         await clearCart();
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
   };
 

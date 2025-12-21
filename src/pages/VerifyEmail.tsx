@@ -19,7 +19,6 @@ export const VerifyEmail: React.FC = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
 
-  
   useEffect(() => {
     if (user?.isVerified) {
       toast.info('Your phone number is already verified');
@@ -27,7 +26,6 @@ export const VerifyEmail: React.FC = () => {
     }
   }, [user, navigate]);
 
-  
   useEffect(() => {
     if (resendCooldown > 0) {
       const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
@@ -95,7 +93,6 @@ export const VerifyEmail: React.FC = () => {
     try {
       const response = await authService.verifyPhone({ otp: values.otp });
       if (response.success) {
-        
         if (user) {
           updateUser({ ...user, isVerified: true });
         }
@@ -131,8 +128,8 @@ export const VerifyEmail: React.FC = () => {
         {!otpSent ? (
           <div className="space-y-4">
             <p className="text-sm text-gray-600">
-              Click the button below to receive a verification code via SMS. The code will
-              expire in 10 minutes.
+              Click the button below to receive a verification code via SMS. The code will expire in
+              10 minutes.
             </p>
             <Button
               type="button"

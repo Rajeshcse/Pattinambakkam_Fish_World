@@ -9,7 +9,6 @@ interface OrderStatusStepperProps {
 const steps: { status: OrderStatus; label: string; icon: string }[] = [
   { status: 'pending', label: 'Pending', icon: '⏳' },
   { status: 'confirmed', label: 'Confirmed', icon: '✅' },
-  { status: 'preparing', label: 'Preparing', icon: '🍳' },
   { status: 'out-for-delivery', label: 'Out for Delivery', icon: '🚗' },
   { status: 'delivered', label: 'Delivered', icon: '✅' },
 ];

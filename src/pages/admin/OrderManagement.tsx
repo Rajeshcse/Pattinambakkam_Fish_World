@@ -7,7 +7,6 @@ import type { Order, OrderStatus } from '@/types';
 const statusOptions: { value: OrderStatus; label: string }[] = [
   { value: 'pending', label: 'Pending' },
   { value: 'confirmed', label: 'Confirmed' },
-  { value: 'preparing', label: 'Preparing' },
   { value: 'out-for-delivery', label: 'Out for Delivery' },
   { value: 'delivered', label: 'Delivered' },
   { value: 'cancelled', label: 'Cancelled' },
@@ -82,7 +81,9 @@ export const OrderManagement: React.FC = () => {
     const matchesStatus = filterStatus === 'all' || order.status === filterStatus;
     const matchesSearch =
       order.orderId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (order.user && typeof order.user === 'object' && order.user.name?.toLowerCase().includes(searchQuery.toLowerCase()));
+      (order.user &&
+        typeof order.user === 'object' &&
+        order.user.name?.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesStatus && matchesSearch;
   });
 
@@ -171,12 +172,12 @@ export const OrderManagement: React.FC = () => {
                           <span className="font-medium">Items:</span> {order.items.length}
                         </p>
                         <p>
-                          <span className="font-medium">Amount:</span> ₹{order.totalAmount.toFixed(2)}
+                          <span className="font-medium">Amount:</span> ₹
+                          {order.totalAmount.toFixed(2)}
                         </p>
                         <p>
                           <span className="font-medium">Delivery:</span>{' '}
-                          {new Date(order.deliveryDetails.deliveryDate).toLocaleDateString('en-IN')}
-                          {' '}
+                          {new Date(order.deliveryDetails.deliveryDate).toLocaleDateString('en-IN')}{' '}
                           {order.deliveryDetails.deliveryTime}
                         </p>
                       </div>
@@ -184,11 +185,7 @@ export const OrderManagement: React.FC = () => {
 
                     {/* Actions */}
                     <div className="flex items-center gap-3">
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => handleStatusUpdate(order)}
-                      >
+                      <Button variant="primary" size="sm" onClick={() => handleStatusUpdate(order)}>
                         Update Status
                       </Button>
                     </div>
@@ -201,11 +198,7 @@ export const OrderManagement: React.FC = () => {
       </div>
 
       {/* Status Update Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Update Order Status"
-      >
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Update Order Status">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -217,9 +210,7 @@ export const OrderManagement: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              New Status
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">New Status</label>
             <select
               value={newStatus}
               onChange={(e) => setNewStatus(e.target.value as OrderStatus)}
@@ -234,12 +225,7 @@ export const OrderManagement: React.FC = () => {
           </div>
 
           <div className="flex gap-3 pt-4">
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={confirmStatusUpdate}
-              loading={updating}
-            >
+            <Button variant="primary" fullWidth onClick={confirmStatusUpdate} loading={updating}>
               Update Status
             </Button>
             <Button

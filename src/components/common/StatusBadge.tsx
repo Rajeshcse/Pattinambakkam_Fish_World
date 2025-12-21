@@ -22,12 +22,6 @@ const statusConfig: Record<
     textColor: 'text-green-700',
     icon: '✅',
   },
-  preparing: {
-    label: 'Preparing',
-    bgColor: 'bg-blue-100',
-    textColor: 'text-blue-700',
-    icon: '🍳',
-  },
   'out-for-delivery': {
     label: 'Out for Delivery',
     bgColor: 'bg-purple-100',
