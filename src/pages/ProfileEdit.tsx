@@ -13,14 +13,14 @@ export const ProfileEdit: React.FC = () => {
   const { formik, isSubmitting, error, dismissError } = useProfileEditForm({
     onSuccess: () => {
       toast.success('Profile updated successfully!');
-      navigate('/profile');
+      navigate('/checkout');
     },
     onError: (errorMessage) => {
       toast.error(errorMessage);
     },
     onNoChanges: () => {
       toast.info('No changes made');
-      navigate('/profile');
+      navigate('/checkout');
     },
   });
 
@@ -79,20 +79,27 @@ export const ProfileEdit: React.FC = () => {
               <div className="pt-4 border-t border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Delivery Address</h3>
 
-                <FormField
-                  name="street"
-                  label="Street Address"
-                  placeholder="Enter your complete street address"
-                  formik={formik}
-                  textarea
-                  rows={2}
-                />
+                <div className="mb-4">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Street Address
+                  </label>
+                  <textarea
+                    name="street"
+                    value={formik.values.street || ''}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter your complete street address"
+                    rows={2}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500"
+                  />
+                  {formik.errors.street && formik.touched.street && (
+                    <p className="text-red-500 text-sm mt-1">{formik.errors.street as string}</p>
+                  )}
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      City
-                    </label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">City</label>
                     <input
                       type="text"
                       value="Chennai"
@@ -104,9 +111,7 @@ export const ProfileEdit: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      State
-                    </label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">State</label>
                     <input
                       type="text"
                       value="Tamil Nadu"
