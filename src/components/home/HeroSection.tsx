@@ -13,7 +13,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated }) => 
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 flex flex-col items-center justify-center min-h-[90vh]">
         <div className="text-center space-y-5 sm:space-y-8 max-w-4xl w-full">
-          <div className="inline-flex items-center gap-2 px-6 py-3 fresh-badge rounded-full text-white font-bold text-sm uppercase tracking-wider animate-bounce-gentle">
+          <div className="inline-flex items-center gap-2 px-6 py-3 fresh-badge rounded-full text-white font-bold text-sm uppercase tracking-wider animate-bounce-gentle mt-8 sm:mt-12">
             <span className="text-xl">🐟</span>
             <span>Fresh Catch Daily</span>
             <span className="text-xl">🌊</span>

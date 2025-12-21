@@ -247,21 +247,28 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             {user && (
               <Link
                 to="/cart"
-                className={`relative p-2 rounded-xl transition-all duration-300 ${
-                  location.pathname === '/cart'
-                    ? isHomePage
-                      ? 'bg-white/20'
-                      : 'bg-cyan-100'
-                    : isHomePage
-                    ? 'hover:bg-white/10'
-                    : 'hover:bg-gray-100'
+                className={`relative transition-all duration-300 ${
+                  isHomePage
+                    ? `rounded-full p-2.5 ${
+                        location.pathname === '/cart'
+                          ? 'bg-blue-900/90'
+                          : 'bg-blue-900/70 hover:bg-blue-900'
+                      }`
+                    : `p-2 rounded-xl ${
+                        location.pathname === '/cart' ? 'bg-cyan-100' : 'hover:bg-gray-100'
+                      }`
                 }`}
               >
-                <svg className="w-6 h-6" fill="none" stroke="#2d3748" viewBox="0 0 24 24">
+                <svg
+                  className={`${isHomePage ? 'w-6 h-6 text-white' : 'w-6 h-6 text-black'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2.5}
+                    strokeWidth={2}
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
@@ -276,26 +283,38 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             {}
             <button
               onClick={toggleMobileMenu}
-              className={`p-2 rounded-xl transition-all duration-300 ${
-                isHomePage ? 'text-white hover:bg-white/10' : 'text-gray-700 hover:bg-gray-100'
+              className={`transition-all duration-300 ${
+                isHomePage
+                  ? 'rounded-full p-2.5 bg-blue-900/70 hover:bg-blue-900'
+                  : 'p-2 rounded-xl text-gray-700 hover:bg-gray-100'
               }`}
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
-                <svg className="w-7 h-7" fill="none" stroke="#2d3748" viewBox="0 0 24 24">
+                <svg
+                  className={`${isHomePage ? 'w-7 h-7 text-white' : 'w-7 h-7 text-black'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2.5}
+                    strokeWidth={2}
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               ) : (
-                <svg className="w-7 h-7" fill="none" stroke="#2d3748" viewBox="0 0 24 24">
+                <svg
+                  className={`${isHomePage ? 'w-7 h-7 text-white' : 'w-7 h-7 text-black'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2.5}
+                    strokeWidth={2}
                     d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>

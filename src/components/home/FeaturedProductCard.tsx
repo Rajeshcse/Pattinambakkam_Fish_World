@@ -22,13 +22,26 @@ export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({ produc
       <div
         className={`relative h-28 sm:h-36 lg:h-48 bg-gradient-to-br ${product.gradient} flex items-center justify-center`}
       >
-        <div className="text-5xl sm:text-6xl lg:text-8xl group-hover:scale-110 transition-transform duration-500">
-          {product.emoji}
-        </div>
+        {product.emoji.includes('/') ? (
+          <img
+            src={product.emoji}
+            alt={product.name}
+            className="w-3/4 h-3/4 object-contain group-hover:scale-110 transition-transform duration-500"
+          />
+        ) : (
+          <div className="text-5xl sm:text-6xl lg:text-8xl group-hover:scale-110 transition-transform duration-500">
+            {product.emoji}
+          </div>
+        )}
         <div
           className={`absolute top-2 sm:top-4 left-2 sm:left-4 ${product.badgeColor} px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold text-white`}
         >
           {product.badge}
+        </div>
+        <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex gap-0.5 sm:gap-1">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} size={10} color="#fbbf24" filled={i < product.rating} />
+          ))}
         </div>
       </div>
       <div className="p-3 sm:p-4 lg:p-6">
@@ -38,18 +51,13 @@ export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({ produc
         <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-2">
           {product.tamilName} - {product.description}
         </p>
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <div className="flex items-center justify-center">
           <div className="price-tag px-2 sm:px-3 lg:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl">
             <span className="text-white font-black text-sm sm:text-base lg:text-xl">
               ₹{product.price}
             </span>
             <span className="text-white/70 text-xs sm:text-sm">/{product.unit || 'kg'}</span>
           </div>
-        </div>
-        <div className="flex justify-center gap-0.5 sm:gap-1">
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} size={10} color="#fbbf24" filled={i < product.rating} />
-          ))}
         </div>
       </div>
     </div>
