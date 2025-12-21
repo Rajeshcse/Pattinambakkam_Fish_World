@@ -37,95 +37,56 @@ export const OrderStatusStepper: React.FC<OrderStatusStepperProps> = ({
   }
 
   return (
-    <div className={`bg-white rounded-lg border border-gray-200 p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-gray-900 mb-6">Order Status</h3>
+    <div className={`bg-white rounded-lg border border-gray-200 p-4 md:p-6 ${className}`}>
+      <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-4 md:mb-6">
+        Order Status
+      </h3>
 
-      {/* Desktop View - Horizontal Stepper */}
-      <div className="hidden md:block">
-        <div className="relative">
-          {/* Progress Line */}
-          <div className="absolute top-5 left-0 right-0 h-1 bg-gray-200">
-            <div
-              className="h-full bg-green-500 transition-all duration-500"
-              style={{ width: `${(currentIndex / (steps.length - 1)) * 100}%` }}
-            />
-          </div>
-
-          {/* Steps */}
-          <div className="relative flex justify-between">
-            {steps.map((step, index) => {
-              const isCompleted = index <= currentIndex;
-              const isCurrent = index === currentIndex;
-
-              return (
-                <div key={step.status} className="flex flex-col items-center">
-                  {/* Circle */}
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all duration-300 ${
-                      isCompleted
-                        ? 'bg-green-500 text-white scale-110'
-                        : 'bg-gray-200 text-gray-400'
-                    } ${isCurrent ? 'ring-4 ring-green-200' : ''}`}
-                  >
-                    {step.icon}
-                  </div>
-
-                  {/* Label */}
-                  <div className="mt-3 text-center">
-                    <p
-                      className={`text-sm font-medium ${
-                        isCompleted ? 'text-gray-900' : 'text-gray-400'
-                      }`}
-                    >
-                      {step.label}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+      {/* Horizontal Stepper for All Screen Sizes */}
+      <div className="relative px-2">
+        {/* Progress Line */}
+        <div className="absolute top-5 left-0 right-0 h-1 bg-gray-200 mx-6">
+          <div
+            className="h-full bg-green-500 transition-all duration-500"
+            style={{ width: `${(currentIndex / (steps.length - 1)) * 100}%` }}
+          />
         </div>
-      </div>
 
-      {/* Mobile View - Vertical Stepper */}
-      <div className="block md:hidden space-y-4">
-        {steps.map((step, index) => {
-          const isCompleted = index <= currentIndex;
-          const isCurrent = index === currentIndex;
+        {/* Steps */}
+        <div className="relative flex justify-between">
+          {steps.map((step, index) => {
+            const isCompleted = index <= currentIndex;
+            const isCurrent = index === currentIndex;
 
-          return (
-            <div key={step.status} className="flex items-center gap-4">
-              {/* Circle */}
-              <div
-                className={`w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center text-lg transition-all duration-300 ${
-                  isCompleted
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-200 text-gray-400'
-                } ${isCurrent ? 'ring-4 ring-green-200' : ''}`}
-              >
-                {step.icon}
-              </div>
-
-              {/* Label */}
-              <div className="flex-1">
-                <p
-                  className={`text-sm font-medium ${
-                    isCompleted ? 'text-gray-900' : 'text-gray-400'
-                  }`}
+            return (
+              <div key={step.status} className="flex flex-col items-center">
+                <div
+                  className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-base md:text-lg transition-all duration-300 ${
+                    isCompleted
+                      ? 'bg-green-500 text-white md:scale-110'
+                      : 'bg-gray-200 text-gray-400'
+                  } ${isCurrent ? 'ring-2 md:ring-4 ring-green-200' : ''}`}
                 >
-                  {step.label}
-                </p>
-              </div>
-
-              {/* Checkmark */}
-              {isCompleted && (
-                <div className="text-green-500 text-xl">
-                  ✓
+                  {step.icon}
                 </div>
-              )}
-            </div>
-          );
-        })}
+
+                {/* Label */}
+                <div className="mt-2 md:mt-3 text-center">
+                  <p
+                    className={`text-xs md:text-sm font-medium ${
+                      isCompleted ? 'text-gray-900' : 'text-gray-400'
+                    }`}
+                  >
+                    {step.label}
+                  </p>
+                </div>
+
+                {/* Checkmark for completed steps */}
+                {isCompleted && <div className="text-green-500 text-sm md:text-base mt-1">✓</div>}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
