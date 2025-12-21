@@ -1,17 +1,14 @@
-
-
 import axios, { AxiosError } from 'axios';
 
 export interface AppError {
-  
   message: string;
-  
+
   code?: string;
-  
+
   statusCode?: number;
-  
+
   details?: Record<string, unknown>;
-  
+
   originalError?: unknown;
 }
 
@@ -47,26 +44,21 @@ export function isError(error: unknown): error is Error {
 }
 
 export function getErrorMessage(error: unknown): string {
-  
   if (isAxiosError(error)) {
-    
     const responseMessage = error.response?.data?.message;
     if (typeof responseMessage === 'string') {
       return responseMessage;
     }
 
-    
     const responseError = error.response?.data?.error;
     if (typeof responseError === 'string') {
       return responseError;
     }
 
-    
     if (error.response?.statusText) {
       return error.response.statusText;
     }
 
-    
     if (error.code === 'ECONNABORTED') {
       return 'Request timeout. Please try again.';
     }
@@ -78,17 +70,14 @@ export function getErrorMessage(error: unknown): string {
     return error.message || 'An unexpected error occurred';
   }
 
-  
   if (isError(error)) {
     return error.message;
   }
 
-  
   if (typeof error === 'string') {
     return error;
   }
 
-  
   if (
     error &&
     typeof error === 'object' &&
@@ -98,12 +87,10 @@ export function getErrorMessage(error: unknown): string {
     return error.message;
   }
 
-  
   return 'An unexpected error occurred';
 }
 
 export function handleApiError(error: unknown, fallbackMessage?: string): AppError {
-  
   if (isAxiosError(error)) {
     const message = getErrorMessage(error);
     const statusCode = error.response?.status;
@@ -118,7 +105,6 @@ export function handleApiError(error: unknown, fallbackMessage?: string): AppErr
     };
   }
 
-  
   if (isError(error)) {
     return {
       message: error.message || fallbackMessage || 'An error occurred',
@@ -126,7 +112,6 @@ export function handleApiError(error: unknown, fallbackMessage?: string): AppErr
     };
   }
 
-  
   if (typeof error === 'string') {
     return {
       message: error || fallbackMessage || 'An error occurred',
@@ -134,7 +119,6 @@ export function handleApiError(error: unknown, fallbackMessage?: string): AppErr
     };
   }
 
-  
   return {
     message: fallbackMessage || 'An unexpected error occurred',
     originalError: error,

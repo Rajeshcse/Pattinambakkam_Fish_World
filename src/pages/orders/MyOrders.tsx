@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Layout, Loading } from '@/components/common';
+import { Layout, Loading, StatusBadge } from '@/components/common';
 import { orderService } from '@/services';
-import type { Order, OrderStatus } from '@/types';
+import type { Order } from '@/types';
 
 const MyOrders: React.FC = () => {
   const navigate = useNavigate();
@@ -27,17 +27,6 @@ const MyOrders: React.FC = () => {
     }
   };
 
-  const getStatusColor = (status: OrderStatus) => {
-    const colors: Record<OrderStatus, string> = {
-      pending: 'bg-orange-100 text-orange-800',
-      confirmed: 'bg-blue-100 text-blue-800',
-      preparing: 'bg-purple-100 text-purple-800',
-      'out-for-delivery': 'bg-indigo-100 text-indigo-800',
-      delivered: 'bg-green-100 text-green-800',
-      cancelled: 'bg-red-100 text-red-800',
-    };
-    return colors[status];
-  };
 
   if (loading) {
     return (
@@ -94,11 +83,7 @@ const MyOrders: React.FC = () => {
                         {new Date(order.createdAt).toLocaleString()}
                       </p>
                     </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(order.status)}`}
-                    >
-                      {order.status}
-                    </span>
+                    <StatusBadge status={order.status} />
                   </div>
 
                   <div className="mb-4">

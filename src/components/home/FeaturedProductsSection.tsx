@@ -12,14 +12,13 @@ export const FeaturedProductsSection: React.FC = () => {
           🔥 TODAY'S FRESH CATCH
         </span>
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-3 sm:mb-4">
-          Premium{' '}
+          Premium
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
             Seafood
           </span>
         </h2>
         <p className="text-sm sm:text-base lg:text-xl text-gray-400 max-w-2xl mx-auto px-2">
-          Hand-picked by local fishermen this morning. Fresh, delicious, and ready for your
-          kitchen!
+          Hand-picked by local fishermen this morning. Fresh, delicious, and ready for your kitchen!
         </p>
       </div>
 
