@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Layout, ProductCard } from '@/components/common';
-import { LogoIcon } from '@/components/common/icons/LogoIcon';
 import { productService } from '@/services';
 import type { FishProduct, ProductCategory, ProductQueryParams } from '@/types';
 
 const Products: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<FishProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalProducts, setTotalProducts] = useState(0);
@@ -14,6 +15,14 @@ const Products: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | ''>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showAvailableOnly, setShowAvailableOnly] = useState(true);
+
+  // Get category from URL query parameter on mount
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && ['Fish', 'Prawn', 'Crab', 'Squid'].includes(categoryParam)) {
+      setSelectedCategory(categoryParam as ProductCategory);
+    }
+  }, [searchParams]);
 
   const categories: { name: ProductCategory; emoji: string; color: string }[] = [
     { name: 'Fish', emoji: '🐟', color: 'from-blue-500 to-cyan-500' },
@@ -84,18 +93,6 @@ const Products: React.FC = () => {
             {}
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
               {}
-              <div className="flex items-center gap-3">
-                <LogoIcon size={48} className="hidden sm:flex" />
-                <LogoIcon size={40} className="sm:hidden" />
-                <div>
-                  <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Fresh Seafood</h1>
-                  <p className="text-xs sm:text-sm text-slate-500">
-                    {totalProducts} products available
-                  </p>
-                </div>
-              </div>
-
-              {}
               <form onSubmit={handleSearch} className="flex-1 sm:max-w-md sm:ml-auto">
                 <div className="flex gap-2">
                   <div className="relative flex-1">
@@ -152,7 +149,9 @@ const Products: React.FC = () => {
               {}
               <label className="flex items-center gap-2 cursor-pointer">
                 <div
-                  className={`relative w-9 h-5 rounded-full transition-colors duration-300 ${showAvailableOnly ? 'bg-green-500' : 'bg-slate-300'}`}
+                  className={`relative w-9 h-5 rounded-full transition-colors duration-300 ${
+                    showAvailableOnly ? 'bg-green-500' : 'bg-slate-300'
+                  }`}
                 >
                   <input
                     type="checkbox"
@@ -164,7 +163,9 @@ const Products: React.FC = () => {
                     className="sr-only"
                   />
                   <div
-                    className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${showAvailableOnly ? 'translate-x-4' : 'translate-x-0.5'}`}
+                    className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${
+                      showAvailableOnly ? 'translate-x-4' : 'translate-x-0.5'
+                    }`}
                   />
                 </div>
                 <span className="text-xs text-slate-500 hidden sm:inline">In Stock</span>
@@ -177,7 +178,7 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-center py-20">
               <div className="text-center">
                 <div className="mb-4 animate-pulse">
-                  <LogoIcon size={64} className="rounded-full" />
+                  <div className="text-6xl">🐟</div>
                 </div>
                 <p className="text-slate-500 font-medium">Loading fresh catches...</p>
               </div>
