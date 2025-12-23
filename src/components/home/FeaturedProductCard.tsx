@@ -10,14 +10,22 @@ interface FeaturedProductCardProps {
 export const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
 
-  const handleCardClick = () => {
+  const handleClick = () => {
     navigate(`/products?category=${product.category}`);
   };
 
   return (
     <div
-      onClick={handleCardClick}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleClick();
+        }
+      }}
       className="fish-card group bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer hover:shadow-xl hover:shadow-cyan-500/20 transition-shadow duration-300"
+      style={{ pointerEvents: 'auto' }}
     >
       <div
         className={`relative h-28 sm:h-36 lg:h-48 bg-gradient-to-br ${product.gradient} flex items-center justify-center`}

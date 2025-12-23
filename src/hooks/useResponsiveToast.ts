@@ -1,37 +1,57 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
+type ToastType = 'success' | 'error' | 'info' | 'warning';
+
+interface ToastOptions {
+  type?: ToastType;
+  isEssential?: boolean;
+  [key: string]: any;
+}
+
 export const useResponsiveToast = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  // Essential toast messages that should show on desktop
+  const essentialMessages = ['login', 'register', 'add to cart', 'added to cart'];
 
   useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint is 768px in Tailwind
+    const checkIfDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768); // md breakpoint is 768px in Tailwind
     };
 
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    return () => window.removeEventListener('resize', checkIfMobile);
+    checkIfDesktop();
+    window.addEventListener('resize', checkIfDesktop);
+    return () => window.removeEventListener('resize', checkIfDesktop);
   }, []);
 
+  const isEssentialToast = (message: string): boolean => {
+    const lowerMessage = message.toLowerCase();
+    return essentialMessages.some((essential) => lowerMessage.includes(essential));
+  };
+
   const showToast = {
-    success: (message: string, options?: any) => {
-      if (!isMobile) {
+    success: (message: string, options?: ToastOptions) => {
+      // On desktop, only show essential toasts; on mobile, show all
+      if (isDesktop ? isEssentialToast(message) : true) {
         toast.success(message, options);
       }
     },
-    error: (message: string, options?: any) => {
-      if (!isMobile) {
+    error: (message: string, options?: ToastOptions) => {
+      // On desktop, only show essential error toasts; on mobile, show all
+      if (isDesktop ? isEssentialToast(message) : true) {
         toast.error(message, options);
       }
     },
-    info: (message: string, options?: any) => {
-      if (!isMobile) {
+    info: (message: string, options?: ToastOptions) => {
+      // On desktop, only show essential info toasts; on mobile, show all
+      if (isDesktop ? isEssentialToast(message) : true) {
         toast.info(message, options);
       }
     },
-    warning: (message: string, options?: any) => {
-      if (!isMobile) {
+    warning: (message: string, options?: ToastOptions) => {
+      // On desktop, only show essential warning toasts; on mobile, show all
+      if (isDesktop ? isEssentialToast(message) : true) {
         toast.warning(message, options);
       }
     },

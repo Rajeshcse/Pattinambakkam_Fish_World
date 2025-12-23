@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Layout, Loading, StatusBadge, Button, Modal } from '@/components/common';
 import { adminService } from '@/services';
 import type { Order, OrderStatus } from '@/types';
@@ -13,6 +13,7 @@ const statusOptions: { value: OrderStatus; label: string }[] = [
 ];
 
 export const OrderManagement: React.FC = () => {
+  const toast = useResponsiveToast();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<OrderStatus | 'all'>('all');

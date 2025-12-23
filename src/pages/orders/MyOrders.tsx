@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Layout, Loading, StatusBadge } from '@/components/common';
 import { orderService } from '@/services';
 import type { Order } from '@/types';
 
 const MyOrders: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +27,6 @@ const MyOrders: React.FC = () => {
       setLoading(false);
     }
   };
-
 
   if (loading) {
     return (

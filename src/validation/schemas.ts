@@ -26,7 +26,9 @@ export const profileUpdateSchema = Yup.object().shape({
     .min(2, 'City name must be at least 2 characters')
     .max(50, 'City name cannot exceed 50 characters'),
   state: Yup.string().max(50, 'State name cannot exceed 50 characters'),
-  pincode: Yup.string().matches(/^\d{6}$/, 'Pincode must be a valid 6-digit number'),
+  pincode: Yup.string()
+    .required('Pincode is required')
+    .matches(/^\d{6}$/, 'Pincode must be a valid 6-digit number'),
   landmark: Yup.string().max(100, 'Landmark cannot exceed 100 characters'),
 });
 

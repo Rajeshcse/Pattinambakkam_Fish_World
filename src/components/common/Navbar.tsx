@@ -75,9 +75,9 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               </h1>
             </div>
             {location.pathname === '/products' && (
-              <div className="ml-2 flex flex-col">
-                <p className="text-sm sm:text-base font-bold text-black">Fresh Seafood</p>
-                <p className="text-xs text-black">{productCount} products</p>
+              <div className="ml-2 flex flex-col md:hidden">
+                <p className="text-sm sm:text-base font-bold text-yellow-500">🐟 Fresh Seafood</p>
+                <p className="text-xs text-blue-600">{productCount} products</p>
               </div>
             )}
           </Link>
@@ -94,8 +94,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       ? 'bg-white/20 text-white'
                       : 'bg-primary-100 text-primary-700'
                     : isHomePage
-                    ? 'text-white/80 hover:text-white hover:bg-white/10'
-                    : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                    ? 'bg-blue-900/70 text-white hover:bg-blue-900'
+                    : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
                 }`}
               >
                 Home
@@ -108,8 +108,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       ? 'bg-white/20 text-white'
                       : 'bg-primary-100 text-primary-700'
                     : isHomePage
-                    ? 'text-white/80 hover:text-white hover:bg-white/10'
-                    : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                    ? 'bg-blue-900/70 text-white hover:bg-blue-900'
+                    : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
                 }`}
               >
                 Products
@@ -123,8 +123,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                         ? 'bg-white/20 text-white'
                         : 'bg-primary-100 text-primary-700'
                       : isHomePage
-                      ? 'text-white/80 hover:text-white hover:bg-white/10'
-                      : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                      ? 'bg-blue-900/70 text-white hover:bg-blue-900'
+                      : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
                   }`}
                 >
                   My Orders
@@ -142,7 +142,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                       ? 'bg-white/20'
                       : 'bg-cyan-100'
                     : isHomePage
-                    ? 'hover:bg-white/10'
+                    ? 'bg-blue-900/70 hover:bg-blue-900'
                     : 'hover:bg-gray-100'
                 }`}
               >
@@ -184,7 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                 <Link
                   to="/profile"
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300 group ${
-                    isHomePage ? 'hover:bg-white/10' : 'hover:bg-gray-100'
+                    isHomePage ? 'bg-blue-900/70 hover:bg-blue-900' : 'hover:bg-gray-100'
                   }`}
                 >
                   <div className="relative">
@@ -212,8 +212,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                   onClick={logout}
                   className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
                     isHomePage
-                      ? 'text-white/80 hover:text-white hover:bg-white/10 border border-white/30'
-                      : 'text-gray-600 hover:text-red-600 hover:bg-red-50 border border-gray-200'
+                      ? 'bg-blue-900/70 text-white hover:bg-blue-900 border border-blue-800'
+                      : 'bg-gray-200 text-gray-900 hover:bg-red-200 border border-gray-400'
                   }`}
                 >
                   Logout

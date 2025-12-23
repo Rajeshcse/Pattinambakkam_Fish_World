@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Layout, Button } from '@/components/common';
 
 const PaymentInstructions: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [orderId, setOrderId] = useState<string>('');
   const RAZORPAY_LINK = 'https://razorpay.me/@paramanandamrajesh';
 
   useEffect(() => {
-    
     const pendingOrderId = localStorage.getItem('pendingPaymentOrderId');
     if (pendingOrderId) {
       setOrderId(pendingOrderId);
     } else {
-      
       navigate('/');
     }
   }, [navigate]);

@@ -3,12 +3,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, Button, Loading, Layout } from '@/components/common';
 import { adminService } from '@/services';
 import { User, PaginationMeta } from '@/types';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useConfirm } from '@/hooks/useConfirm';
 import { getErrorMessage, logError } from '@/utils/errors';
 
 export const AdminUsers: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { confirm } = useConfirm();
   const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState<User[]>([]);
@@ -39,12 +40,10 @@ export const AdminUsers: React.FC = () => {
 
       const response = await adminService.getAllUsers(params);
 
-      
       if (response && response.data && response.data.users) {
         setUsers(response.data.users);
         setPagination(response.data.pagination);
       } else if (response && response.users) {
-        
         setUsers(response.users);
         setPagination(response.pagination);
       } else {
@@ -136,7 +135,9 @@ export const AdminUsers: React.FC = () => {
     try {
       await adminService.bulkUserAction(action, selectedUsers);
       toast.success(
-        `Successfully ${action === 'delete' ? 'deleted' : action === 'verify' ? 'verified' : 'unverified'} ${selectedUsers.length} user(s)`,
+        `Successfully ${
+          action === 'delete' ? 'deleted' : action === 'verify' ? 'verified' : 'unverified'
+        } ${selectedUsers.length} user(s)`,
       );
       setSelectedUsers([]);
       fetchUsers();

@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useCallback, ReactNode } fro
 
 import { User, LoginRequest, RegisterRequest, AuthContextType, DecodedToken } from '@/types';
 import { authService } from '@/services';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { getErrorMessage, logError } from '@/utils/errors';
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,6 +15,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const toast = useResponsiveToast();
 
   const decodeToken = (token: string): DecodedToken | null => {
     try {
@@ -100,46 +101,52 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initAuth();
   }, []);
 
-  const login = useCallback(async (credentials: LoginRequest) => {
-    try {
-      const response = await authService.login(credentials);
+  const login = useCallback(
+    async (credentials: LoginRequest) => {
+      try {
+        const response = await authService.login(credentials);
 
-      if (response.success && response.accessToken && response.refreshToken && response.user) {
-        authService.setAuthData(response.accessToken, response.refreshToken, response.user);
-        setToken(response.accessToken);
-        setUser(response.user);
-        toast.success(response.message || 'Welcome back to Pattinambakkam_Fish_World!');
+        if (response.success && response.accessToken && response.refreshToken && response.user) {
+          authService.setAuthData(response.accessToken, response.refreshToken, response.user);
+          setToken(response.accessToken);
+          setUser(response.user);
+          toast.success(response.message || 'Welcome back to Pattinambakkam_Fish_World!');
+        }
+      } catch (error: unknown) {
+        logError(error, 'AuthContext.login');
+        const errorMessage = getErrorMessage(error) || 'Login failed. Please try again.';
+        toast.error(errorMessage, { autoClose: 5000 });
+        throw new Error(errorMessage);
       }
-    } catch (error: unknown) {
-      logError(error, 'AuthContext.login');
-      const errorMessage = getErrorMessage(error) || 'Login failed. Please try again.';
-      toast.error(errorMessage, { autoClose: 5000 });
-      throw new Error(errorMessage);
-    }
-  }, []);
+    },
+    [toast],
+  );
 
-  const register = useCallback(async (data: RegisterRequest) => {
-    try {
-      const response = await authService.register(data);
+  const register = useCallback(
+    async (data: RegisterRequest) => {
+      try {
+        const response = await authService.register(data);
 
-      if (response.success && response.accessToken && response.refreshToken && response.user) {
-        authService.setAuthData(response.accessToken, response.refreshToken, response.user);
-        setToken(response.accessToken);
-        setUser(response.user);
-        toast.success(
-          response.message || 'Welcome to Pattinambakkam_Fish_World! Please verify your email.',
-        );
-      } else {
-        console.error('Unexpected response structure:', response);
-        throw new Error('Invalid response from server');
+        if (response.success && response.accessToken && response.refreshToken && response.user) {
+          authService.setAuthData(response.accessToken, response.refreshToken, response.user);
+          setToken(response.accessToken);
+          setUser(response.user);
+          toast.success(
+            response.message || 'Welcome to Pattinambakkam_Fish_World! Please verify your email.',
+          );
+        } else {
+          console.error('Unexpected response structure:', response);
+          throw new Error('Invalid response from server');
+        }
+      } catch (error: unknown) {
+        logError(error, 'AuthContext.register');
+        const errorMessage = getErrorMessage(error) || 'Registration failed. Please try again.';
+        toast.error(errorMessage, { autoClose: 5000 });
+        throw new Error(errorMessage);
       }
-    } catch (error: unknown) {
-      logError(error, 'AuthContext.register');
-      const errorMessage = getErrorMessage(error) || 'Registration failed. Please try again.';
-      toast.error(errorMessage, { autoClose: 5000 });
-      throw new Error(errorMessage);
-    }
-  }, []);
+    },
+    [toast],
+  );
 
   const logout = useCallback(async () => {
     try {
@@ -155,7 +162,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(null);
       toast.info('Logged out successfully');
     }
-  }, []);
+  }, [toast]);
 
   const logoutAll = useCallback(async () => {
     try {
@@ -169,7 +176,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setToken(null);
       setUser(null);
     }
-  }, []);
+  }, [toast]);
 
   const updateUser = useCallback((updatedUser: User) => {
     setUser(updatedUser);

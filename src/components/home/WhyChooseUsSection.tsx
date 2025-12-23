@@ -5,19 +5,22 @@ const features = [
   {
     icon: Truck,
     title: 'Lightning Fast Delivery',
-    description: 'From sea to your kitchen in just 2 hours! Our delivery partners ensure your fish arrives fresh and on time.',
+    description:
+      'From sea to your kitchen in just 2 hours! Our delivery partners ensure your fish arrives fresh and on time.',
     gradient: 'from-blue-500 to-cyan-500',
   },
   {
     icon: Leaf,
     title: '100% Fresh & Organic',
-    description: 'No frozen fish here! Every catch is fresh from the morning and naturally sourced from local fishermen.',
+    description:
+      'No frozen fish here! Every catch is fresh from the morning and naturally sourced from local fishermen.',
     gradient: 'from-green-500 to-emerald-500',
   },
   {
     icon: CheckCircle,
     title: 'Quality Guaranteed',
-    description: 'Not satisfied? Full refund, no questions asked. We stand behind the quality of every fish we deliver.',
+    description:
+      'Not satisfied? Full refund, no questions asked. We stand behind the quality of every fish we deliver.',
     gradient: 'from-orange-500 to-amber-500',
   },
 ];
@@ -46,11 +49,15 @@ export const WhyChooseUsSection: React.FC = () => {
                 key={index}
                 className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden"
               >
-                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.gradient} rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity`}></div>
+                <div
+                  className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.gradient} rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity`}
+                ></div>
 
                 <div className="relative z-10">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${feature.gradient} rounded-2xl sm:rounded-3xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <Icon size={32} color="white" />
+                  <div
+                    className={`inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl sm:rounded-3xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg bg-gradient-to-br ${feature.gradient}`}
+                  >
+                    <Icon size={28} color="white" className="sm:w-8 sm:h-8 md:w-10 md:h-10" />
                   </div>
 
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">

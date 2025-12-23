@@ -307,7 +307,7 @@ export interface CartCountResponse {
 
 export type OrderStatus = 'pending' | 'confirmed' | 'out-for-delivery' | 'delivered' | 'cancelled';
 export type PaymentStatus = 'pending' | 'paid';
-export type DeliveryTimeSlot = '08:00-12:00' | '12:00-16:00' | '16:00-20:00';
+export type DeliveryTimeSlot = '8:00 AM - 12:00 PM' | '12:00 PM - 4:00 PM' | '4:00 PM - 8:00 PM';
 
 export interface OrderItem {
   product: string | FishProduct;

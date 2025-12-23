@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useAuth } from '@/hooks/useAuth';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
 import { ErrorAlert } from '@/components/common/ErrorAlert';
@@ -11,6 +11,7 @@ import { useLoginForm } from '@/hooks/useLoginForm';
 export const Login: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { formik, isSubmitting, error, dismissError } = useLoginForm({
     onSuccess: () => {
       navigate('/home');
@@ -20,7 +21,6 @@ export const Login: React.FC = () => {
     },
   });
 
-  
   if (user) {
     return <Navigate to="/home" replace />;
   }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
@@ -13,6 +13,7 @@ import { authService } from '@/services';
 export const VerifyEmail: React.FC = () => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSendingOTP, setIsSendingOTP] = useState(false);

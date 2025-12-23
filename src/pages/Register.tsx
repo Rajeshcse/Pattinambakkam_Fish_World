@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useAuth } from '@/hooks/useAuth';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
 import { ErrorAlert } from '@/components/common/ErrorAlert';
@@ -11,9 +11,9 @@ import { useRegisterForm } from '@/hooks/useRegisterForm';
 export const Register: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { formik, isSubmitting, error, dismissError } = useRegisterForm({
     onSuccess: () => {
-      
       navigate('/verify-email');
     },
     onError: (errorMessage) => {
@@ -21,12 +21,10 @@ export const Register: React.FC = () => {
     },
   });
 
-  
   if (user && user.isVerified) {
     return <Navigate to="/profile" replace />;
   }
 
-  
   if (user && !user.isVerified) {
     return <Navigate to="/verify-email" replace />;
   }

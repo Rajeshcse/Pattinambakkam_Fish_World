@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Button, Loading, Layout } from '@/components/common';
 import { adminService } from '@/services';
 import { User } from '@/types';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useAuth } from '@/hooks/useAuth';
 import { useConfirm } from '@/hooks/useConfirm';
 import { getErrorMessage, logError, isNotFoundError, isAuthorizationError } from '@/utils/errors';
@@ -11,6 +11,7 @@ import { getErrorMessage, logError, isNotFoundError, isAuthorizationError } from
 export const AdminUserDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { user: currentUser } = useAuth();
   const { confirm } = useConfirm();
   const [user, setUser] = useState<User | null>(null);
@@ -38,7 +39,6 @@ export const AdminUserDetail: React.FC = () => {
     try {
       const response = await adminService.getUserById(id);
 
-      
       if (response && response.data) {
         setUser(response.data);
         setEditForm({
@@ -47,7 +47,6 @@ export const AdminUserDetail: React.FC = () => {
           phone: response.data.phone,
         });
       } else if (response && response.user) {
-        
         setUser(response.user);
         setEditForm({
           name: response.user.name,
@@ -83,14 +82,13 @@ export const AdminUserDetail: React.FC = () => {
     try {
       const response = await adminService.updateUser(id, editForm);
 
-      
       if (response && response.data) {
         setUser(response.data);
       } else if (response && response.user) {
         setUser(response.user);
       } else {
         console.warn('Unexpected update response structure:', response);
-        
+
         await fetchUser();
       }
 

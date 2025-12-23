@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from './useResponsiveToast';
 import imageCompression from 'browser-image-compression';
 import apiClient from '@/services/api';
 
@@ -22,6 +22,7 @@ const DEFAULT_OPTIONS: ImageUploadOptions = {
 
 export const useImageUpload = (options: ImageUploadOptions = {}): UseImageUploadReturn => {
   const [uploading, setUploading] = useState(false);
+  const toast = useResponsiveToast();
 
   const compressionOptions = {
     ...DEFAULT_OPTIONS,
@@ -53,7 +54,9 @@ export const useImageUpload = (options: ImageUploadOptions = {}): UseImageUpload
     const compressedFile = await compressImage(file);
 
     console.log(
-      `Uploading image: ${compressedFile.name}, Size: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`
+      `Uploading image: ${compressedFile.name}, Size: ${(compressedFile.size / 1024 / 1024).toFixed(
+        2,
+      )} MB`,
     );
 
     const formData = new FormData();
@@ -75,7 +78,7 @@ export const useImageUpload = (options: ImageUploadOptions = {}): UseImageUpload
 
   const uploadImages = async (
     files: FileList | null,
-    currentImages: string[] = []
+    currentImages: string[] = [],
   ): Promise<string[]> => {
     if (!files || files.length === 0) {
       return currentImages;

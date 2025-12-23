@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useAuth } from '@/hooks/useAuth';
 import { Button, Loading, Layout } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
@@ -10,6 +10,7 @@ import { useProfileEditForm } from '@/hooks/useProfileEditForm';
 export const ProfileEdit: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { formik, isSubmitting, error, dismissError } = useProfileEditForm({
     onSuccess: () => {
       toast.success('Profile updated successfully!');

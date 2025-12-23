@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Layout, Loading, Button } from '@/components/common';
 import { productService } from '@/services';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import type { FishProduct } from '@/types';
 import { formatQuantityToWeight, getStockStatus as formatStockStatus } from '@/utils/formatters';
 
@@ -13,11 +13,17 @@ const ProductDetail: React.FC = () => {
   const navigate = useNavigate();
   const { addItem, loading: cartLoading } = useCart();
   const { isAuthenticated } = useAuth();
+  const toast = useResponsiveToast();
 
   const [product, setProduct] = useState<FishProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
+
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (id) {

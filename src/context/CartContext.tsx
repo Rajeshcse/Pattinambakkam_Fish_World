@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { Cart, CartContextType } from '@/types';
 import { cartService } from '@/services';
-import { toast } from 'react-toastify';
 import { getErrorMessage, logError } from '@/utils/errors';
 import { useAuth } from '@/hooks/useAuth';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 
 export const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -15,6 +15,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
+  const toast = useResponsiveToast();
 
   const itemCount = cart?.items.length || 0;
 

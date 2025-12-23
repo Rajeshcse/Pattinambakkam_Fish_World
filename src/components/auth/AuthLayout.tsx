@@ -23,10 +23,10 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
         <div className="max-w-md w-full">
           {}
           <div className="text-center mb-8 space-y-3">
-            <div className="space-y-2">
-              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black text-primary-600 leading-tight">
-                <span className="block glow-text">Pattinambakkam</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 glow-text-gold animate-gradient">
+            <div className="space-y-2 flex justify-center">
+              <h1 className="text-3xl xs:text-4xl sm:text-4xl md:text-5xl font-black leading-tight flex flex-col md:flex-row md:whitespace-nowrap gap-2 md:gap-2">
+                <span className="text-primary-600 glow-text">Pattinambakkam</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 glow-text-gold animate-gradient">
                   Fish World
                 </span>
               </h1>
