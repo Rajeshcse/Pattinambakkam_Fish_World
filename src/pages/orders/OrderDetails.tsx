@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { Layout, Loading, Button, StatusBadge } from '@/components/common';
+import { Layout, Loading, Button, StatusBadge, Modal } from '@/components/common';
 import { OrderStatusStepper } from '@/components/orders/OrderStatusStepper';
 import { orderService } from '@/services';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import type { Order } from '@/types';
 
 const OrderDetails: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [cancelling, setCancelling] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   useEffect(() => {
     if (orderId) {
@@ -34,14 +36,13 @@ const OrderDetails: React.FC = () => {
   };
 
   const handleCancelOrder = async () => {
-    if (!window.confirm('Are you sure you want to cancel this order?')) return;
-
     try {
       setCancelling(true);
       const response = await orderService.cancelOrder(orderId!);
       if (response.success) {
-        toast.success('Order cancelled successfully');
+        toast.success('🐟 Fresh catch order cancelled successfully!');
         setOrder(response.data);
+        setShowCancelModal(false);
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to cancel order');
@@ -49,7 +50,6 @@ const OrderDetails: React.FC = () => {
       setCancelling(false);
     }
   };
-
 
   if (loading) {
     return (
@@ -151,12 +151,79 @@ const OrderDetails: React.FC = () => {
 
           {}
           {canCancel && (
-            <Button onClick={handleCancelOrder} loading={cancelling} variant="outline" fullWidth>
+            <Button
+              onClick={() => setShowCancelModal(true)}
+              loading={cancelling}
+              variant="outline"
+              fullWidth
+            >
               Cancel Order
             </Button>
           )}
         </div>
       </div>
+
+      {/* Cancel Order Modal */}
+      <Modal
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        title="🐟 Cancel Fresh Catch Order"
+        size="lg"
+        closeOnOverlayClick={!cancelling}
+        closeOnEscape={!cancelling}
+        showCloseButton={!cancelling}
+      >
+        <div className="space-y-6">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-gray-700 leading-relaxed">
+              Your seafood order <span className="font-semibold">{order?.orderId}</span> will be{' '}
+              <span className="font-semibold text-red-600">permanently removed</span> and this
+              action <span className="font-semibold text-red-600">cannot be reversed</span>.
+            </p>
+          </div>
+
+          <div className="bg-gray-50 rounded-lg p-4">
+            <div className="text-sm space-y-2">
+              <div>
+                <span className="font-medium text-gray-700">Order Total:</span>
+                <span className="ml-2 text-green-600 font-bold">
+                  ₹{order?.totalAmount.toFixed(2)}
+                </span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Delivery Date:</span>
+                <span className="ml-2 text-gray-600">
+                  {order?.deliveryDetails.deliveryDate &&
+                    new Date(order.deliveryDetails.deliveryDate).toLocaleDateString('en-IN')}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
+            <Button
+              variant="outline"
+              onClick={() => setShowCancelModal(false)}
+              disabled={cancelling}
+              size="lg"
+              fullWidth
+              className="order-2 sm:order-1"
+            >
+              Keep Order
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleCancelOrder}
+              loading={cancelling}
+              size="lg"
+              fullWidth
+              className="order-1 sm:order-2 bg-red-600 hover:bg-red-700"
+            >
+              Yes, Cancel Order
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </Layout>
   );
 };

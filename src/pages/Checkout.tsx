@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Layout, Loading, Button, Modal } from '@/components/common';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { orderService } from '@/services';
 import type { DeliveryTimeSlot, CreateOrderRequest } from '@/types';
 import { formatQuantityToWeight } from '@/utils/formatters';
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { cart, itemCount, totalAmount, loading: cartLoading, clearCart } = useCart();
   const { isAuthenticated, user } = useAuth();
 
@@ -533,7 +534,10 @@ _Please confirm this order. Thank you!_`;
             <h3 className="font-semibold text-gray-900 mb-2 text-sm md:text-base">Order Items:</h3>
             <div className="bg-gray-50 rounded-lg p-3 md:p-4 space-y-2 max-h-40 md:max-h-48 overflow-y-auto">
               {cart?.items.map((item) => (
-                <div key={item._id} className="flex justify-between items-start gap-2 text-xs md:text-sm">
+                <div
+                  key={item._id}
+                  className="flex justify-between items-start gap-2 text-xs md:text-sm"
+                >
                   <span className="text-gray-700 flex-1">
                     {item.product.name} × {formatQuantityToWeight(item.quantity)}
                   </span>
@@ -551,7 +555,9 @@ _Please confirm this order. Thank you!_`;
 
           {/* Delivery Details */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm md:text-base">Delivery Details:</h3>
+            <h3 className="font-semibold text-gray-900 mb-2 text-sm md:text-base">
+              Delivery Details:
+            </h3>
             <div className="bg-gray-50 rounded-lg p-3 md:p-4 space-y-2.5 text-xs md:text-sm">
               <div>
                 <span className="font-medium text-gray-700">Address:</span>
@@ -593,8 +599,8 @@ _Please confirm this order. Thank you!_`;
               <div className="flex-1">
                 <h4 className="font-semibold text-gray-900 text-sm md:text-base">WhatsApp Order</h4>
                 <p className="text-xs md:text-sm text-gray-600 mt-1 leading-relaxed">
-                  You'll be redirected to WhatsApp to confirm this order. Pay using
-                  UPI/PhonePe/GPay after confirmation.
+                  You'll be redirected to WhatsApp to confirm this order. Pay using UPI/PhonePe/GPay
+                  after confirmation.
                 </p>
               </div>
             </div>

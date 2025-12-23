@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
 import { ErrorAlert } from '@/components/common/ErrorAlert';
@@ -12,9 +12,9 @@ import { authService } from '@/services';
 export const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useResponsiveToast();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   const identifierFromState = (location.state as { identifier?: string })?.identifier || '';
 

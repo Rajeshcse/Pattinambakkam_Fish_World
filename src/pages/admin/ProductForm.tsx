@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Layout, Button } from '@/components/common';
 import { productService } from '@/services';
@@ -10,6 +10,7 @@ import type { CreateProductRequest } from '@/types';
 
 const ProductForm: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { id } = useParams();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,7 @@ const ProductForm: React.FC = () => {
       // Convert stock from kg to units (1 kg = 4 units of 250g)
       const productData = {
         ...values,
-        stock: values.stock * 4
+        stock: values.stock * 4,
       };
 
       console.log('Submitting product with values:', productData);

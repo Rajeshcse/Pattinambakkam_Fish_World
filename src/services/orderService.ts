@@ -1,5 +1,11 @@
 import apiClient from './api';
-import { OrderResponse, OrderListResponse, OrderStatsResponse, CreateOrderRequest, DeliveryTimeSlot } from '@/types';
+import {
+  OrderResponse,
+  OrderListResponse,
+  OrderStatsResponse,
+  CreateOrderRequest,
+  DeliveryTimeSlot,
+} from '@/types';
 
 const ORDER_BASE_URL = '/api/orders';
 
@@ -42,8 +48,26 @@ export const validateDeliveryTime = (
   const minimumTime = new Date(now.getTime() + 4 * 60 * 60 * 1000);
 
   const selectedDate = new Date(deliveryDate);
-  const [startTime] = deliveryTime.split('-');
-  const [hours, minutes] = startTime.split(':').map(Number);
+  const [startTimePart] = deliveryTime.split('-');
+  const timeMatch = startTimePart.trim().match(/(\d+):(\d+)\s*(AM|PM)/i);
+
+  if (!timeMatch) {
+    return {
+      valid: false,
+      message: 'Invalid time format',
+    };
+  }
+
+  let hours = parseInt(timeMatch[1], 10);
+  const minutes = parseInt(timeMatch[2], 10);
+  const period = timeMatch[3].toUpperCase();
+
+  // Convert to 24-hour format
+  if (period === 'PM' && hours !== 12) {
+    hours += 12;
+  } else if (period === 'AM' && hours === 12) {
+    hours = 0;
+  }
 
   const selectedDeliveryTime = new Date(selectedDate);
   selectedDeliveryTime.setHours(hours, minutes, 0, 0);
@@ -68,15 +92,17 @@ export const validateDeliveryTime = (
   };
 };
 
-export const getAvailableTimeSlots = (date: string): { slot: DeliveryTimeSlot; available: boolean; reason: string }[] => {
+export const getAvailableTimeSlots = (
+  date: string,
+): { slot: DeliveryTimeSlot; available: boolean; reason: string }[] => {
   const now = new Date();
   const minimumTime = new Date(now.getTime() + 4 * 60 * 60 * 1000);
   const selectedDate = new Date(date);
 
   const timeSlots: { slot: DeliveryTimeSlot; start: number }[] = [
-    { slot: '08:00-12:00', start: 8 },
-    { slot: '12:00-16:00', start: 12 },
-    { slot: '16:00-20:00', start: 16 },
+    { slot: '8:00 AM - 12:00 PM', start: 8 },
+    { slot: '12:00 PM - 4:00 PM', start: 12 },
+    { slot: '4:00 PM - 8:00 PM', start: 16 },
   ];
 
   return timeSlots.map(({ slot, start }) => {

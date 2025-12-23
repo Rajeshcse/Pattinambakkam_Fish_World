@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import type { CartItem as CartItemType } from '@/types';
 import { formatQuantityToWeight } from '@/utils/formatters';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 
 interface CartItemProps {
   item: CartItemType;
@@ -17,6 +17,7 @@ export const CartItem: React.FC<CartItemProps> = ({
   disabled = false,
 }) => {
   const [updating, setUpdating] = useState(false);
+  const toast = useResponsiveToast();
 
   const handleQuantityChange = async (newQuantity: number) => {
     if (newQuantity < 1) return;

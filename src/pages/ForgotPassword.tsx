@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
 import { ErrorAlert } from '@/components/common/ErrorAlert';
@@ -11,6 +11,7 @@ import { authService } from '@/services';
 
 export const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -100,8 +101,8 @@ export const ForgotPassword: React.FC = () => {
                   <p className="text-sm font-medium text-green-800">Reset code sent!</p>
                   <p className="mt-1 text-sm text-green-700">
                     If an account exists with <strong>{submittedIdentifier}</strong>, you will
-                    receive a 6-digit reset code via SMS to your registered phone number. The
-                    code expires in 10 minutes.
+                    receive a 6-digit reset code via SMS to your registered phone number. The code
+                    expires in 10 minutes.
                   </p>
                 </div>
               </div>

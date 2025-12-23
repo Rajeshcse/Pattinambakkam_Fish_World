@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Button, Loading, Layout } from '@/components/common';
 import { adminService } from '@/services';
 import { DashboardStats } from '@/types';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { getErrorMessage, logError, categorizeError, ErrorCategory } from '@/utils/errors';
 
 export const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -20,7 +21,6 @@ export const AdminDashboard: React.FC = () => {
     try {
       const response = await adminService.getDashboardStats();
 
-      
       if (response && response.data) {
         setStats(response.data);
       } else {

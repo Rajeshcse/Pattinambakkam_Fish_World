@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Layout, ProductCard } from '@/components/common';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { productService } from '@/services';
 import type { FishProduct, ProductCategory, ProductQueryParams } from '@/types';
 
@@ -15,14 +15,96 @@ const Products: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | ''>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showAvailableOnly, setShowAvailableOnly] = useState(true);
+  const toast = useResponsiveToast();
 
-  // Get category from URL query parameter on mount
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Get category from URL and fetch products together
   useEffect(() => {
     const categoryParam = searchParams.get('category');
+    let categoryToUse: ProductCategory | '' = '';
+
     if (categoryParam && ['Fish', 'Prawn', 'Crab', 'Squid'].includes(categoryParam)) {
-      setSelectedCategory(categoryParam as ProductCategory);
+      categoryToUse = categoryParam as ProductCategory;
+      setSelectedCategory(categoryToUse);
+      setSearchQuery('');
+      setCurrentPage(1);
+    } else {
+      setSelectedCategory('');
     }
-  }, [searchParams]);
+
+    // Fetch products with the category from URL
+    const fetchByCategory = async () => {
+      try {
+        setLoading(true);
+        setProducts([]);
+        const params: ProductQueryParams = {
+          page: 1,
+          limit: 12,
+          isAvailable: showAvailableOnly,
+        };
+
+        if (categoryToUse) {
+          params.category = categoryToUse;
+        }
+
+        const response = await productService.getAllProducts(params);
+
+        if (response.success) {
+          setProducts(response.data);
+          setTotalProducts(response.pagination.totalProducts);
+          setTotalPages(response.pagination.totalPages);
+        }
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || 'Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchByCategory();
+  }, [searchParams, showAvailableOnly]);
+
+  // Fetch products when category is changed via buttons (not from URL)
+  useEffect(() => {
+    const fetchBySelectedCategory = async () => {
+      try {
+        setLoading(true);
+        setProducts([]);
+        const params: ProductQueryParams = {
+          page: 1,
+          limit: 12,
+          isAvailable: showAvailableOnly,
+        };
+
+        if (selectedCategory) {
+          params.category = selectedCategory;
+        }
+
+        if (searchQuery.trim()) {
+          params.search = searchQuery.trim().toLowerCase();
+        }
+
+        const response = await productService.getAllProducts(params);
+
+        if (response.success) {
+          setProducts(response.data);
+          setTotalProducts(response.pagination.totalProducts);
+          setTotalPages(response.pagination.totalPages);
+        }
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || 'Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Fetch when selectedCategory changes
+    fetchBySelectedCategory();
+  }, [selectedCategory, showAvailableOnly, searchQuery]);
 
   const categories: { name: ProductCategory; emoji: string; color: string }[] = [
     { name: 'Fish', emoji: '🐟', color: 'from-blue-500 to-cyan-500' },
@@ -34,8 +116,9 @@ const Products: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      setProducts([]);
       const params: ProductQueryParams = {
-        page: currentPage,
+        page: 1,
         limit: 12,
         isAvailable: showAvailableOnly,
       };
@@ -45,7 +128,7 @@ const Products: React.FC = () => {
       }
 
       if (searchQuery.trim()) {
-        params.search = searchQuery.trim();
+        params.search = searchQuery.trim().toLowerCase();
       }
 
       const response = await productService.getAllProducts(params);
@@ -56,16 +139,11 @@ const Products: React.FC = () => {
         setTotalPages(response.pagination.totalPages);
       }
     } catch (error: any) {
-      console.error('Error fetching products:', error);
       toast.error(error.response?.data?.message || 'Failed to load products');
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchProducts();
-  }, [currentPage, selectedCategory, showAvailableOnly]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,9 +169,15 @@ const Products: React.FC = () => {
           {}
           <div className="bg-white rounded-2xl shadow-lg shadow-cyan-500/10 border border-slate-100 p-4 sm:p-5 mb-6">
             {}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
               {}
-              <form onSubmit={handleSearch} className="flex-1 sm:max-w-md sm:ml-auto">
+              <div className="hidden md:block">
+                <h2 className="text-2xl font-bold text-yellow-500">🐟 Fresh Seafood</h2>
+                <p className="text-sm text-blue-600">{totalProducts} products</p>
+              </div>
+
+              {}
+              <form onSubmit={handleSearch} className="w-full md:max-w-md">
                 <div className="flex gap-2">
                   <div className="relative flex-1">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">

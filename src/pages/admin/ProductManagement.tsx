@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Layout, ProductCard, Loading, ConfirmDialog } from '@/components/common';
 import { productService } from '@/services';
 import type { FishProduct, ProductCategory, ProductQueryParams } from '@/types';
 
 const ProductManagement: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [products, setProducts] = useState<FishProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
