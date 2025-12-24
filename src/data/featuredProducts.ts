@@ -1,3 +1,6 @@
+import fishImage from '@/assets/images/products/fish.png';
+import crabImage from '@/assets/images/products/crab2.png';
+
 export interface FeaturedProduct {
   id: string;
   name: string;
@@ -20,7 +23,7 @@ export const featuredProducts: FeaturedProduct[] = [
     tamilName: 'வெள்ளை வாவல்',
     description: 'Soft, delicate',
     price: 200,
-    emoji: '/src/assets/images/products/fish.png',
+    emoji: fishImage,
     badge: 'POPULAR',
     badgeColor: 'fresh-badge',
     gradient: 'from-teal-600/30 to-emerald-800/30',
@@ -62,7 +65,7 @@ export const featuredProducts: FeaturedProduct[] = [
     tamilName: 'நண்டு',
     description: 'Fresh, meaty crabs',
     price: 115,
-    emoji: '/src/assets/images/products/crab2.png',
+    emoji: crabImage,
     badge: 'PREMIUM',
     badgeColor: 'fresh-badge',
     gradient: 'from-amber-600/30 to-orange-800/30',
