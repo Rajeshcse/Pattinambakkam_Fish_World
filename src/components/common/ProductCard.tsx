@@ -1,5 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { FishProduct } from '@/types';
+import { getStockStatus as formatStockStatus } from '@/utils/formatters';
 
 interface ProductCardProps {
   product: FishProduct;
@@ -12,24 +14,12 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
-  onBuyNow,
   showAdminActions = false,
   onEdit,
   onDelete,
   onToggleAvailability,
 }) => {
-  const whatsappNumber = '9994072395'; // Replace with your actual WhatsApp number
-
-  const handleBuyNow = () => {
-    if (onBuyNow) {
-      onBuyNow(product);
-    } else {
-      // Default behavior: Open WhatsApp with pre-filled message
-      const message = `Hi, I'm interested in buying *${product.name}* (${product.category}) priced at ₹${product.price}`;
-      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
-    }
-  };
+  const navigate = useNavigate();
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
@@ -41,20 +31,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     return colors[category] || 'bg-gray-100 text-gray-800';
   };
 
-  const getStockStatus = () => {
-    if (product.stock === 0) {
-      return { text: 'Out of Stock', color: 'text-red-600' };
-    } else if (product.stock < 10) {
-      return { text: `Only ${product.stock} left`, color: 'text-orange-600' };
-    }
-    return { text: 'In Stock', color: 'text-green-600' };
-  };
-
-  const stockStatus = getStockStatus();
+  const stockStatus = formatStockStatus(product.stock);
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      {/* Product Image */}
+      {}
       <div className="relative h-48 bg-gray-200 overflow-hidden">
         {product.images && product.images.length > 0 ? (
           <img
@@ -63,7 +44,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className="w-full h-full object-cover"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+              target.src =
+                'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGM0Y0RjYiLz48cGF0aCBkPSJtMTk1LjY2NyAxMjUuMzMzLTE2LjY2NyAzNS0xNi42NjctMzVoMzMuMzM0eiIgZmlsbD0iIzlDQTNBRiIvPjxwYXRoIGQ9Im0xOTUuNjY3IDEzOS42NjctMTYuNjY3IDM1LTE2LjY2Ny0zNWgzMy4zMzR6IiBmaWxsPSIjOUNBM0FGIi8+PHJlY3QgeD0iMTY1IiB5PSIxNTAiIHdpZHRoPSI3MCIgaGVpZ2h0PSI0IiBmaWxsPSIjOUNBM0FGIi8+PHRleHQgeD0iMjAwIiB5PSIxODUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+';
             }}
           />
         ) : (
@@ -84,45 +66,41 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
-        {/* Availability Badge */}
+        {}
         {!product.isAvailable && (
           <div className="absolute top-0 left-0 right-0 bg-red-600 text-white text-center py-1 text-sm font-semibold">
             Not Available
           </div>
         )}
 
-        {/* Category Badge */}
+        {}
         <div className="absolute bottom-2 right-2">
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(product.category)}`}>
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(product.category)}`}
+          >
             {product.category}
           </span>
         </div>
       </div>
 
-      {/* Product Details */}
+      {}
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">
-          {product.name}
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-1 truncate">{product.name}</h3>
 
         {product.description && (
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-            {product.description}
-          </p>
+          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
         )}
 
-        {/* Price and Stock */}
+        {}
         <div className="flex items-center justify-between mb-4">
           <div className="text-2xl font-bold text-green-600">
             ₹{product.price}
-            <span className="text-sm text-gray-500 font-normal">/kg</span>
+            <span className="text-sm text-gray-500 font-normal">/250g</span>
           </div>
-          <div className={`text-sm font-semibold ${stockStatus.color}`}>
-            {stockStatus.text}
-          </div>
+          <div className={`text-sm font-semibold ${stockStatus.color}`}>{stockStatus.text}</div>
         </div>
 
-        {/* Action Buttons */}
+        {}
         {showAdminActions ? (
           <div className="flex gap-2">
             <button
@@ -150,15 +128,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         ) : (
           <button
-            onClick={handleBuyNow}
-            disabled={!product.isAvailable || product.stock === 0}
-            className={`w-full py-2 px-4 rounded-md font-semibold transition-colors ${
-              !product.isAvailable || product.stock === 0
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-green-600 text-white hover:bg-green-700'
-            }`}
+            onClick={() => navigate(`/products/${product._id}`)}
+            className="w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700 transition-colors font-semibold"
           >
-            {!product.isAvailable || product.stock === 0 ? 'Not Available' : 'Buy Now via WhatsApp'}
+            View Details
           </button>
         )}
       </div>

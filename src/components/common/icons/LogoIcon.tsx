@@ -6,13 +6,13 @@ interface LogoIconProps {
   showBackground?: boolean;
 }
 
-export const LogoIcon: React.FC<LogoIconProps> = ({ 
-  size = 48, 
+export const LogoIcon: React.FC<LogoIconProps> = ({
+  size = 48,
   className = '',
-  showBackground = true
+  showBackground = true,
 }) => {
   const fishSize = showBackground ? size * 0.6 : size;
-  
+
   const SilverFish = () => (
     <svg
       width={fishSize}
@@ -21,50 +21,128 @@ export const LogoIcon: React.FC<LogoIconProps> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Fish Body - Main */}
-      <ellipse cx="14" cy="16" rx="10" ry="6" fill="url(#brightFishGradient)" stroke="#0284c7" strokeWidth="0.5"/>
+      {}
+      <ellipse
+        cx="14"
+        cy="16"
+        rx="10"
+        ry="6"
+        fill="url(#brightFishGradient)"
+        stroke="#0284c7"
+        strokeWidth="0.5"
+      />
 
-      {/* Fish Head */}
-      <circle cx="6" cy="16" r="4" fill="url(#brightFishGradient)" stroke="#0284c7" strokeWidth="0.5"/>
+      {}
+      <circle
+        cx="6"
+        cy="16"
+        r="4"
+        fill="url(#brightFishGradient)"
+        stroke="#0284c7"
+        strokeWidth="0.5"
+      />
 
-      {/* Fish Tail - More visible */}
-      <path d="M 24 16 L 30 10 L 28 16 L 30 22 Z" fill="url(#tailGradient)" stroke="#0284c7" strokeWidth="0.5"/>
+      {}
+      <path
+        d="M 24 16 L 30 10 L 28 16 L 30 22 Z"
+        fill="url(#tailGradient)"
+        stroke="#0284c7"
+        strokeWidth="0.5"
+      />
 
-      {/* Dorsal Fin - Top fin */}
-      <path d="M 12 10 L 14 6 L 16 10 Z" fill="url(#finGradient)" stroke="#0284c7" strokeWidth="0.5"/>
+      {}
+      <path
+        d="M 12 10 L 14 6 L 16 10 Z"
+        fill="url(#finGradient)"
+        stroke="#0284c7"
+        strokeWidth="0.5"
+      />
 
-      {/* Ventral Fin - Bottom fin */}
-      <path d="M 12 22 L 14 26 L 16 22 Z" fill="url(#finGradient)" stroke="#0284c7" strokeWidth="0.5"/>
+      {}
+      <path
+        d="M 12 22 L 14 26 L 16 22 Z"
+        fill="url(#finGradient)"
+        stroke="#0284c7"
+        strokeWidth="0.5"
+      />
 
-      {/* Pectoral Fin */}
-      <ellipse cx="10" cy="20" rx="2.5" ry="4" fill="url(#finGradient)" opacity="0.9" stroke="#0284c7" strokeWidth="0.3"/>
+      {}
+      <ellipse
+        cx="10"
+        cy="20"
+        rx="2.5"
+        ry="4"
+        fill="url(#finGradient)"
+        opacity="0.9"
+        stroke="#0284c7"
+        strokeWidth="0.3"
+      />
 
-      {/* Eye - Black with white reflection */}
+      {}
       <circle cx="6" cy="15" r="1.8" fill="#1e3a8a" />
       <circle cx="6.5" cy="14.5" r="0.7" fill="white" />
 
-      {/* Gill Lines - More visible */}
+      {}
       <path d="M 9 13.5 Q 8 16 9 18.5" stroke="#0284c7" strokeWidth="1" fill="none" />
-      <path d="M 10.5 14 Q 9.5 16 10.5 18" stroke="#0284c7" strokeWidth="0.7" fill="none" opacity="0.7" />
+      <path
+        d="M 10.5 14 Q 9.5 16 10.5 18"
+        stroke="#0284c7"
+        strokeWidth="0.7"
+        fill="none"
+        opacity="0.7"
+      />
 
-      {/* Scale Pattern - Adds texture */}
-      <circle cx="12" cy="14" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6"/>
-      <circle cx="15" cy="15" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6"/>
-      <circle cx="18" cy="16" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6"/>
-      <circle cx="12" cy="18" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6"/>
-      <circle cx="15" cy="17" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6"/>
+      {}
+      <circle cx="12" cy="14" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="15" cy="15" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="18" cy="16" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="12" cy="18" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6" />
+      <circle cx="15" cy="17" r="1.2" fill="none" stroke="white" strokeWidth="0.4" opacity="0.6" />
 
-      {/* Body Shimmer Lines - Enhanced */}
-      <line x1="10" y1="13" x2="22" y2="13" stroke="white" strokeWidth="0.8" opacity="0.7" strokeLinecap="round"/>
-      <line x1="10" y1="19" x2="22" y2="19" stroke="white" strokeWidth="0.8" opacity="0.7" strokeLinecap="round"/>
-      <line x1="11" y1="16" x2="21" y2="16" stroke="white" strokeWidth="0.6" opacity="0.5" strokeLinecap="round"/>
+      {}
+      <line
+        x1="10"
+        y1="13"
+        x2="22"
+        y2="13"
+        stroke="white"
+        strokeWidth="0.8"
+        opacity="0.7"
+        strokeLinecap="round"
+      />
+      <line
+        x1="10"
+        y1="19"
+        x2="22"
+        y2="19"
+        stroke="white"
+        strokeWidth="0.8"
+        opacity="0.7"
+        strokeLinecap="round"
+      />
+      <line
+        x1="11"
+        y1="16"
+        x2="21"
+        y2="16"
+        stroke="white"
+        strokeWidth="0.6"
+        opacity="0.5"
+        strokeLinecap="round"
+      />
 
-      {/* Mouth */}
-      <path d="M 3 16 Q 2.5 16.5 3 17" stroke="#0284c7" strokeWidth="0.8" fill="none" strokeLinecap="round"/>
+      {}
+      <path
+        d="M 3 16 Q 2.5 16.5 3 17"
+        stroke="#0284c7"
+        strokeWidth="0.8"
+        fill="none"
+        strokeLinecap="round"
+      />
 
-      {/* Gradient Definitions */}
+      {}
       <defs>
-        {/* Bright white-to-light-blue gradient for fish body */}
+        {}
         <linearGradient id="brightFishGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#ffffff" />
           <stop offset="40%" stopColor="#f0f9ff" />
@@ -72,14 +150,14 @@ export const LogoIcon: React.FC<LogoIconProps> = ({
           <stop offset="100%" stopColor="#bae6fd" />
         </linearGradient>
 
-        {/* Tail gradient - orange/amber for contrast */}
+        {}
         <linearGradient id="tailGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#fef3c7" />
           <stop offset="50%" stopColor="#fde68a" />
           <stop offset="100%" stopColor="#fbbf24" />
         </linearGradient>
 
-        {/* Fin gradient - light blue */}
+        {}
         <linearGradient id="finGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#dbeafe" />
           <stop offset="100%" stopColor="#93c5fd" />
@@ -93,7 +171,7 @@ export const LogoIcon: React.FC<LogoIconProps> = ({
   }
 
   return (
-    <div 
+    <div
       className={`bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg overflow-hidden ${className}`}
       style={{ width: size, height: size }}
     >

@@ -1,28 +1,23 @@
-/**
- * useConfirm Hook
- *
- * Provides a simple way to show confirmation dialogs throughout the app.
- * Replaces window.confirm() with a beautiful modal component.
- */
+
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { ConfirmDialog } from '@/components/common';
 
 interface ConfirmOptions {
-  /** Dialog title */
+  
   title: string;
-  /** Dialog message */
+  
   message: string;
-  /** Confirm button text */
+  
   confirmText?: string;
-  /** Cancel button text */
+  
   cancelText?: string;
-  /** Variant of confirm button */
+  
   variant?: 'primary' | 'danger' | 'warning';
 }
 
 interface ConfirmContextValue {
-  /** Show confirmation dialog and wait for user response */
+  
   confirm: (options: ConfirmOptions) => Promise<boolean>;
 }
 
@@ -37,18 +32,6 @@ interface ConfirmState extends ConfirmOptions {
   resolve: (value: boolean) => void;
 }
 
-/**
- * ConfirmProvider Component
- *
- * Wrap your app with this provider to enable useConfirm hook
- *
- * @example
- * ```tsx
- * <ConfirmProvider>
- *   <App />
- * </ConfirmProvider>
- * ```
- */
 export const ConfirmProvider: React.FC<ConfirmProviderProps> = ({ children }) => {
   const [confirmState, setConfirmState] = useState<ConfirmState | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,7 +51,7 @@ export const ConfirmProvider: React.FC<ConfirmProviderProps> = ({ children }) =>
 
     setIsLoading(true);
     try {
-      // Small delay for better UX
+      
       await new Promise((resolve) => setTimeout(resolve, 150));
       confirmState.resolve(true);
     } finally {
@@ -103,29 +86,6 @@ export const ConfirmProvider: React.FC<ConfirmProviderProps> = ({ children }) =>
   );
 };
 
-/**
- * useConfirm Hook
- *
- * Returns a confirm function to show confirmation dialogs
- *
- * @example
- * ```tsx
- * const { confirm } = useConfirm();
- *
- * const handleDelete = async () => {
- *   const confirmed = await confirm({
- *     title: 'Delete User',
- *     message: 'Are you sure you want to delete this user?',
- *     confirmText: 'Delete',
- *     variant: 'danger'
- *   });
- *
- *   if (confirmed) {
- *     await deleteUser();
- *   }
- * };
- * ```
- */
 export const useConfirm = (): ConfirmContextValue => {
   const context = useContext(ConfirmContext);
 

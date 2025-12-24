@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Layout, ProductCard, Loading, ConfirmDialog } from '@/components/common';
 import { productService } from '@/services';
 import type { FishProduct, ProductCategory, ProductQueryParams } from '@/types';
 
 const ProductManagement: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [products, setProducts] = useState<FishProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -20,7 +21,10 @@ const ProductManagement: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | ''>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; product: FishProduct | null }>({
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    show: boolean;
+    product: FishProduct | null;
+  }>({
     show: false,
     product: null,
   });
@@ -114,7 +118,7 @@ const ProductManagement: React.FC = () => {
     <Layout>
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
+          {}
           <div className="mb-8 flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Product Management</h1>
@@ -125,13 +129,18 @@ const ProductManagement: React.FC = () => {
               className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
               Add New Product
             </button>
           </div>
 
-          {/* Stats Cards */}
+          {}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-white rounded-lg shadow-sm p-4">
               <div className="text-sm text-gray-600 mb-1">Total Products</div>
@@ -147,14 +156,16 @@ const ProductManagement: React.FC = () => {
             </div>
             <div className="bg-white rounded-lg shadow-sm p-4">
               <div className="text-sm text-gray-600 mb-1">Avg Price</div>
-              <div className="text-2xl font-bold text-purple-600">₹{stats.averagePrice.toFixed(0)}</div>
+              <div className="text-2xl font-bold text-purple-600">
+                ₹{stats.averagePrice.toFixed(0)}
+              </div>
             </div>
           </div>
 
-          {/* Filters */}
+          {}
           <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Search */}
+              {}
               <form onSubmit={handleSearch} className="md:col-span-2">
                 <div className="flex gap-2">
                   <input
@@ -173,7 +184,7 @@ const ProductManagement: React.FC = () => {
                 </div>
               </form>
 
-              {/* Availability Toggle */}
+              {}
               <div className="flex items-center">
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -190,7 +201,7 @@ const ProductManagement: React.FC = () => {
               </div>
             </div>
 
-            {/* Category Filters */}
+            {}
             <div className="mt-4 flex flex-wrap gap-2">
               <button
                 onClick={() => {
@@ -224,7 +235,7 @@ const ProductManagement: React.FC = () => {
             </div>
           </div>
 
-          {/* Products Grid */}
+          {}
           {loading ? (
             <Loading fullScreen={false} text="Loading products..." />
           ) : products.length === 0 ? (
@@ -266,7 +277,7 @@ const ProductManagement: React.FC = () => {
                 ))}
               </div>
 
-              {/* Pagination */}
+              {}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2">
                   <button
@@ -329,7 +340,7 @@ const ProductManagement: React.FC = () => {
           )}
         </div>
 
-        {/* Delete Confirmation Dialog */}
+        {}
         <ConfirmDialog
           isOpen={deleteConfirm.show}
           title="Delete Product"

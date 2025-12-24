@@ -1,4 +1,11 @@
-// User types based on Swagger schema
+export interface Address {
+  street?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  landmark?: string;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -7,11 +14,11 @@ export interface User {
   role: 'user' | 'admin';
   isVerified: boolean;
   avatar?: string;
+  address?: Address;
   createdAt: string;
   updatedAt?: string;
 }
 
-// Request types
 export interface RegisterRequest {
   name: string;
   email: string;
@@ -30,9 +37,9 @@ export interface ProfileUpdateRequest {
   email?: string;
   phone?: string;
   avatar?: string;
+  address?: Address;
 }
 
-// Response types
 export interface AuthSuccessResponse {
   success: boolean;
   message: string;
@@ -55,23 +62,22 @@ export interface LogoutRequest {
 }
 
 export interface MessageResponse {
+  method: 'email' | 'phone';
   success: boolean;
   message: string;
   expiresIn?: string;
 }
 
-// Email Verification types
 export interface VerifyEmailRequest {
   otp: string;
 }
 
-// Password Management types
 export interface ForgotPasswordRequest {
-  email: string;
+  identifier: string;
 }
 
 export interface ResetPasswordRequest {
-  email: string;
+  identifier: string;
   otp: string;
   newPassword: string;
 }
@@ -111,10 +117,8 @@ export interface ErrorResponse {
   message: string;
 }
 
-// API Response union type
 export type ApiResponse<T = any> = T | ErrorResponse | ValidationErrorResponse;
 
-// Auth context types
 export interface AuthContextType {
   user: User | null;
   token: string | null;
@@ -128,7 +132,6 @@ export interface AuthContextType {
   isAuthenticated: boolean;
 }
 
-// Decoded JWT token
 export interface DecodedToken {
   id: string;
   email: string;
@@ -137,7 +140,6 @@ export interface DecodedToken {
   exp: number;
 }
 
-// Admin Dashboard Types
 export interface DashboardStats {
   totalUsers: number;
   verifiedUsers: number;
@@ -151,7 +153,6 @@ export interface DashboardResponse {
   data: DashboardStats;
 }
 
-// Admin User Management Types
 export interface UserListQueryParams {
   page?: number;
   limit?: number;
@@ -195,15 +196,14 @@ export interface BulkActionRequest {
   userIds: string[];
 }
 
-// Product types
 export type ProductCategory = 'Fish' | 'Prawn' | 'Crab' | 'Squid';
 
 export interface FishProduct {
   _id: string;
   name: string;
   category: ProductCategory;
-  price: number;
-  stock: number;
+  price: number; // Price per 250g unit
+  stock: number; // Stock in 250g units (e.g., 100 units = 25kg)
   description: string;
   images: string[];
   createdBy: string;
@@ -215,8 +215,8 @@ export interface FishProduct {
 export interface CreateProductRequest {
   name: string;
   category: ProductCategory;
-  price: number;
-  stock: number;
+  price: number; // Price per 250g unit
+  stock: number; // Stock in 250g units
   description?: string;
   images?: string[];
 }
@@ -266,5 +266,135 @@ export interface ProductListResponse {
 export interface ProductResponse {
   success: boolean;
   message: string;
+  data: FishProduct;
+}
+
+export interface CartItem {
+  _id: string;
   product: FishProduct;
+  quantity: number; // Quantity in 250g units (e.g., 4 = 1kg)
+  addedAt: string;
+}
+
+export interface Cart {
+  _id?: string;
+  user: string;
+  items: CartItem[];
+  updatedAt: string;
+}
+
+export interface AddToCartRequest {
+  productId: string;
+  quantity: number;
+}
+
+export interface UpdateCartItemRequest {
+  quantity: number;
+}
+
+export interface CartResponse {
+  success: boolean;
+  data: Cart;
+  message?: string;
+}
+
+export interface CartCountResponse {
+  success: boolean;
+  data: {
+    count: number;
+  };
+}
+
+export type OrderStatus = 'pending' | 'confirmed' | 'out-for-delivery' | 'delivered' | 'cancelled';
+export type PaymentStatus = 'pending' | 'paid';
+export type DeliveryTimeSlot = '8:00 AM - 12:00 PM' | '12:00 PM - 4:00 PM' | '4:00 PM - 8:00 PM';
+
+export interface OrderItem {
+  product: string | FishProduct;
+  name: string;
+  price: number;
+  quantity: number;
+  subtotal: number;
+}
+
+export interface DeliveryDetails {
+  address: string;
+  phone: string;
+  deliveryDate: string;
+  deliveryTime: DeliveryTimeSlot;
+}
+
+export interface Order {
+  _id: string;
+  orderId: string;
+  user: string | User;
+  items: OrderItem[];
+  totalAmount: number;
+  deliveryDetails: DeliveryDetails;
+  orderNotes?: string;
+  status: OrderStatus;
+  paymentStatus: PaymentStatus;
+  paymentMethod: string;
+  payment?: {
+    method?: string;
+    status?: string;
+    transactionId?: string;
+    razorpayTransactionId?: string;
+    paidAt?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateOrderRequest {
+  deliveryDetails: DeliveryDetails;
+  orderNotes?: string;
+  paymentMethod?: string;
+}
+
+export interface OrderResponse {
+  success: boolean;
+  data: Order;
+  message?: string;
+}
+
+export interface OrderListResponse {
+  success: boolean;
+  data: Order[];
+  message?: string;
+}
+
+export interface OrderStatsResponse {
+  success: boolean;
+  data: {
+    totalOrders: number;
+    pendingOrders: number;
+    deliveredOrders: number;
+    cancelledOrders: number;
+    totalSpent: number;
+  };
+}
+
+export interface DeliveryTimeValidation {
+  valid: boolean;
+  message: string;
+  minimumTime?: Date;
+}
+
+export interface TimeSlot {
+  slot: DeliveryTimeSlot;
+  available: boolean;
+  reason: string;
+}
+
+export interface CartContextType {
+  cart: Cart | null;
+  itemCount: number;
+  totalAmount: number;
+  loading: boolean;
+  addItem: (productId: string, quantity: number) => Promise<void>;
+  updateQuantity: (itemId: string, quantity: number) => Promise<void>;
+  removeItem: (itemId: string) => Promise<void>;
+  clearCart: () => Promise<void>;
+  refreshCart: () => Promise<void>;
 }

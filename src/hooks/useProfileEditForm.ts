@@ -21,6 +21,11 @@ export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
     email: user?.email || '',
     phone: user?.phone || '',
     avatar: user?.avatar || '',
+    street: user?.address?.street || '',
+    city: user?.address?.city || 'Chennai',
+    state: user?.address?.state || 'Tamil Nadu',
+    pincode: user?.address?.pincode || '',
+    landmark: user?.address?.landmark || '',
   };
 
   const formik = useFormik({
@@ -37,12 +42,29 @@ export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
       setIsSubmitting(true);
 
       try {
-        // Only send fields that were changed
-        const changedValues: Partial<User> = {};
+        const changedValues: any = {};
         if (values.name !== user.name) changedValues.name = values.name;
         if (values.email !== user.email) changedValues.email = values.email;
         if (values.phone !== user.phone) changedValues.phone = values.phone;
         if (values.avatar !== user.avatar) changedValues.avatar = values.avatar;
+
+        // Check if address fields have changed
+        const addressChanged =
+          values.street !== (user.address?.street || '') ||
+          values.city !== (user.address?.city || '') ||
+          values.state !== (user.address?.state || '') ||
+          values.pincode !== (user.address?.pincode || '') ||
+          values.landmark !== (user.address?.landmark || '');
+
+        if (addressChanged) {
+          changedValues.address = {
+            street: values.street,
+            city: values.city,
+            state: values.state,
+            pincode: values.pincode,
+            landmark: values.landmark,
+          };
+        }
 
         if (Object.keys(changedValues).length === 0) {
           callbacks?.onNoChanges?.();
@@ -53,12 +75,13 @@ export const useProfileEditForm = (callbacks?: ProfileEditFormCallbacks) => {
         updateUser(updatedUser);
         callbacks?.onSuccess?.();
       } catch (error) {
-        const message = error instanceof Error
-          ? error.message
-          : 'Failed to update profile. Please try again.';
+        const message =
+          error instanceof Error ? error.message : 'Failed to update profile. Please try again.';
         setError(message);
         callbacks?.onError?.(message);
-        console.error('Profile update error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Profile update error:', error);
+        }
       } finally {
         setIsSubmitting(false);
       }

@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Button, Loading, Layout } from '@/components/common';
 import { adminService } from '@/services';
 import { DashboardStats } from '@/types';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { getErrorMessage, logError, categorizeError, ErrorCategory } from '@/utils/errors';
 
 export const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -19,8 +20,7 @@ export const AdminDashboard: React.FC = () => {
     setLoading(true);
     try {
       const response = await adminService.getDashboardStats();
-      
-      // Check if response has the expected structure
+
       if (response && response.data) {
         setStats(response.data);
       } else {
@@ -61,9 +61,7 @@ export const AdminDashboard: React.FC = () => {
           <div className="max-w-7xl mx-auto">
             <Card>
               <div className="text-center py-8">
-                <div className="text-red-500 text-lg font-medium mb-4">
-                  Error loading dashboard
-                </div>
+                <div className="text-red-500 text-lg font-medium mb-4">Error loading dashboard</div>
                 <p className="text-gray-600 mb-4">
                   Unable to fetch dashboard data. This could be due to:
                 </p>
@@ -74,17 +72,10 @@ export const AdminDashboard: React.FC = () => {
                   <li>• Insufficient admin privileges</li>
                 </ul>
                 <div className="mt-6">
-                  <Button 
-                    onClick={fetchDashboardStats}
-                    variant="primary"
-                    className="mr-3"
-                  >
+                  <Button onClick={fetchDashboardStats} variant="primary" className="mr-3">
                     Retry
                   </Button>
-                  <Button 
-                    onClick={() => navigate('/')}
-                    variant="outline"
-                  >
+                  <Button onClick={() => navigate('/')} variant="outline">
                     Go Home
                   </Button>
                 </div>
@@ -105,7 +96,7 @@ export const AdminDashboard: React.FC = () => {
             <p className="text-gray-600">Overview of your application</p>
           </div>
 
-          {/* Stats Grid */}
+          {}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card>
               <div className="space-y-2">
@@ -136,7 +127,7 @@ export const AdminDashboard: React.FC = () => {
             </Card>
           </div>
 
-          {/* Quick Actions */}
+          {}
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -158,12 +149,13 @@ export const AdminDashboard: React.FC = () => {
                 Manage Products
               </Button>
               <Button
-                variant="secondary"
+                variant="primary"
                 size="lg"
                 fullWidth
-                onClick={() => navigate('/admin/users?role=admin')}
+                onClick={() => navigate('/admin/orders')}
+                className="bg-purple-600 hover:bg-purple-700"
               >
-                View Admins
+                📦 Manage Orders
               </Button>
               <Button
                 variant="outline"
@@ -176,7 +168,7 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Recent Users */}
+          {}
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Recent Users</h2>
             {!stats.recentUsers || stats.recentUsers.length === 0 ? (

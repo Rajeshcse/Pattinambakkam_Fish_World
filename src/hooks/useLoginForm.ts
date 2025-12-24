@@ -22,7 +22,6 @@ export const useLoginForm = (callbacks?: LoginFormCallbacks) => {
       setIsSubmitting(true);
 
       try {
-        // Determine if identifier is email or phone
         const isEmail = values.identifier.includes('@');
         const credentials: LoginRequest = {
           password: values.password,
@@ -32,12 +31,13 @@ export const useLoginForm = (callbacks?: LoginFormCallbacks) => {
         await login(credentials);
         callbacks?.onSuccess?.();
       } catch (error) {
-        const message = error instanceof Error 
-          ? error.message 
-          : 'Login failed. Please check your credentials.';
+        const message =
+          error instanceof Error ? error.message : 'Login failed. Please check your credentials.';
         setError(message);
         callbacks?.onError?.(message);
-        console.error('Login error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Login error:', error);
+        }
       } finally {
         setIsSubmitting(false);
       }

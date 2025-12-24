@@ -7,11 +7,6 @@ interface AdminRouteProps {
   children: React.ReactNode;
 }
 
-/**
- * AdminRoute Component
- * Protects routes that require admin role
- * Redirects to home if user is not an admin
- */
 export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   const { isAuthenticated, loading, user } = useAuth();
 

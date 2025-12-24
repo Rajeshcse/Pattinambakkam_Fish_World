@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useAuth } from '@/hooks/useAuth';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
 import { ErrorAlert } from '@/components/common/ErrorAlert';
@@ -11,29 +11,27 @@ import { useRegisterForm } from '@/hooks/useRegisterForm';
 export const Register: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { formik, isSubmitting, error, dismissError } = useRegisterForm({
     onSuccess: () => {
-      // Redirect to email verification instead of home
       navigate('/verify-email');
     },
     onError: (errorMessage) => {
       toast.error(errorMessage);
-    }
+    },
   });
 
-  // Redirect if already logged in and verified
   if (user && user.isVerified) {
     return <Navigate to="/profile" replace />;
   }
 
-  // Redirect to verify email if logged in but not verified
   if (user && !user.isVerified) {
     return <Navigate to="/verify-email" replace />;
   }
 
   return (
-    <AuthLayout 
-      title="Pattinambakkam_Fish_World" 
+    <AuthLayout
+      title="Pattinambakkam_Fish_World"
       subtitle="Create your account to start your creative journey"
     >
       <div className="space-y-6">
@@ -47,9 +45,7 @@ export const Register: React.FC = () => {
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert message={error} onDismiss={dismissError} />
-        )}
+        {error && <ErrorAlert message={error} onDismiss={dismissError} />}
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <FormField
@@ -96,13 +92,7 @@ export const Register: React.FC = () => {
             required
           />
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            fullWidth
-            loading={isSubmitting}
-          >
+          <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
             Create Account
           </Button>
 

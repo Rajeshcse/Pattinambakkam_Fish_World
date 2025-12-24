@@ -3,12 +3,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, Button, Loading, Layout } from '@/components/common';
 import { adminService } from '@/services';
 import { User, PaginationMeta } from '@/types';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useConfirm } from '@/hooks/useConfirm';
 import { getErrorMessage, logError } from '@/utils/errors';
 
 export const AdminUsers: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { confirm } = useConfirm();
   const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState<User[]>([]);
@@ -38,15 +39,14 @@ export const AdminUsers: React.FC = () => {
       if (search) params.search = search;
 
       const response = await adminService.getAllUsers(params);
-      
-      // Handle different response structures
+
       if (response && response.data && response.data.users) {
         setUsers(response.data.users);
         setPagination(response.data.pagination);
-      } else if (response && response.users) {
-        // Handle direct users property
-        setUsers(response.users);
-        setPagination(response.pagination);
+      } else if (response && typeof response === 'object' && 'users' in response) {
+        const typedResponse = response as { users: User[]; pagination?: PaginationMeta };
+        setUsers(typedResponse.users);
+        setPagination(typedResponse.pagination || null);
       } else {
         toast.error('Received invalid users data');
         setUsers([]);
@@ -92,13 +92,13 @@ export const AdminUsers: React.FC = () => {
 
   const handleSelectUser = (userId: string) => {
     setSelectedUsers((prev) =>
-      prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
+      prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId],
     );
   };
 
   const handleSelectAll = () => {
     if (!users || users.length === 0) return;
-    
+
     if (selectedUsers.length === users.length && selectedUsers.length > 0) {
       setSelectedUsers([]);
     } else {
@@ -135,7 +135,11 @@ export const AdminUsers: React.FC = () => {
 
     try {
       await adminService.bulkUserAction(action, selectedUsers);
-      toast.success(`Successfully ${action === 'delete' ? 'deleted' : action === 'verify' ? 'verified' : 'unverified'} ${selectedUsers.length} user(s)`);
+      toast.success(
+        `Successfully ${
+          action === 'delete' ? 'deleted' : action === 'verify' ? 'verified' : 'unverified'
+        } ${selectedUsers.length} user(s)`,
+      );
       setSelectedUsers([]);
       fetchUsers();
     } catch (error: unknown) {
@@ -163,7 +167,7 @@ export const AdminUsers: React.FC = () => {
             </Button>
           </div>
 
-          {/* Filters and Search */}
+          {}
           <Card className="mb-6">
             <div className="space-y-4">
               <form onSubmit={handleSearch} className="flex gap-2">
@@ -221,39 +225,27 @@ export const AdminUsers: React.FC = () => {
             </div>
           </Card>
 
-          {/* Bulk Actions */}
+          {}
           {selectedUsers.length > 0 && (
             <Card className="mb-6 bg-blue-50 border-blue-200">
               <div className="flex gap-4 items-center">
                 <span className="text-sm font-medium text-gray-700">
                   {selectedUsers.length} user(s) selected
                 </span>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => handleBulkAction('verify')}
-                >
+                <Button variant="primary" size="sm" onClick={() => handleBulkAction('verify')}>
                   Verify Selected
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => handleBulkAction('unverify')}
-                >
+                <Button variant="secondary" size="sm" onClick={() => handleBulkAction('unverify')}>
                   Unverify Selected
                 </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleBulkAction('delete')}
-                >
+                <Button variant="danger" size="sm" onClick={() => handleBulkAction('delete')}>
                   Delete Selected
                 </Button>
               </div>
             </Card>
           )}
 
-          {/* Users Table */}
+          {}
           <Card>
             {users.length === 0 ? (
               <p className="text-gray-500 text-center py-8">No users found</p>
@@ -267,7 +259,11 @@ export const AdminUsers: React.FC = () => {
                           <input
                             type="checkbox"
                             checked={users.length > 0 && selectedUsers.length === users.length}
-                            indeterminate={selectedUsers.length > 0 && selectedUsers.length < users.length}
+                            ref={(el) => {
+                              if (el) {
+                                el.indeterminate = selectedUsers.length > 0 && selectedUsers.length < users.length;
+                              }
+                            }}
                             onChange={handleSelectAll}
                             className="rounded"
                           />
@@ -293,57 +289,59 @@ export const AdminUsers: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {users && users.length > 0 ? users.map((user) => (
-                        <tr key={user.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4">
-                            <input
-                              type="checkbox"
-                              checked={selectedUsers.includes(user.id)}
-                              onChange={() => handleSelectUser(user.id)}
-                              className="rounded"
-                            />
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">{user.email}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">{user.phone}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                user.role === 'admin'
-                                  ? 'bg-blue-100 text-blue-800'
-                                  : 'bg-gray-100 text-gray-800'
-                              }`}
-                            >
-                              {user.role}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                user.isVerified
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-yellow-100 text-yellow-800'
-                              }`}
-                            >
-                              {user.isVerified ? 'Verified' : 'Unverified'}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button
-                              onClick={() => navigate(`/admin/users/${user.id}`)}
-                              className="text-primary-600 hover:text-primary-900"
-                            >
-                              View
-                            </button>
-                          </td>
-                        </tr>
-                      )) : (
+                      {users && users.length > 0 ? (
+                        users.map((user) => (
+                          <tr key={user.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4">
+                              <input
+                                type="checkbox"
+                                checked={selectedUsers.includes(user.id)}
+                                onChange={() => handleSelectUser(user.id)}
+                                className="rounded"
+                              />
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-500">{user.email}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-500">{user.phone}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span
+                                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                  user.role === 'admin'
+                                    ? 'bg-blue-100 text-blue-800'
+                                    : 'bg-gray-100 text-gray-800'
+                                }`}
+                              >
+                                {user.role}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span
+                                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                  user.isVerified
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-yellow-100 text-yellow-800'
+                                }`}
+                              >
+                                {user.isVerified ? 'Verified' : 'Unverified'}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <button
+                                onClick={() => navigate(`/admin/users/${user.id}`)}
+                                className="text-primary-600 hover:text-primary-900"
+                              >
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
                         <tr>
                           <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
                             {loading ? 'Loading users...' : 'No users found'}
@@ -354,7 +352,7 @@ export const AdminUsers: React.FC = () => {
                   </table>
                 </div>
 
-                {/* Pagination */}
+                {}
                 {pagination && pagination.totalPages > 1 && (
                   <div className="mt-6 flex justify-between items-center">
                     <div className="text-sm text-gray-700">

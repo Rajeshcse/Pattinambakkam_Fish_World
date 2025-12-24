@@ -9,28 +9,33 @@ interface AuthLayoutProps {
   showNavbar?: boolean;
 }
 
-export const AuthLayout: React.FC<AuthLayoutProps> = ({ 
-  children, 
-  title, 
+export const AuthLayout: React.FC<AuthLayoutProps> = ({
+  children,
+  title,
   subtitle,
-  showNavbar = true
+  showNavbar = true,
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100">
       {showNavbar && <Navbar />}
-      
+
       <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-primary-600 mb-2">{title}</h1>
-            <p className="text-gray-600">{subtitle}</p>
+          {}
+          <div className="text-center mb-8 space-y-3">
+            <div className="space-y-2 flex justify-center">
+              <h1 className="text-3xl xs:text-4xl sm:text-4xl md:text-5xl font-black leading-tight flex flex-col md:flex-row md:whitespace-nowrap gap-2 md:gap-2">
+                <span className="text-primary-600 glow-text">Pattinambakkam</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 glow-text-gold animate-gradient">
+                  Fish World
+                </span>
+              </h1>
+            </div>
+            <p className="text-sm sm:text-base text-gray-600 font-light">{subtitle}</p>
           </div>
 
-          {/* Card Content */}
-          <Card>
-            {children}
-          </Card>
+          {}
+          <Card>{children}</Card>
         </div>
       </div>
     </div>

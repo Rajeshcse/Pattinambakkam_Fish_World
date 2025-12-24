@@ -7,10 +7,6 @@ interface PrivateRouteProps {
   children: React.ReactNode;
 }
 
-/**
- * PrivateRoute Component
- * Protects routes that require authentication
- */
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Layout, ProductCard } from '@/components/common';
-import { LogoIcon } from '@/components/common/icons/LogoIcon';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { productService } from '@/services';
 import type { FishProduct, ProductCategory, ProductQueryParams } from '@/types';
 
 const Products: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<FishProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalProducts, setTotalProducts] = useState(0);
@@ -14,6 +15,96 @@ const Products: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | ''>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showAvailableOnly, setShowAvailableOnly] = useState(true);
+  const toast = useResponsiveToast();
+
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Get category from URL and fetch products together
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    let categoryToUse: ProductCategory | '' = '';
+
+    if (categoryParam && ['Fish', 'Prawn', 'Crab', 'Squid'].includes(categoryParam)) {
+      categoryToUse = categoryParam as ProductCategory;
+      setSelectedCategory(categoryToUse);
+      setSearchQuery('');
+      setCurrentPage(1);
+    } else {
+      setSelectedCategory('');
+    }
+
+    // Fetch products with the category from URL
+    const fetchByCategory = async () => {
+      try {
+        setLoading(true);
+        setProducts([]);
+        const params: ProductQueryParams = {
+          page: 1,
+          limit: 12,
+          isAvailable: showAvailableOnly,
+        };
+
+        if (categoryToUse) {
+          params.category = categoryToUse;
+        }
+
+        const response = await productService.getAllProducts(params);
+
+        if (response.success) {
+          setProducts(response.data);
+          setTotalProducts(response.pagination.totalProducts);
+          setTotalPages(response.pagination.totalPages);
+        }
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || 'Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchByCategory();
+  }, [searchParams, showAvailableOnly]);
+
+  // Fetch products when category is changed via buttons (not from URL)
+  useEffect(() => {
+    const fetchBySelectedCategory = async () => {
+      try {
+        setLoading(true);
+        setProducts([]);
+        const params: ProductQueryParams = {
+          page: 1,
+          limit: 12,
+          isAvailable: showAvailableOnly,
+        };
+
+        if (selectedCategory) {
+          params.category = selectedCategory;
+        }
+
+        if (searchQuery.trim()) {
+          params.search = searchQuery.trim().toLowerCase();
+        }
+
+        const response = await productService.getAllProducts(params);
+
+        if (response.success) {
+          setProducts(response.data);
+          setTotalProducts(response.pagination.totalProducts);
+          setTotalPages(response.pagination.totalPages);
+        }
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || 'Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Fetch when selectedCategory changes
+    fetchBySelectedCategory();
+  }, [selectedCategory, showAvailableOnly, searchQuery]);
 
   const categories: { name: ProductCategory; emoji: string; color: string }[] = [
     { name: 'Fish', emoji: '🐟', color: 'from-blue-500 to-cyan-500' },
@@ -25,8 +116,9 @@ const Products: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      setProducts([]);
       const params: ProductQueryParams = {
-        page: currentPage,
+        page: 1,
         limit: 12,
         isAvailable: showAvailableOnly,
       };
@@ -36,7 +128,7 @@ const Products: React.FC = () => {
       }
 
       if (searchQuery.trim()) {
-        params.search = searchQuery.trim();
+        params.search = searchQuery.trim().toLowerCase();
       }
 
       const response = await productService.getAllProducts(params);
@@ -47,16 +139,11 @@ const Products: React.FC = () => {
         setTotalPages(response.pagination.totalPages);
       }
     } catch (error: any) {
-      console.error('Error fetching products:', error);
       toast.error(error.response?.data?.message || 'Failed to load products');
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchProducts();
-  }, [currentPage, selectedCategory, showAvailableOnly]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,29 +163,26 @@ const Products: React.FC = () => {
 
   return (
     <Layout>
-      {/* Main Content - Direct to Products */}
+      {}
       <div className="bg-gradient-to-b from-cyan-50 via-slate-50 to-white min-h-screen pt-4 sm:pt-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          
-          {/* Compact Header + Search Bar */}
+          {}
           <div className="bg-white rounded-2xl shadow-lg shadow-cyan-500/10 border border-slate-100 p-4 sm:p-5 mb-6">
-            {/* Top Row: Title + Search */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
-              {/* Title */}
-              <div className="flex items-center gap-3">
-                <LogoIcon size={48} className="hidden sm:flex" />
-                <LogoIcon size={40} className="sm:hidden" />
-                <div>
-                  <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Fresh Seafood</h1>
-                  <p className="text-xs sm:text-sm text-slate-500">{totalProducts} products available</p>
-                </div>
+            {}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+              {}
+              <div className="hidden md:block">
+                <h2 className="text-2xl font-bold text-yellow-500">🐟 Fresh Seafood</h2>
+                <p className="text-sm text-blue-600">{totalProducts} products</p>
               </div>
 
-              {/* Search */}
-              <form onSubmit={handleSearch} className="flex-1 sm:max-w-md sm:ml-auto">
+              {}
+              <form onSubmit={handleSearch} className="w-full md:max-w-md">
                 <div className="flex gap-2">
                   <div className="relative flex-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+                      🔍
+                    </span>
                     <input
                       type="text"
                       value={searchQuery}
@@ -117,7 +201,7 @@ const Products: React.FC = () => {
               </form>
             </div>
 
-            {/* Category Pills Row */}
+            {}
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => handleCategoryChange('')}
@@ -143,12 +227,16 @@ const Products: React.FC = () => {
                 </button>
               ))}
 
-              {/* Spacer */}
+              {}
               <div className="flex-1" />
 
-              {/* Availability Toggle */}
+              {}
               <label className="flex items-center gap-2 cursor-pointer">
-                <div className={`relative w-9 h-5 rounded-full transition-colors duration-300 ${showAvailableOnly ? 'bg-green-500' : 'bg-slate-300'}`}>
+                <div
+                  className={`relative w-9 h-5 rounded-full transition-colors duration-300 ${
+                    showAvailableOnly ? 'bg-green-500' : 'bg-slate-300'
+                  }`}
+                >
                   <input
                     type="checkbox"
                     checked={showAvailableOnly}
@@ -158,19 +246,23 @@ const Products: React.FC = () => {
                     }}
                     className="sr-only"
                   />
-                  <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${showAvailableOnly ? 'translate-x-4' : 'translate-x-0.5'}`} />
+                  <div
+                    className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300 ${
+                      showAvailableOnly ? 'translate-x-4' : 'translate-x-0.5'
+                    }`}
+                  />
                 </div>
                 <span className="text-xs text-slate-500 hidden sm:inline">In Stock</span>
               </label>
             </div>
           </div>
 
-          {/* Products Grid */}
+          {}
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <div className="text-center">
                 <div className="mb-4 animate-pulse">
-                  <LogoIcon size={64} className="rounded-full" />
+                  <div className="text-6xl">🐟</div>
                 </div>
                 <p className="text-slate-500 font-medium">Loading fresh catches...</p>
               </div>
@@ -201,14 +293,14 @@ const Products: React.FC = () => {
             </div>
           ) : (
             <>
-              {/* Products Grid */}
+              {}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
                 {products?.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </div>
 
-              {/* Pagination */}
+              {}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 py-8">
                   <button
@@ -221,7 +313,12 @@ const Products: React.FC = () => {
                     }`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
                     </svg>
                   </button>
 
@@ -266,7 +363,12 @@ const Products: React.FC = () => {
                     }`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </button>
                 </div>

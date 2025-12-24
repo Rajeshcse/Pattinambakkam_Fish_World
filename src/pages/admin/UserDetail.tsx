@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Button, Loading, Layout } from '@/components/common';
 import { adminService } from '@/services';
 import { User } from '@/types';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useAuth } from '@/hooks/useAuth';
 import { useConfirm } from '@/hooks/useConfirm';
 import { getErrorMessage, logError, isNotFoundError, isAuthorizationError } from '@/utils/errors';
@@ -11,6 +11,7 @@ import { getErrorMessage, logError, isNotFoundError, isAuthorizationError } from
 export const AdminUserDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { user: currentUser } = useAuth();
   const { confirm } = useConfirm();
   const [user, setUser] = useState<User | null>(null);
@@ -38,7 +39,6 @@ export const AdminUserDetail: React.FC = () => {
     try {
       const response = await adminService.getUserById(id);
 
-      // Handle different response structures
       if (response && response.data) {
         setUser(response.data);
         setEditForm({
@@ -46,13 +46,13 @@ export const AdminUserDetail: React.FC = () => {
           email: response.data.email,
           phone: response.data.phone,
         });
-      } else if (response && response.user) {
-        // Handle direct user property
-        setUser(response.user);
+      } else if (response && typeof response === 'object' && 'user' in response) {
+        const typedResponse = response as { user: User };
+        setUser(typedResponse.user);
         setEditForm({
-          name: response.user.name,
-          email: response.user.email,
-          phone: response.user.phone,
+          name: typedResponse.user.name,
+          email: typedResponse.user.email,
+          phone: typedResponse.user.phone,
         });
       } else {
         console.error('Unexpected user detail response structure:', response);
@@ -83,17 +83,17 @@ export const AdminUserDetail: React.FC = () => {
     try {
       const response = await adminService.updateUser(id, editForm);
 
-      // Handle different response structures
       if (response && response.data) {
         setUser(response.data);
-      } else if (response && response.user) {
-        setUser(response.user);
+      } else if (response && typeof response === 'object' && 'user' in response) {
+        const typedResponse = response as { user: User };
+        setUser(typedResponse.user);
       } else {
         console.warn('Unexpected update response structure:', response);
-        // Refresh user data to get latest state
+
         await fetchUser();
       }
-      
+
       setIsEditing(false);
       toast.success('User updated successfully');
     } catch (error: unknown) {
@@ -224,9 +224,7 @@ export const AdminUserDetail: React.FC = () => {
             {isEditing ? (
               <form onSubmit={handleUpdateUser} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                   <input
                     type="text"
                     value={editForm.name}
@@ -237,9 +235,7 @@ export const AdminUserDetail: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                   <input
                     type="email"
                     value={editForm.email}
@@ -250,9 +246,7 @@ export const AdminUserDetail: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                   <input
                     type="tel"
                     value={editForm.phone}
@@ -285,7 +279,7 @@ export const AdminUserDetail: React.FC = () => {
               </form>
             ) : (
               <div className="space-y-6">
-                {/* Profile Picture */}
+                {}
                 <div className="flex justify-center">
                   <div className="relative">
                     {user.avatar ? (
@@ -304,7 +298,7 @@ export const AdminUserDetail: React.FC = () => {
                   </div>
                 </div>
 
-                {/* User Information */}
+                {}
                 <div className="space-y-4">
                   <div className="border-b pb-4">
                     <h3 className="text-sm font-medium text-gray-500">User ID</h3>
@@ -368,7 +362,7 @@ export const AdminUserDetail: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {}
                 <div className="space-y-4 pt-4">
                   <div className="flex gap-4">
                     <Button

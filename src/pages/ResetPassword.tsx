@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
 import { ErrorAlert } from '@/components/common/ErrorAlert';
@@ -12,19 +12,19 @@ import { authService } from '@/services';
 export const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useResponsiveToast();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Get email from navigation state if available
-  const emailFromState = (location.state as { email?: string })?.email || '';
+  const identifierFromState = (location.state as { identifier?: string })?.identifier || '';
 
   const initialValues = {
     ...resetPasswordInitialValues,
-    email: emailFromState,
+    identifier: identifierFromState,
   };
 
   const handleSubmit = async (values: {
-    email: string;
+    identifier: string;
     otp: string;
     newPassword: string;
     confirmPassword: string;
@@ -34,13 +34,15 @@ export const ResetPassword: React.FC = () => {
 
     try {
       const response = await authService.resetPassword({
-        email: values.email,
+        identifier: values.identifier,
         otp: values.otp,
         newPassword: values.newPassword,
       });
 
       if (response.success) {
-        toast.success(response.message || 'Password reset successful! Please login with your new password.');
+        toast.success(
+          response.message || 'Password reset successful! Please login with your new password.',
+        );
         navigate('/login');
       }
     } catch (err: any) {
@@ -53,21 +55,16 @@ export const ResetPassword: React.FC = () => {
   };
 
   return (
-    <AuthLayout
-      title="Pattinambakkam_Fish_World"
-      subtitle="Create your new password"
-    >
+    <AuthLayout title="Pattinambakkam_Fish_World" subtitle="Create your new password">
       <div className="space-y-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900">Reset Password</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Enter the code sent to your email and create a new password
+            Enter the code sent to your email or phone and create a new password
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert message={error} onDismiss={() => setError(null)} />
-        )}
+        {error && <ErrorAlert message={error} onDismiss={() => setError(null)} />}
 
         <Formik
           initialValues={initialValues}
@@ -78,10 +75,10 @@ export const ResetPassword: React.FC = () => {
           {(formik) => (
             <Form className="space-y-4">
               <FormField
-                name="email"
-                label="Email Address"
-                type="email"
-                placeholder="Enter your email"
+                name="identifier"
+                label="Email or Phone Number"
+                type="text"
+                placeholder="Enter your email or phone number"
                 formik={formik}
               />
 
@@ -119,13 +116,7 @@ export const ResetPassword: React.FC = () => {
                 </ul>
               </div>
 
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                loading={isSubmitting}
-              >
+              <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
                 Reset Password
               </Button>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useAuth } from '@/hooks/useAuth';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
 import { ErrorAlert } from '@/components/common/ErrorAlert';
@@ -11,25 +11,22 @@ import { useLoginForm } from '@/hooks/useLoginForm';
 export const Login: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const { formik, isSubmitting, error, dismissError } = useLoginForm({
     onSuccess: () => {
       navigate('/home');
     },
     onError: (errorMessage) => {
       toast.error(errorMessage);
-    }
+    },
   });
 
-  // Redirect if already logged in
   if (user) {
     return <Navigate to="/home" replace />;
   }
 
   return (
-    <AuthLayout 
-      title="Pattinambakkam_Fish_World" 
-      subtitle="Welcome back to your creative journey"
-    >
+    <AuthLayout title="Pattinambakkam_Fish_World" subtitle="Welcome back to your creative journey">
       <div className="space-y-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900">Sign in to your account</h2>
@@ -41,9 +38,7 @@ export const Login: React.FC = () => {
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert message={error} onDismiss={dismissError} />
-        )}
+        {error && <ErrorAlert message={error} onDismiss={dismissError} />}
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <FormField
@@ -63,19 +58,16 @@ export const Login: React.FC = () => {
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link to="/forgot-password" className="font-medium text-primary-600 hover:text-primary-500">
+              <Link
+                to="/forgot-password"
+                className="font-medium text-primary-600 hover:text-primary-500"
+              >
                 Forgot your password?
               </Link>
             </div>
           </div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            fullWidth
-            loading={isSubmitting}
-          >
+          <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
             Sign In
           </Button>
 

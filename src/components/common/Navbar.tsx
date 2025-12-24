@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 import { LogoIcon } from './icons/LogoIcon';
+import { productService } from '@/services';
 
 interface NavbarProps {
   className?: string;
@@ -9,11 +11,31 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
   const { user, logout } = useAuth();
+  const { itemCount } = useCart();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [productCount, setProductCount] = useState(0);
 
-  // Check if current page is home for transparent navbar
   const isHomePage = location.pathname === '/';
+
+  // Fetch product count
+  useEffect(() => {
+    const fetchProductCount = async () => {
+      try {
+        const response = await productService.getAllProducts({
+          page: 1,
+          limit: 1,
+          isAvailable: true,
+        });
+        if (response.success) {
+          setProductCount(response.pagination.totalProducts);
+        }
+      } catch (error) {
+        console.error('Error fetching product count:', error);
+      }
+    };
+    fetchProductCount();
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -25,13 +47,13 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isHomePage 
-          ? 'bg-transparent' 
-          : 'bg-white/95 backdrop-blur-md shadow-lg'
-      } ${className}`}>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isHomePage ? 'bg-transparent' : 'bg-white/95 backdrop-blur-md shadow-lg'
+        } ${className}`}
+      >
         <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 py-4 max-w-7xl mx-auto">
-          {/* Logo */}
+          {}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group" onClick={closeMobileMenu}>
             <div className="relative group-hover:scale-110 transition-transform duration-300">
               <LogoIcon size={40} className="sm:hidden" />
@@ -39,46 +61,116 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
             </div>
             <div className="hidden xs:block">
-              <h1 className={`text-lg sm:text-xl lg:text-2xl font-bold ${
-                isHomePage ? 'text-white' : 'text-gray-800'
-              } group-hover:text-primary-500 transition-colors`}>
+              <h1
+                className={`text-lg sm:text-xl lg:text-2xl font-bold ${
+                  isHomePage ? 'text-white' : 'text-black'
+                } group-hover:text-primary-500 transition-colors`}
+              >
                 <span className="hidden sm:inline">Pattinambakkam</span>
                 <span className="sm:hidden">PFW</span>
-                <span className={`${isHomePage ? 'text-amber-300' : 'text-primary-600'}`}> Fish World</span>
+                <span className={`${isHomePage ? 'text-amber-300' : 'text-primary-600'}`}>
+                  {' '}
+                  Fish World
+                </span>
               </h1>
             </div>
+            {location.pathname === '/products' && (
+              <div className="ml-2 flex flex-col md:hidden">
+                <p className="text-sm sm:text-base font-bold text-yellow-500">🐟 Fresh Seafood</p>
+                <p className="text-xs text-blue-600">{productCount} products</p>
+              </div>
+            )}
           </Link>
 
-          {/* Desktop Navigation */}
+          {}
           <div className="hidden md:flex items-center gap-6">
-            {/* Nav Links */}
+            {}
             <div className="flex items-center gap-1">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                  location.pathname === '/' 
-                    ? isHomePage ? 'bg-white/20 text-white' : 'bg-primary-100 text-primary-700'
-                    : isHomePage ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                  location.pathname === '/'
+                    ? isHomePage
+                      ? 'bg-white/20 text-white'
+                      : 'bg-primary-100 text-primary-700'
+                    : isHomePage
+                    ? 'bg-blue-900/70 text-white hover:bg-blue-900'
+                    : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
                 }`}
               >
                 Home
               </Link>
-              <Link 
-                to="/products" 
+              <Link
+                to="/products"
                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                  location.pathname === '/products' 
-                    ? isHomePage ? 'bg-white/20 text-white' : 'bg-primary-100 text-primary-700'
-                    : isHomePage ? 'text-white/80 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
+                  location.pathname === '/products'
+                    ? isHomePage
+                      ? 'bg-white/20 text-white'
+                      : 'bg-primary-100 text-primary-700'
+                    : isHomePage
+                    ? 'bg-blue-900/70 text-white hover:bg-blue-900'
+                    : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
                 }`}
               >
                 Products
               </Link>
+              {user && (
+                <Link
+                  to="/my-orders"
+                  className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
+                    location.pathname === '/my-orders'
+                      ? isHomePage
+                        ? 'bg-white/20 text-white'
+                        : 'bg-primary-100 text-primary-700'
+                      : isHomePage
+                      ? 'bg-blue-900/70 text-white hover:bg-blue-900'
+                      : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                  }`}
+                >
+                  My Orders
+                </Link>
+              )}
             </div>
 
-            {/* Auth Section */}
+            {}
+            {user && (
+              <Link
+                to="/cart"
+                className={`relative p-2 rounded-xl transition-all duration-300 ${
+                  location.pathname === '/cart'
+                    ? isHomePage
+                      ? 'bg-white/20'
+                      : 'bg-cyan-100'
+                    : isHomePage
+                    ? 'bg-blue-900/70 hover:bg-blue-900'
+                    : 'hover:bg-gray-100'
+                }`}
+              >
+                <svg
+                  className={`w-6 h-6 ${isHomePage ? 'text-white' : 'text-gray-700'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
+              </Link>
+            )}
+
+            {}
             {user ? (
               <div className="flex items-center gap-3">
-                {/* Admin Badge */}
+                {}
                 {user.role === 'admin' && (
                   <Link
                     to="/admin/dashboard"
@@ -88,11 +180,11 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                   </Link>
                 )}
 
-                {/* User Profile Dropdown */}
+                {}
                 <Link
                   to="/profile"
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300 group ${
-                    isHomePage ? 'hover:bg-white/10' : 'hover:bg-gray-100'
+                    isHomePage ? 'bg-blue-900/70 hover:bg-blue-900' : 'hover:bg-gray-100'
                   }`}
                 >
                   <div className="relative">
@@ -102,7 +194,11 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                     <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                   <div className="hidden lg:block">
-                    <p className={`text-sm font-semibold ${isHomePage ? 'text-white' : 'text-gray-800'}`}>
+                    <p
+                      className={`text-sm font-semibold ${
+                        isHomePage ? 'text-white' : 'text-gray-800'
+                      }`}
+                    >
                       {user.name}
                     </p>
                     <p className={`text-xs ${isHomePage ? 'text-white/70' : 'text-gray-500'}`}>
@@ -111,13 +207,13 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                   </div>
                 </Link>
 
-                {/* Logout Button */}
+                {}
                 <button
                   onClick={logout}
                   className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                    isHomePage 
-                      ? 'text-white/80 hover:text-white hover:bg-white/10 border border-white/30' 
-                      : 'text-gray-600 hover:text-red-600 hover:bg-red-50 border border-gray-200'
+                    isHomePage
+                      ? 'bg-blue-900/70 text-white hover:bg-blue-900 border border-blue-800'
+                      : 'bg-gray-200 text-gray-900 hover:bg-red-200 border border-gray-400'
                   }`}
                 >
                   Logout
@@ -126,11 +222,13 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             ) : (
               <div className="flex items-center gap-3">
                 <Link to="/login">
-                  <button className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 ${
-                    isHomePage 
-                      ? 'text-white border-2 border-white/50 hover:bg-white hover:text-primary-600' 
-                      : 'text-primary-600 border-2 border-primary-500 hover:bg-primary-50'
-                  }`}>
+                  <button
+                    className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 ${
+                      isHomePage
+                        ? 'text-white border-2 border-white/50 hover:bg-white hover:text-primary-600'
+                        : 'text-primary-600 border-2 border-primary-500 hover:bg-primary-50'
+                    }`}
+                  >
                     Login
                   </button>
                 </Link>
@@ -143,44 +241,104 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={toggleMobileMenu}
-            className={`md:hidden p-2 rounded-xl transition-all duration-300 ${
-              isHomePage 
-                ? 'text-white hover:bg-white/10' 
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? (
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+          {}
+          <div className="flex items-center gap-2 md:hidden">
+            {}
+            {user && (
+              <Link
+                to="/cart"
+                className={`relative transition-all duration-300 ${
+                  isHomePage
+                    ? `rounded-full p-2.5 ${
+                        location.pathname === '/cart'
+                          ? 'bg-blue-900/90'
+                          : 'bg-blue-900/70 hover:bg-blue-900'
+                      }`
+                    : `p-2 rounded-xl ${
+                        location.pathname === '/cart' ? 'bg-cyan-100' : 'hover:bg-gray-100'
+                      }`
+                }`}
+              >
+                <svg
+                  className={`${isHomePage ? 'w-6 h-6 text-white' : 'w-6 h-6 text-black'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
+              </Link>
             )}
-          </button>
+
+            {}
+            <button
+              onClick={toggleMobileMenu}
+              className={`transition-all duration-300 ${
+                isHomePage
+                  ? 'rounded-full p-2.5 bg-blue-900/70 hover:bg-blue-900'
+                  : 'p-2 rounded-xl text-gray-700 hover:bg-gray-100'
+              }`}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <svg
+                  className={`${isHomePage ? 'w-7 h-7 text-white' : 'w-7 h-7 text-black'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className={`${isHomePage ? 'w-7 h-7 text-white' : 'w-7 h-7 text-black'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      <div 
+      {}
+      <div
         className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
           isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={closeMobileMenu}
       />
 
-      {/* Mobile Menu Drawer */}
-      <div 
+      {}
+      <div
         className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white z-50 md:hidden transform transition-transform duration-300 ease-out shadow-2xl ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {/* Mobile Menu Header */}
+        {}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
             <LogoIcon size={40} />
@@ -191,14 +349,19 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
-        {/* Mobile Menu Content */}
+        {}
         <div className="p-4 space-y-2">
-          {/* User Profile Card (if logged in) */}
+          {}
           {user && (
             <div className="p-4 mb-4 bg-gradient-to-br from-primary-50 to-cyan-50 rounded-2xl border border-primary-100">
               <div className="flex items-center gap-3">
@@ -213,13 +376,13 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             </div>
           )}
 
-          {/* Navigation Links */}
+          {}
           <Link
             to="/"
             onClick={closeMobileMenu}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-              location.pathname === '/' 
-                ? 'bg-primary-100 text-primary-700' 
+              location.pathname === '/'
+                ? 'bg-primary-100 text-primary-700'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -231,8 +394,8 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             to="/products"
             onClick={closeMobileMenu}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-              location.pathname === '/products' 
-                ? 'bg-primary-100 text-primary-700' 
+              location.pathname === '/products'
+                ? 'bg-primary-100 text-primary-700'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -241,13 +404,46 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           </Link>
 
           {user && (
+            <Link
+              to="/cart"
+              onClick={closeMobileMenu}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                location.pathname === '/cart'
+                  ? 'bg-primary-100 text-primary-700'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <span className="text-xl">🛒</span>
+              My Cart
+              {itemCount > 0 && (
+                <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">
+                  {itemCount}
+                </span>
+              )}
+            </Link>
+          )}
+
+          {user && (
             <>
+              <Link
+                to="/my-orders"
+                onClick={closeMobileMenu}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                  location.pathname === '/my-orders'
+                    ? 'bg-primary-100 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span className="text-xl">📦</span>
+                My Orders
+              </Link>
+
               <Link
                 to="/profile"
                 onClick={closeMobileMenu}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-                  location.pathname === '/profile' 
-                    ? 'bg-primary-100 text-primary-700' 
+                  location.pathname === '/profile'
+                    ? 'bg-primary-100 text-primary-700'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -268,22 +464,30 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             </>
           )}
 
-          {/* Divider */}
+          {}
           <div className="my-4 border-t border-gray-100"></div>
 
-          {/* Auth Actions */}
+          {}
           {user ? (
             <button
-              onClick={() => { logout(); closeMobileMenu(); }}
+              onClick={() => {
+                logout();
+                closeMobileMenu();
+              }}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-all"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
               </svg>
               Logout
             </button>
           ) : (
-            <div className="space-y-3">
+            <div className="mb-32 flex flex-col gap-8">
               <Link to="/login" onClick={closeMobileMenu}>
                 <button className="w-full px-4 py-3 rounded-xl font-semibold text-primary-600 border-2 border-primary-500 hover:bg-primary-50 transition-all">
                   Login
@@ -298,7 +502,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           )}
         </div>
 
-        {/* Mobile Menu Footer */}
+        {}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-gray-50">
           <div className="text-center">
             <p className="text-sm text-gray-500">🌊 Fresh Fish, Daily Catch</p>
@@ -307,7 +511,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
         </div>
       </div>
 
-      {/* Spacer for fixed navbar */}
+      {}
       <div className={isHomePage ? '' : 'h-20'}></div>
     </>
   );

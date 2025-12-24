@@ -1,4 +1,4 @@
- import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import { FieldInputProps } from 'formik';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -31,16 +31,15 @@ export const Input: React.FC<InputProps> = ({
         {...props}
         className={`
           w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 
-          ${hasError
-            ? 'border-red-500 focus:ring-red-500'
-            : 'border-gray-300 focus:ring-primary-500'
+          ${
+            hasError
+              ? 'border-red-500 focus:ring-red-500'
+              : 'border-gray-300 focus:ring-primary-500'
           }
           ${className}
         `}
       />
-      {hasError && (
-        <p className="mt-1 text-sm text-red-500">{error}</p>
-      )}
+      {hasError && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );
 };

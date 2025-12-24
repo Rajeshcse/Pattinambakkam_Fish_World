@@ -4,11 +4,6 @@ import { adminService } from '@/services';
 import { useAuth } from '@/hooks/useAuth';
 import { getErrorMessage, handleApiError } from '@/utils/errors';
 
-/**
- * Admin Test Component
- * Use this to diagnose admin API connection issues
- * Access at: /admin/test
- */
 export const AdminTest: React.FC = () => {
   const { user, token } = useAuth();
   const [results, setResults] = useState<any[]>([]);
@@ -25,20 +20,25 @@ export const AdminTest: React.FC = () => {
     setResults([]);
     setTesting(true);
 
-    // Test 1: Check user authentication
-    addResult('Authentication', user ? 'success' : 'error', user ? 'User is logged in' : 'User is not logged in', { user, token });
+    
+    addResult(
+      'Authentication',
+      user ? 'success' : 'error',
+      user ? 'User is logged in' : 'User is not logged in',
+      { user, token },
+    );
 
-    // Test 2: Check admin role
+    
     if (user) {
       addResult(
         'Admin Role',
         user.role === 'admin' ? 'success' : 'error',
         user.role === 'admin' ? 'User has admin role' : `User role is '${user.role}', not 'admin'`,
-        { role: user.role }
+        { role: user.role },
       );
     }
 
-    // Test 3: Check localStorage
+    
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('accessToken');
     addResult(
@@ -49,43 +49,33 @@ export const AdminTest: React.FC = () => {
         hasUser: !!storedUser,
         hasToken: !!storedToken,
         user: storedUser ? JSON.parse(storedUser) : null,
-      }
+      },
     );
 
-    // Test 4: Test dashboard API
+    
     try {
       const response = await adminService.getDashboardStats();
       addResult('Dashboard API', 'success', 'Dashboard endpoint responded', response);
     } catch (error: unknown) {
       const errorMessage = getErrorMessage(error) || 'API call failed';
       const appError = handleApiError(error);
-      addResult(
-        'Dashboard API',
-        'error',
-        errorMessage,
-        {
-          statusCode: appError.statusCode,
-          details: appError.details,
-        }
-      );
+      addResult('Dashboard API', 'error', errorMessage, {
+        statusCode: appError.statusCode,
+        details: appError.details,
+      });
     }
 
-    // Test 5: Test users API
+    
     try {
       const response = await adminService.getAllUsers({ page: 1, limit: 1 });
       addResult('Users API', 'success', 'Users endpoint responded', response);
     } catch (error: unknown) {
       const errorMessage = getErrorMessage(error) || 'API call failed';
       const appError = handleApiError(error);
-      addResult(
-        'Users API',
-        'error',
-        errorMessage,
-        {
-          statusCode: appError.statusCode,
-          details: appError.details,
-        }
-      );
+      addResult('Users API', 'error', errorMessage, {
+        statusCode: appError.statusCode,
+        details: appError.details,
+      });
     }
 
     setTesting(false);
@@ -156,9 +146,7 @@ export const AdminTest: React.FC = () => {
                               Show details
                             </summary>
                             <div className="bg-gray-100 p-2 rounded-md mt-2 overflow-x-auto">
-                              <pre className="text-xs">
-                                {JSON.stringify(result.data, null, 2)}
-                              </pre>
+                              <pre className="text-xs">{JSON.stringify(result.data, null, 2)}</pre>
                             </div>
                           </details>
                         )}
@@ -178,21 +166,20 @@ export const AdminTest: React.FC = () => {
                     <li>
                       Your account needs admin role. Update in MongoDB:
                       <code className="block bg-blue-100 p-2 mt-1 rounded">
-                        db.users.updateOne({'{email: "your@email.com"}'}, {'{ $set: { role: "admin" } }'})
+                        db.users.updateOne({'{email: "your@email.com"}'},{' '}
+                        {'{ $set: { role: "admin" } }'})
                       </code>
                     </li>
                   )}
                   {results.some(
                     (r) =>
                       r.status === 'error' &&
-                      (r.test === 'Dashboard API' || r.test === 'Users API')
+                      (r.test === 'Dashboard API' || r.test === 'Users API'),
                   ) && (
                     <>
                       <li>Check if backend server is running on port 3001</li>
                       <li>Check browser console for detailed error messages</li>
-                      <li>
-                        Verify CORS is enabled in backend for http://localhost:5173
-                      </li>
+                      <li>Verify CORS is enabled in backend for http://localhost:5173</li>
                     </>
                   )}
                 </ul>

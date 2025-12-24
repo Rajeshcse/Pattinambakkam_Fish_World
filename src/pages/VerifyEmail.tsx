@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { toast } from 'react-toastify';
+import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/common';
 import { FormField } from '@/components/common/FormField';
@@ -13,21 +13,20 @@ import { authService } from '@/services';
 export const VerifyEmail: React.FC = () => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
+  const toast = useResponsiveToast();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSendingOTP, setIsSendingOTP] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
 
-  // Redirect if user is already verified
   useEffect(() => {
     if (user?.isVerified) {
-      toast.info('Your email is already verified');
+      toast.info('Your phone number is already verified');
       navigate('/profile');
     }
   }, [user, navigate]);
 
-  // Cooldown timer for resend
   useEffect(() => {
     if (resendCooldown > 0) {
       const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
@@ -36,18 +35,24 @@ export const VerifyEmail: React.FC = () => {
   }, [resendCooldown]);
 
   const handleSendOTP = async () => {
+    console.log('🚀 Starting OTP send process...');
     setIsSendingOTP(true);
     setError(null);
 
     try {
-      const response = await authService.sendVerificationEmail();
+      console.log('📤 Calling authService.sendVerificationSMS()...');
+      const response = await authService.sendVerificationSMS();
+      console.log('✅ OTP Send Response:', response);
+
       if (response.success) {
         setOtpSent(true);
-        setResendCooldown(60); // 60 second cooldown
-        toast.success(response.message || 'Verification OTP sent to your email');
+        setResendCooldown(60);
+        toast.success(response.message || 'Verification OTP sent to your phone');
+        console.log('🎉 OTP sent successfully!');
       }
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 'Failed to send verification email';
+      console.error('❌ Error sending OTP:', err);
+      const errorMessage = err.response?.data?.message || 'Failed to send verification SMS';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -58,17 +63,23 @@ export const VerifyEmail: React.FC = () => {
   const handleResendOTP = async () => {
     if (resendCooldown > 0) return;
 
+    console.log('🔄 Starting OTP resend process...');
     setIsSendingOTP(true);
     setError(null);
 
     try {
-      const response = await authService.resendVerificationEmail();
+      console.log('📤 Calling authService.resendVerificationSMS()...');
+      const response = await authService.resendVerificationSMS();
+      console.log('✅ Resend OTP Response:', response);
+
       if (response.success) {
         setResendCooldown(60);
-        toast.success(response.message || 'New verification OTP sent to your email');
+        toast.success(response.message || 'New verification OTP sent to your phone');
+        console.log('🎉 OTP resent successfully!');
       }
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 'Failed to resend verification email';
+      console.error('❌ Error resending OTP:', err);
+      const errorMessage = err.response?.data?.message || 'Failed to resend verification SMS';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -81,17 +92,16 @@ export const VerifyEmail: React.FC = () => {
     setError(null);
 
     try {
-      const response = await authService.verifyEmail({ otp: values.otp });
+      const response = await authService.verifyPhone({ otp: values.otp });
       if (response.success) {
-        // Update user in context with verified status
         if (user) {
           updateUser({ ...user, isVerified: true });
         }
-        toast.success(response.message || 'Email verified successfully!');
+        toast.success(response.message || 'Phone number verified successfully!');
         navigate('/profile');
       }
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 'Failed to verify email';
+      const errorMessage = err.response?.data?.message || 'Failed to verify phone number';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -105,27 +115,22 @@ export const VerifyEmail: React.FC = () => {
   }
 
   return (
-    <AuthLayout
-      title="Verify Email"
-      subtitle="Secure your account with email verification"
-    >
+    <AuthLayout title="Verify Phone" subtitle="Secure your account with phone verification">
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Email Verification</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Phone Verification</h2>
           <p className="mt-2 text-sm text-gray-600">
-            We'll send a 6-digit OTP to <strong>{user.email}</strong>
+            We'll send a 6-digit OTP to <strong>{user.phone}</strong>
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert message={error} onDismiss={() => setError(null)} />
-        )}
+        {error && <ErrorAlert message={error} onDismiss={() => setError(null)} />}
 
         {!otpSent ? (
           <div className="space-y-4">
             <p className="text-sm text-gray-600">
-              Click the button below to receive a verification code in your email.
-              The code will expire in 10 minutes.
+              Click the button below to receive a verification code via SMS. The code will expire in
+              10 minutes.
             </p>
             <Button
               type="button"
@@ -155,18 +160,12 @@ export const VerifyEmail: React.FC = () => {
                     maxLength={6}
                   />
                   <p className="mt-1 text-xs text-gray-500">
-                    Enter the 6-digit code sent to your email
+                    Enter the 6-digit code sent to your phone
                   </p>
                 </div>
 
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  fullWidth
-                  loading={isSubmitting}
-                >
-                  Verify Email
+                <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
+                  Verify Phone Number
                 </Button>
 
                 <div className="text-center">

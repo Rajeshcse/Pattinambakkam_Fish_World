@@ -14,7 +14,7 @@ export const Fish: React.FC<FishIconProps> = ({
   size = 24,
   color = 'currentColor',
   className = '',
-  variant = 'default'
+  variant = 'default',
 }) => {
   return (
     <svg
@@ -33,7 +33,7 @@ export const Fish: React.FC<FishIconProps> = ({
 export const Truck: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
-  className = ''
+  className = '',
 }) => {
   return (
     <svg
@@ -59,7 +59,7 @@ export const Truck: React.FC<IconProps> = ({
 export const Leaf: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
-  className = ''
+  className = '',
 }) => {
   return (
     <svg
@@ -83,7 +83,7 @@ export const Leaf: React.FC<IconProps> = ({
 export const CheckCircle: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
-  className = ''
+  className = '',
 }) => {
   return (
     <svg
@@ -112,7 +112,7 @@ export const Star: React.FC<StarIconProps> = ({
   size = 24,
   color = 'currentColor',
   className = '',
-  filled = true
+  filled = true,
 }) => {
   return (
     <svg
