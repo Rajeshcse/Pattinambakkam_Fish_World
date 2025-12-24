@@ -45,12 +45,12 @@ export function isError(error: unknown): error is Error {
 
 export function getErrorMessage(error: unknown): string {
   if (isAxiosError(error)) {
-    const responseMessage = error.response?.data?.message;
+    const responseMessage = (error.response?.data as any)?.message;
     if (typeof responseMessage === 'string') {
       return responseMessage;
     }
 
-    const responseError = error.response?.data?.error;
+    const responseError = (error.response?.data as any)?.error;
     if (typeof responseError === 'string') {
       return responseError;
     }
@@ -94,13 +94,13 @@ export function handleApiError(error: unknown, fallbackMessage?: string): AppErr
   if (isAxiosError(error)) {
     const message = getErrorMessage(error);
     const statusCode = error.response?.status;
-    const code = error.response?.data?.code || error.code;
+    const code = (error.response?.data as any)?.code || error.code;
 
     return {
       message: message || fallbackMessage || 'Request failed',
       code,
       statusCode,
-      details: error.response?.data,
+      details: error.response?.data as Record<string, unknown> | undefined,
       originalError: error,
     };
   }
@@ -160,7 +160,7 @@ export function getValidationErrors(error: unknown): ValidationError[] | null {
     return null;
   }
 
-  const errors = error.response?.data?.errors;
+  const errors = (error.response?.data as any)?.errors;
 
   if (Array.isArray(errors) && errors.length > 0) {
     return errors as ValidationError[];

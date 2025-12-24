@@ -35,7 +35,9 @@ export const useLoginForm = (callbacks?: LoginFormCallbacks) => {
           error instanceof Error ? error.message : 'Login failed. Please check your credentials.';
         setError(message);
         callbacks?.onError?.(message);
-        console.error('Login error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Login error:', error);
+        }
       } finally {
         setIsSubmitting(false);
       }

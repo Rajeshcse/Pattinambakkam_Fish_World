@@ -43,9 +43,10 @@ export const AdminUsers: React.FC = () => {
       if (response && response.data && response.data.users) {
         setUsers(response.data.users);
         setPagination(response.data.pagination);
-      } else if (response && response.users) {
-        setUsers(response.users);
-        setPagination(response.pagination);
+      } else if (response && typeof response === 'object' && 'users' in response) {
+        const typedResponse = response as { users: User[]; pagination?: PaginationMeta };
+        setUsers(typedResponse.users);
+        setPagination(typedResponse.pagination || null);
       } else {
         toast.error('Received invalid users data');
         setUsers([]);
@@ -258,9 +259,11 @@ export const AdminUsers: React.FC = () => {
                           <input
                             type="checkbox"
                             checked={users.length > 0 && selectedUsers.length === users.length}
-                            indeterminate={
-                              selectedUsers.length > 0 && selectedUsers.length < users.length
-                            }
+                            ref={(el) => {
+                              if (el) {
+                                el.indeterminate = selectedUsers.length > 0 && selectedUsers.length < users.length;
+                              }
+                            }}
                             onChange={handleSelectAll}
                             className="rounded"
                           />

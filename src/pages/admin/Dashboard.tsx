@@ -158,14 +158,6 @@ export const AdminDashboard: React.FC = () => {
                 📦 Manage Orders
               </Button>
               <Button
-                variant="secondary"
-                size="lg"
-                fullWidth
-                onClick={() => navigate('/admin/users?role=admin')}
-              >
-                View Admins
-              </Button>
-              <Button
                 variant="outline"
                 size="lg"
                 fullWidth

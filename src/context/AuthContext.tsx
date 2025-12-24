@@ -91,7 +91,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
         }
       } catch (error) {
-        console.error('Auth initialization error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Auth initialization error:', error);
+        }
         authService.clearAuthData();
       } finally {
         setLoading(false);
@@ -135,7 +137,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             response.message || 'Welcome to Pattinambakkam_Fish_World! Please verify your email.',
           );
         } else {
-          console.error('Unexpected response structure:', response);
+          if (import.meta.env.DEV) {
+            console.error('Unexpected response structure:', response);
+          }
           throw new Error('Invalid response from server');
         }
       } catch (error: unknown) {
@@ -155,7 +159,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         await authService.logout(refreshToken);
       }
     } catch (error) {
-      console.error('Logout API error:', error);
+      if (import.meta.env.DEV) {
+        console.error('Logout API error:', error);
+      }
     } finally {
       authService.clearAuthData();
       setToken(null);
@@ -169,7 +175,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await authService.logoutAll();
       toast.success('Logged out from all devices successfully');
     } catch (error) {
-      console.error('Logout all API error:', error);
+      if (import.meta.env.DEV) {
+        console.error('Logout all API error:', error);
+      }
       toast.error('Failed to logout from all devices');
     } finally {
       authService.clearAuthData();

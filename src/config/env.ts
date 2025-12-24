@@ -1,11 +1,17 @@
 interface EnvironmentConfig {
   apiBaseUrl: string;
+  whatsappNumber: string;
+  razorpayPaymentLink: string;
   isDev: boolean;
   isProd: boolean;
   isTest: boolean;
 }
 
-const REQUIRED_ENV_VARS = ['VITE_API_BASE_URL'] as const;
+const REQUIRED_ENV_VARS = [
+  'VITE_API_BASE_URL',
+  'VITE_WHATSAPP_NUMBER',
+  'VITE_RAZORPAY_PAYMENT_LINK',
+] as const;
 
 function validateEnvironment(): void {
   const missing: string[] = [];
@@ -30,6 +36,8 @@ Please ensure these variables are defined in your .env file.
 
 Example .env file:
 VITE_API_BASE_URL=http://localhost:3001
+VITE_WHATSAPP_NUMBER=919994072395
+VITE_RAZORPAY_PAYMENT_LINK=https://razorpay.me/@yourusername
 
 For production deployment, set these in your hosting provider's
 environment variable configuration.
@@ -84,6 +92,8 @@ function initializeConfig(): EnvironmentConfig {
 
   return {
     apiBaseUrl,
+    whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER!,
+    razorpayPaymentLink: import.meta.env.VITE_RAZORPAY_PAYMENT_LINK!,
     isDev: import.meta.env.DEV,
     isProd: import.meta.env.PROD,
     isTest: import.meta.env.MODE === 'test',

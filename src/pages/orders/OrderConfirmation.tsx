@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Layout, Loading, Button } from '@/components/common';
 import { orderService } from '@/services';
 import type { Order } from '@/types';
+import { config } from '@/config/env';
 
 const OrderConfirmation: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -273,7 +274,7 @@ const OrderConfirmation: React.FC = () => {
 
                       {}
                       <a
-                        href="https://wa.me/919994072395"
+                        href={`https://wa.me/${config.whatsappNumber}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block mt-3 bg-green-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"

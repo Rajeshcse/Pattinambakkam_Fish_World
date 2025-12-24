@@ -16,7 +16,9 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('Request interceptor error:', error);
+    if (import.meta.env.DEV) {
+      console.error('Request interceptor error:', error);
+    }
     return Promise.reject(error);
   },
 );
@@ -26,7 +28,9 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error(`API Response Error: ${error.response?.status || 'Network Error'}`);
+    if (import.meta.env.DEV) {
+      console.error(`API Response Error: ${error.response?.status || 'Network Error'}`);
+    }
     return Promise.reject(error);
   },
 );

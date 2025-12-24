@@ -7,6 +7,7 @@ import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { orderService } from '@/services';
 import type { DeliveryTimeSlot, CreateOrderRequest } from '@/types';
 import { formatQuantityToWeight } from '@/utils/formatters';
+import { config } from '@/config/env';
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Checkout: React.FC = () => {
     orderNotes: '',
   });
 
-  const RAZORPAY_PAYMENT_LINK = 'https://razorpay.me/@paramanandamrajesh';
+  const RAZORPAY_PAYMENT_LINK = config.razorpayPaymentLink;
 
   const [availableSlots, setAvailableSlots] = useState<
     { slot: DeliveryTimeSlot; available: boolean; reason: string }[]
@@ -138,6 +139,9 @@ const Checkout: React.FC = () => {
         )
         .join('\n') || '';
 
+    // Get the current app URL for admin link
+    const appUrl = window.location.origin;
+
     const message = `🐟 *New Order from Pattinambakkam Fish World*
 
 *Order ID:* ${order.orderId}
@@ -159,7 +163,11 @@ ${items}
 🕐 Time: ${formData.deliveryTime}
 
 ${formData.orderNotes ? `*Special Instructions:*\n${formData.orderNotes}\n` : ''}
-_Please confirm this order. Thank you!_`;
+_Please confirm this order. Thank you!_
+
+📊 *Admin Panel:*
+${appUrl}/admin/products - Manage Products
+${appUrl}/admin/orders - Manage Orders`;
 
     return message;
   };
@@ -208,8 +216,7 @@ _Please confirm this order. Thank you!_`;
 
           const whatsappMessage = generateWhatsAppMessage(order);
           const encodedMessage = encodeURIComponent(whatsappMessage);
-          const whatsappNumber = '919994072395';
-          const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+          const whatsappURL = `https://wa.me/${config.whatsappNumber}?text=${encodedMessage}`;
 
           window.open(whatsappURL, '_blank');
 
@@ -422,39 +429,6 @@ _Please confirm this order. Thank you!_`;
                             Amount: <span className="font-semibold">₹{totalAmount.toFixed(2)}</span>
                           </div>
                           <div className="mt-1 text-xs text-green-600">✓ Quick & convenient</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {}
-                    <div
-                      onClick={() => setPaymentMethod('razorpay-link')}
-                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                        paymentMethod === 'razorpay-link'
-                          ? 'border-cyan-500 bg-cyan-50'
-                          : 'border-gray-300 hover:border-cyan-400'
-                      }`}
-                    >
-                      <div className="flex items-start">
-                        <input
-                          type="radio"
-                          checked={paymentMethod === 'razorpay-link'}
-                          onChange={() => setPaymentMethod('razorpay-link')}
-                          className="mt-1 mr-3"
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-800">💳 Pay Online</h4>
-                          <p className="text-sm text-gray-600 mt-1">
-                            Pay now using UPI, Cards, NetBanking, or Wallets
-                          </p>
-                          <div className="mt-2 flex items-center space-x-1 text-xs">
-                            <span className="text-green-600 font-medium">
-                              ✓ Instant confirmation
-                            </span>
-                          </div>
-                          <div className="mt-1 text-xs text-green-600 font-medium">
-                            ✓ Secure payment
-                          </div>
                         </div>
                       </div>
                     </div>

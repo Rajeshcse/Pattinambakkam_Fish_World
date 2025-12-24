@@ -30,7 +30,9 @@ export const useRegisterForm = (callbacks?: RegisterFormCallbacks) => {
           error instanceof Error ? error.message : 'Registration failed. Please try again.';
         setError(message);
         callbacks?.onError?.(message);
-        console.error('Registration error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Registration error:', error);
+        }
       } finally {
         setIsSubmitting(false);
       }

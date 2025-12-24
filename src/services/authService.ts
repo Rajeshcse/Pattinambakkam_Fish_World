@@ -49,7 +49,7 @@ class AuthService {
           throw new Error('Request timeout - API server may be slow or unreachable');
         }
         if (error.response?.status === 400) {
-          const apiMessage = error.response.data?.message || 'Invalid registration data';
+          const apiMessage = (error.response.data as any)?.message || 'Invalid registration data';
           throw new Error(apiMessage);
         }
         if (error.response?.status && error.response.status >= 500) {
@@ -84,9 +84,7 @@ class AuthService {
   }
 
   async sendVerificationEmail(): Promise<MessageResponse> {
-    console.log('📧 Sending verification email...');
     const response = await apiClient.post<MessageResponse>('/api/auth/send-verification-email');
-    console.log('📧 OTP Response:', response.data);
     return response.data;
   }
 
@@ -96,16 +94,12 @@ class AuthService {
   }
 
   async resendVerificationEmail(): Promise<MessageResponse> {
-    console.log('🔄 Resending verification email...');
     const response = await apiClient.post<MessageResponse>('/api/auth/resend-verification-email');
-    console.log('🔄 Resend OTP Response:', response.data);
     return response.data;
   }
 
   async sendVerificationSMS(): Promise<MessageResponse> {
-    console.log('📱 Sending verification SMS...');
     const response = await apiClient.post<MessageResponse>('/api/auth/send-verification-sms');
-    console.log('📱 SMS OTP Response:', response.data);
     return response.data;
   }
 
@@ -115,9 +109,7 @@ class AuthService {
   }
 
   async resendVerificationSMS(): Promise<MessageResponse> {
-    console.log('🔄 Resending verification SMS...');
     const response = await apiClient.post<MessageResponse>('/api/auth/resend-verification-sms');
-    console.log('🔄 Resend SMS OTP Response:', response.data);
     return response.data;
   }
 

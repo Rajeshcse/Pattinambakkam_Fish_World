@@ -353,11 +353,9 @@ Check:
 - `.env.development` has correct API URL
 - CORS is enabled on backend
 
-**4.Admin :**
-{
-"email": "admin@Pattinambakkam_Fish_World.com",
-"password": "Admin123"
-}
+**4. Admin Access:**
+
+Contact your system administrator for admin credentials.
 
 ## 📚 Additional Resources
 

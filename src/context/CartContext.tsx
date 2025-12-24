@@ -40,7 +40,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     } catch (error: unknown) {
       logError(error, 'CartContext.refreshCart');
 
-      console.error('Failed to refresh cart:', getErrorMessage(error));
+      if (import.meta.env.DEV) {
+        console.error('Failed to refresh cart:', getErrorMessage(error));
+      }
     } finally {
       setLoading(false);
     }

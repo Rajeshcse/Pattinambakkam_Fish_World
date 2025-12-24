@@ -21,9 +21,9 @@ export const ApiTest: React.FC = () => {
   const testConnection = async () => {
     setLoading(true);
 
-    
+
     try {
-      const response = await fetch('http://localhost:3001/api/health');
+      const response = await fetch(`${config.apiBaseUrl}/api/health`);
       if (response.ok) {
         const data = await response.json();
         addResult('Backend Health Check', true, data);

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Layout, Button } from '@/components/common';
+import { config } from '@/config/env';
 
 const PaymentInstructions: React.FC = () => {
   const navigate = useNavigate();
   const toast = useResponsiveToast();
   const [orderId, setOrderId] = useState<string>('');
-  const RAZORPAY_LINK = 'https://razorpay.me/@paramanandamrajesh';
+  const RAZORPAY_LINK = config.razorpayPaymentLink;
 
   useEffect(() => {
     const pendingOrderId = localStorage.getItem('pendingPaymentOrderId');
@@ -171,7 +172,7 @@ const PaymentInstructions: React.FC = () => {
               <p className="text-sm text-gray-600">
                 <strong>Need help?</strong> Contact us on WhatsApp:{' '}
                 <a
-                  href="https://wa.me/919994072395"
+                  href={`https://wa.me/${config.whatsappNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-cyan-600 hover:underline font-semibold"

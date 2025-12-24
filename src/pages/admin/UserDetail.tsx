@@ -46,12 +46,13 @@ export const AdminUserDetail: React.FC = () => {
           email: response.data.email,
           phone: response.data.phone,
         });
-      } else if (response && response.user) {
-        setUser(response.user);
+      } else if (response && typeof response === 'object' && 'user' in response) {
+        const typedResponse = response as { user: User };
+        setUser(typedResponse.user);
         setEditForm({
-          name: response.user.name,
-          email: response.user.email,
-          phone: response.user.phone,
+          name: typedResponse.user.name,
+          email: typedResponse.user.email,
+          phone: typedResponse.user.phone,
         });
       } else {
         console.error('Unexpected user detail response structure:', response);
@@ -84,8 +85,9 @@ export const AdminUserDetail: React.FC = () => {
 
       if (response && response.data) {
         setUser(response.data);
-      } else if (response && response.user) {
-        setUser(response.user);
+      } else if (response && typeof response === 'object' && 'user' in response) {
+        const typedResponse = response as { user: User };
+        setUser(typedResponse.user);
       } else {
         console.warn('Unexpected update response structure:', response);
 

@@ -73,26 +73,24 @@ const ProductForm: React.FC = () => {
         stock: values.stock * 4,
       };
 
-      console.log('Submitting product with values:', productData);
-
       if (isEditMode && id) {
-        const response = await productService.updateProduct(id, productData);
-        console.log('Update response:', response);
+        await productService.updateProduct(id, productData);
         toast.success('Product updated successfully!');
       } else {
-        const response = await productService.createProduct(productData);
-        console.log('Create response:', response);
+        await productService.createProduct(productData);
         toast.success('Product created successfully!');
       }
 
       navigate('/admin/products');
     } catch (error: any) {
-      console.error('Error saving product:', error);
-      console.error('Error details:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-      });
+      if (import.meta.env.DEV) {
+        console.error('Error saving product:', error);
+        console.error('Error details:', {
+          message: error.message,
+          response: error.response?.data,
+          status: error.response?.status,
+        });
+      }
       toast.error(error.response?.data?.message || 'Failed to save product');
     } finally {
       setLoading(false);

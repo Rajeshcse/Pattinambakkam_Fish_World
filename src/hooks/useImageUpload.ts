@@ -36,28 +36,18 @@ export const useImageUpload = (options: ImageUploadOptions = {}): UseImageUpload
     }
 
     try {
-      const originalSize = (file.size / 1024 / 1024).toFixed(2);
-      console.log(`Compressing image: ${file.name}, Size: ${originalSize} MB`);
-
       const compressedFile = await imageCompression(file, compressionOptions);
-      const compressedSize = (compressedFile.size / 1024 / 1024).toFixed(2);
-
-      console.log(`✅ Compressed from ${originalSize}MB to ${compressedSize}MB`);
       return compressedFile;
     } catch (error) {
-      console.warn('⚠️ Compression failed, using original file:', error);
+      if (import.meta.env.DEV) {
+        console.warn('⚠️ Compression failed, using original file:', error);
+      }
       return file;
     }
   };
 
   const uploadSingleImage = async (file: File): Promise<string> => {
     const compressedFile = await compressImage(file);
-
-    console.log(
-      `Uploading image: ${compressedFile.name}, Size: ${(compressedFile.size / 1024 / 1024).toFixed(
-        2,
-      )} MB`,
-    );
 
     const formData = new FormData();
     formData.append('image', compressedFile);
@@ -72,7 +62,6 @@ export const useImageUpload = (options: ImageUploadOptions = {}): UseImageUpload
       throw new Error('No URL returned from upload');
     }
 
-    console.log(`Successfully uploaded: ${response.data.data.url}`);
     return response.data.data.url;
   };
 
@@ -97,7 +86,9 @@ export const useImageUpload = (options: ImageUploadOptions = {}): UseImageUpload
       toast.success(`${uploadedUrls.length} image(s) uploaded successfully!`);
       return [...currentImages, ...uploadedUrls];
     } catch (error: any) {
-      console.error('Upload error:', error);
+      if (import.meta.env.DEV) {
+        console.error('Upload error:', error);
+      }
       toast.error(error.response?.data?.message || 'Failed to upload images');
       return currentImages;
     } finally {

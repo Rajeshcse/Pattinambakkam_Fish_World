@@ -335,6 +335,13 @@ export interface Order {
   status: OrderStatus;
   paymentStatus: PaymentStatus;
   paymentMethod: string;
+  payment?: {
+    method?: string;
+    status?: string;
+    transactionId?: string;
+    razorpayTransactionId?: string;
+    paidAt?: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
