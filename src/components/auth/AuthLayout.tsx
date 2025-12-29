@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Card } from '@/components/common';
-import { Navbar } from '@/components/common/Navbar';
+import { Navbar } from '@/components/common/navbar';
 
 interface AuthLayoutProps {
   children: ReactNode;

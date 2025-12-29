@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Navbar } from './Navbar';
+import { Navbar } from './navbar';
 import { LogoIcon } from './icons/LogoIcon';
 
 interface LayoutProps {
@@ -89,7 +89,7 @@ export const Layout: React.FC<LayoutProps> = ({
           {}
           <div className="pt-8 border-t border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              © 2024 Pattinambakkam Fish World. All rights reserved.
+              © 2026 Pattinambakkam Fish World. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <span className="text-gray-400 text-sm">Made with ❤️ in Chennai</span>

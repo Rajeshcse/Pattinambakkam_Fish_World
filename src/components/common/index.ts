@@ -5,7 +5,7 @@ export { Loading } from './Loading';
 export { FormField } from './FormField';
 export { ErrorAlert } from './ErrorAlert';
 export { ErrorBoundary } from './ErrorBoundary';
-export { Navbar } from './Navbar';
+export { Navbar } from './navbar';
 export { Layout } from './Layout';
 export { Modal } from './Modal';
 export { ConfirmDialog } from './ConfirmDialog';

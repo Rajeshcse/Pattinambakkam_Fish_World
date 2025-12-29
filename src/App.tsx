@@ -44,7 +44,7 @@ const App: React.FC = () => {
       <AuthProvider>
         <CartProvider>
           <ConfirmProvider>
-            <Router>
+            <Router future={{ v7_startTransition: true }}>
               <div className="App">
               <Routes>
                 <Route path="/" element={<Home />} />

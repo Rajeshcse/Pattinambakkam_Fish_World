@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning';
@@ -13,7 +13,10 @@ export const useResponsiveToast = () => {
   const [isDesktop, setIsDesktop] = useState(true);
 
   // Essential toast messages that should show on desktop
-  const essentialMessages = ['login', 'register', 'add to cart', 'added to cart'];
+  const essentialMessages = useMemo(
+    () => ['login', 'register', 'add to cart', 'added to cart'],
+    [],
+  );
 
   useEffect(() => {
     const checkIfDesktop = () => {
@@ -25,37 +28,43 @@ export const useResponsiveToast = () => {
     return () => window.removeEventListener('resize', checkIfDesktop);
   }, []);
 
-  const isEssentialToast = (message: string): boolean => {
-    const lowerMessage = message.toLowerCase();
-    return essentialMessages.some((essential) => lowerMessage.includes(essential));
-  };
+  const isEssentialToast = useCallback(
+    (message: string): boolean => {
+      const lowerMessage = message.toLowerCase();
+      return essentialMessages.some((essential) => lowerMessage.includes(essential));
+    },
+    [essentialMessages],
+  );
 
-  const showToast = {
-    success: (message: string, options?: ToastOptions) => {
-      // On desktop, only show essential toasts; on mobile, show all
-      if (isDesktop ? isEssentialToast(message) : true) {
-        toast.success(message, options);
-      }
-    },
-    error: (message: string, options?: ToastOptions) => {
-      // On desktop, only show essential error toasts; on mobile, show all
-      if (isDesktop ? isEssentialToast(message) : true) {
-        toast.error(message, options);
-      }
-    },
-    info: (message: string, options?: ToastOptions) => {
-      // On desktop, only show essential info toasts; on mobile, show all
-      if (isDesktop ? isEssentialToast(message) : true) {
-        toast.info(message, options);
-      }
-    },
-    warning: (message: string, options?: ToastOptions) => {
-      // On desktop, only show essential warning toasts; on mobile, show all
-      if (isDesktop ? isEssentialToast(message) : true) {
-        toast.warning(message, options);
-      }
-    },
-  };
+  const showToast = useMemo(
+    () => ({
+      success: (message: string, options?: ToastOptions) => {
+        // On desktop, only show essential toasts; on mobile, show all
+        if (isDesktop ? isEssentialToast(message) : true) {
+          toast.success(message, options);
+        }
+      },
+      error: (message: string, options?: ToastOptions) => {
+        // On desktop, only show essential error toasts; on mobile, show all
+        if (isDesktop ? isEssentialToast(message) : true) {
+          toast.error(message, options);
+        }
+      },
+      info: (message: string, options?: ToastOptions) => {
+        // On desktop, only show essential info toasts; on mobile, show all
+        if (isDesktop ? isEssentialToast(message) : true) {
+          toast.info(message, options);
+        }
+      },
+      warning: (message: string, options?: ToastOptions) => {
+        // On desktop, only show essential warning toasts; on mobile, show all
+        if (isDesktop ? isEssentialToast(message) : true) {
+          toast.warning(message, options);
+        }
+      },
+    }),
+    [isDesktop, isEssentialToast],
+  );
 
   return showToast;
 };

@@ -1,4 +1,5 @@
 import apiClient from './api';
+import { storageService } from './storageService';
 import {
   RegisterRequest,
   LoginRequest,
@@ -9,6 +10,7 @@ import {
   ForgotPasswordRequest,
   ResetPasswordRequest,
   ChangePasswordRequest,
+  User,
 } from '@/types';
 import { handleApiError, logError, isAxiosError } from '@/utils/errors';
 
@@ -128,42 +130,37 @@ class AuthService {
     return response.data;
   }
 
-  setAuthData(accessToken: string, refreshToken: string, user: any): void {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    localStorage.setItem('user', JSON.stringify(user));
+  // Storage operations delegated to storageService
+  setAuthData(accessToken: string, refreshToken: string, user: User): void {
+    storageService.setAuthData(accessToken, refreshToken, user);
   }
 
   setAccessToken(accessToken: string): void {
-    localStorage.setItem('accessToken', accessToken);
+    storageService.setAccessToken(accessToken);
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
+    return storageService.getAccessToken();
   }
 
   getRefreshToken(): string | null {
-    return localStorage.getItem('refreshToken');
+    return storageService.getRefreshToken();
   }
 
   getToken(): string | null {
     return this.getAccessToken();
   }
 
-  getUser(): any | null {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+  getUser(): User | null {
+    return storageService.getUser();
   }
 
-  setUser(user: any): void {
-    localStorage.setItem('user', JSON.stringify(user));
+  setUser(user: User): void {
+    storageService.setUser(user);
   }
 
   clearAuthData(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    storageService.clearAuthData();
   }
 
   isAuthenticated(): boolean {
