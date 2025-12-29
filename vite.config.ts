@@ -16,6 +16,7 @@ export default defineConfig({
       '@/hooks': path.resolve(__dirname, './src/hooks'),
       '@/utils': path.resolve(__dirname, './src/utils'),
       '@/validation': path.resolve(__dirname, './src/validation'),
+      '@/organizer': path.resolve(__dirname, './src/organizer'),
     },
   },
   server: {

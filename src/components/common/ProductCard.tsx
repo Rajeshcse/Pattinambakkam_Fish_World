@@ -33,15 +33,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const stockStatus = formatStockStatus(product.stock);
 
+  const handleCardClick = () => {
+    if (!showAdminActions) {
+      navigate(`/products/${product._id}`);
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      {}
+    <div
+      onClick={handleCardClick}
+      className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 ${
+        !showAdminActions ? 'cursor-pointer hover:scale-[1.02]' : ''
+      }`}
+    >
+      {/* Product Image */}
       <div className="relative h-48 bg-gray-200 overflow-hidden">
         {product.images && product.images.length > 0 ? (
           <img
             src={product.images[0]}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src =
@@ -100,9 +111,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className={`text-sm font-semibold ${stockStatus.color}`}>{stockStatus.text}</div>
         </div>
 
-        {}
-        {showAdminActions ? (
-          <div className="flex gap-2">
+        {/* Admin Actions (prevent card click) */}
+        {showAdminActions && (
+          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => onEdit && onEdit(product)}
               className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm font-semibold"
@@ -126,13 +137,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               Delete
             </button>
           </div>
-        ) : (
-          <button
-            onClick={() => navigate(`/products/${product._id}`)}
-            className="w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700 transition-colors font-semibold"
-          >
-            View Details
-          </button>
         )}
       </div>
     </div>

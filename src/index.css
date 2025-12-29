@@ -233,6 +233,19 @@ select:focus {
   }
 }
 
+@keyframes boat-rock {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
 /* Animation Classes */
 .animate-wave {
   animation: wave 3s ease-in-out infinite;
@@ -279,6 +292,10 @@ select:focus {
 
 .animate-scale-pulse {
   animation: scale-pulse 2s ease-in-out infinite;
+}
+
+.animate-boat-rock {
+  animation: boat-rock 3s ease-in-out infinite;
 }
 
 /* Staggered animation delays */

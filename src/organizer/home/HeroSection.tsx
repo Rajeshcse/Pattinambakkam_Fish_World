@@ -13,11 +13,36 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated }) => 
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 flex flex-col items-center justify-center min-h-[90vh]">
         <div className="text-center space-y-5 sm:space-y-8 max-w-4xl w-full">
-          <div className="inline-flex items-center gap-2 px-6 py-3 fresh-badge rounded-full text-white font-bold text-sm uppercase tracking-wider animate-bounce-gentle mt-8 sm:mt-12">
-            <span className="text-xl">🐟</span>
-            <span>Fresh Catch Daily</span>
-            <span className="text-xl">🌊</span>
-          </div>
+          {/* Clickable Fish Boat */}
+          <Link to="/products" className="inline-block mt-8 sm:mt-12">
+            <div className="group relative cursor-pointer transition-all duration-300 hover:scale-110">
+              {/* Boat Container */}
+              <div className="relative inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl shadow-2xl hover:shadow-cyan-500/50 animate-float">
+                {/* Wave Effect Background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                {/* Boat Icon and Text */}
+                <div className="relative z-8 flex items-center gap-3">
+                  <div className="text-left">
+                    <div
+                      className="text-white font-black text-xl  tracking-wide"
+                      style={{
+                        fontFamily: 'Poppins, Arial Black, sans-serif',
+                        textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                      }}
+                    >
+                      Fresh Off The Boat
+                    </div>
+                  </div>
+                  <span className="text-4xl animate-boat-rock">⛵</span>
+                </div>
+
+                {/* Sparkle Effect on Hover */}
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
+                <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-cyan-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping animation-delay-150"></div>
+              </div>
+            </div>
+          </Link>
 
           <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-tight px-2">
             <span className="block glow-text">Pattinambakkam</span>

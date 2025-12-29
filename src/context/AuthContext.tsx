@@ -1,7 +1,8 @@
 import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
 
-import { User, LoginRequest, RegisterRequest, AuthContextType, DecodedToken } from '@/types';
+import { User, LoginRequest, RegisterRequest, AuthContextType } from '@/types';
 import { authService } from '@/services';
+import { tokenService } from '@/services/tokenService';
 import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { getErrorMessage, logError } from '@/utils/errors';
 
@@ -17,38 +18,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const toast = useResponsiveToast();
 
-  const decodeToken = (token: string): DecodedToken | null => {
-    try {
-      const parts = token.split('.');
-      if (parts.length < 2) return null;
-
-      const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-      const decodedPayload = atob(payload);
-      return JSON.parse(decodedPayload) as DecodedToken;
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const isTokenExpired = (token: string): boolean => {
-    const decoded = decodeToken(token);
-    if (!decoded) return true;
-    const currentTime = Date.now() / 1000;
-    return decoded.exp < currentTime;
-  };
-
+  /**
+   * Refresh access token using centralized token service
+   */
   const refreshAccessToken = useCallback(async () => {
-    const storedRefreshToken = authService.getRefreshToken();
-    if (!storedRefreshToken) {
-      throw new Error('No refresh token available');
-    }
-
     try {
-      const response = await authService.refreshToken(storedRefreshToken);
-      if (response.success && response.accessToken) {
-        authService.setAccessToken(response.accessToken);
-        setToken(response.accessToken);
-      }
+      const newToken = await tokenService.refreshAccessToken();
+      setToken(newToken);
     } catch (error: unknown) {
       logError(error, 'AuthContext.refreshAccessToken');
       authService.clearAuthData();
@@ -58,6 +34,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
+  /**
+   * Initialize authentication on app load
+   * Checks stored tokens and refreshes if expired
+   */
   useEffect(() => {
     const initAuth = async () => {
       try {
@@ -66,17 +46,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedUser = authService.getUser();
 
         if (storedToken && storedUser) {
-          if (isTokenExpired(storedToken)) {
+          // Check if token is expired using centralized token service
+          if (tokenService.isTokenExpired(storedToken)) {
             if (storedRefreshToken) {
               try {
-                const response = await authService.refreshToken(storedRefreshToken);
-                if (response.success && response.accessToken) {
-                  authService.setAccessToken(response.accessToken);
-                  setToken(response.accessToken);
-                  setUser(storedUser);
-                } else {
-                  throw new Error('Token refresh failed');
-                }
+                // Use centralized token refresh
+                const newToken = await tokenService.refreshAccessToken();
+                setToken(newToken);
+                setUser(storedUser);
               } catch (refreshError) {
                 authService.clearAuthData();
                 toast.error('Session expired. Please login again.');
@@ -86,6 +63,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               toast.error('Session expired. Please login again.');
             }
           } else {
+            // Token is valid
             setToken(storedToken);
             setUser(storedUser);
           }
@@ -101,7 +79,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     initAuth();
-  }, []);
+  }, [toast]);
 
   const login = useCallback(
     async (credentials: LoginRequest) => {

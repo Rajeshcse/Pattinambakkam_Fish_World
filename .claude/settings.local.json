@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for file in \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\Login.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\Register.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\ForgotPassword.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\ResetPassword.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\ChangePassword.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\VerifyEmail.tsx\")",
+      "Bash(do wc -l \"$file\")",
+      "Bash(done)",
+      "Bash(for file in \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\admin\\\\Dashboard.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\admin\\\\ProductManagement.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\admin\\\\OrderManagement.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\orders\\\\MyOrders.tsx\" \"c:\\\\Pattinambakkam_Fish_World\\\\PFW-SPA\\\\src\\\\pages\\\\orders\\\\OrderDetails.tsx\")",
+      "Bash(wc:*)",
+      "Bash(npm run build:*)",
+      "Bash(mkdir:*)",
+      "Bash(for:*)"
+    ]
+  }
+}
