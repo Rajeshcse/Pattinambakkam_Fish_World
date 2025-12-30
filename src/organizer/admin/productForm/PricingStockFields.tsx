@@ -12,7 +12,7 @@ export const PricingStockFields: React.FC = () => {
       {/* Price Field */}
       <div>
         <label htmlFor="price" className="block text-sm font-semibold text-gray-700 mb-2">
-          Price (₹ per 250g) *
+          Price (₹ per 500g) *
         </label>
         <Field
           type="number"
@@ -24,7 +24,7 @@ export const PricingStockFields: React.FC = () => {
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <p className="mt-1 text-xs text-gray-500">
-          Enter price for 250 grams (e.g., ₹100 for 250g = ₹400 per kg)
+          Enter price for 500 grams (e.g., ₹100 for 500g = ₹200 per kg)
         </p>
         <ErrorMessage name="price" component="div" className="mt-1 text-sm text-red-600" />
       </div>

@@ -122,7 +122,7 @@ export const CartItem: React.FC<CartItemProps> = ({
             <span className="text-base sm:text-lg font-bold text-green-600">
               ₹{item.product.price}
             </span>
-            <span className="text-xs sm:text-sm text-gray-500">/250g</span>
+            <span className="text-xs sm:text-sm text-gray-500">/500g</span>
           </div>
 
           {}

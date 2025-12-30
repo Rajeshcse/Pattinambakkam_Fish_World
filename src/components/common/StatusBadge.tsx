@@ -18,8 +18,8 @@ const statusConfig: Record<
   },
   confirmed: {
     label: 'Confirmed',
-    bgColor: 'bg-green-100',
-    textColor: 'text-green-700',
+    bgColor: 'bg-blue-100',
+    textColor: 'text-blue-700',
     icon: '✅',
   },
   'out-for-delivery': {

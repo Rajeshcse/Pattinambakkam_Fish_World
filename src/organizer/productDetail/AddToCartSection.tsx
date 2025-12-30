@@ -62,7 +62,7 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
               +
             </button>
             <span className="text-xs text-gray-500 ml-2">
-              {quantity} × 250g = {formatQuantityToWeight(quantity)}
+              {quantity} × 500g = {formatQuantityToWeight(quantity)}
             </span>
             <span className="text-xs text-gray-400 ml-2">
               (Max: {formatQuantityToWeight(maxStock)})
