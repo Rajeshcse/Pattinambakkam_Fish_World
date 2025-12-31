@@ -77,7 +77,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           {user && (
             <div className="p-4 mb-4 bg-gradient-to-br from-primary-50 to-cyan-50 rounded-2xl border border-primary-100">
               <div className="flex items-center gap-3">
-                <div className="w-14 h-14 bg-gradient-to-br from-primary-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                <div
+                  className="w-16 h-16 bg-gradient-to-br from-primary-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg flex-shrink-0"
+                  style={{ lineHeight: '1' }}
+                >
                   {user.name?.charAt(0).toUpperCase()}
                 </div>
                 <div>

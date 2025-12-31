@@ -87,7 +87,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {}
         <div className="absolute bottom-2 right-2">
           <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(product.category)}`}
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(
+              product.category,
+            )}`}
           >
             {product.category}
           </span>
@@ -106,7 +108,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex items-center justify-between mb-4">
           <div className="text-2xl font-bold text-green-600">
             ₹{product.price}
-            <span className="text-sm text-gray-500 font-normal">/250g</span>
+            <span className="text-sm text-gray-500 font-normal">/500g</span>
           </div>
           <div className={`text-sm font-semibold ${stockStatus.color}`}>{stockStatus.text}</div>
         </div>

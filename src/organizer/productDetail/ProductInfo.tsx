@@ -15,12 +15,7 @@ interface ProductInfoProps {
  *
  * Displays product name, category badge, price, and stock status
  */
-export const ProductInfo: React.FC<ProductInfoProps> = ({
-  name,
-  category,
-  price,
-  stockStatus,
-}) => {
+export const ProductInfo: React.FC<ProductInfoProps> = ({ name, category, price, stockStatus }) => {
   const getCategoryColor = (cat: string) => {
     const colors: Record<string, string> = {
       Fish: 'bg-blue-100 text-blue-800 border-blue-300',
@@ -51,7 +46,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
       <div className="mb-4">
         <div className="flex items-baseline gap-2">
           <span className="text-3xl font-bold text-green-600">₹{price}</span>
-          <span className="text-base text-gray-500">/250g</span>
+          <span className="text-base text-gray-500">/500g</span>
         </div>
       </div>
 

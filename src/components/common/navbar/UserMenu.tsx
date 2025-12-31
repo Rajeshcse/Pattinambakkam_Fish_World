@@ -36,8 +36,8 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, isHomePage, onLogout }
         }`}
       >
         <div className="relative">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:scale-110 transition-transform">
-            {user.name?.charAt(0).toUpperCase()}
+          <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md group-hover:scale-110 transition-transform leading-none overflow-hidden">
+            <span className="text-center block">{user.name?.charAt(0).toUpperCase()}</span>
           </div>
           <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white"></div>
         </div>

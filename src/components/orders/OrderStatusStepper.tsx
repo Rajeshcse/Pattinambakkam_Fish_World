@@ -47,7 +47,7 @@ export const OrderStatusStepper: React.FC<OrderStatusStepperProps> = ({
         {/* Progress Line */}
         <div className="absolute top-5 left-0 right-0 h-1 bg-gray-200 mx-6">
           <div
-            className="h-full bg-green-500 transition-all duration-500"
+            className="h-full bg-blue-500 transition-all duration-500"
             style={{ width: `${(currentIndex / (steps.length - 1)) * 100}%` }}
           />
         </div>
@@ -63,9 +63,9 @@ export const OrderStatusStepper: React.FC<OrderStatusStepperProps> = ({
                 <div
                   className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-base md:text-lg transition-all duration-300 ${
                     isCompleted
-                      ? 'bg-green-500 text-white md:scale-110'
+                      ? 'bg-blue-500 text-white md:scale-110'
                       : 'bg-gray-200 text-gray-400'
-                  } ${isCurrent ? 'ring-2 md:ring-4 ring-green-200' : ''}`}
+                  } ${isCurrent ? 'ring-2 md:ring-4 ring-blue-200' : ''}`}
                 >
                   {step.icon}
                 </div>
@@ -82,7 +82,7 @@ export const OrderStatusStepper: React.FC<OrderStatusStepperProps> = ({
                 </div>
 
                 {/* Checkmark for completed steps */}
-                {isCompleted && <div className="text-green-500 text-sm md:text-base mt-1">✓</div>}
+                {isCompleted && <div className="text-blue-500 text-sm md:text-base mt-1">✓</div>}
               </div>
             );
           })}

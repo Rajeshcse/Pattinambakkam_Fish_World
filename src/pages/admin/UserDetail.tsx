@@ -289,8 +289,8 @@ export const AdminUserDetail: React.FC = () => {
                         className="w-32 h-32 rounded-full object-cover border-4 border-primary-200"
                       />
                     ) : (
-                      <div className="w-32 h-32 rounded-full bg-primary-200 flex items-center justify-center border-4 border-primary-300">
-                        <span className="text-4xl font-bold text-primary-600">
+                      <div className="w-32 h-32 rounded-full bg-primary-200 flex items-center justify-center border-4 border-primary-300 leading-none overflow-hidden">
+                        <span className="text-3xl font-bold text-primary-600 text-center block">
                           {user.name.charAt(0).toUpperCase()}
                         </span>
                       </div>

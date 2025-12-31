@@ -116,17 +116,21 @@ const ProductManagement: React.FC = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gray-50 py-6 sm:py-8 md:py-12">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           {}
-          <div className="mb-8 flex justify-between items-center">
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Product Management</h1>
-              <p className="text-gray-600">Manage your fish products inventory</p>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-2">
+                Product Management
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-600">
+                Manage your fish products inventory
+              </p>
             </div>
             <button
               onClick={() => navigate('/admin/products/new')}
-              className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold flex items-center gap-2"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold flex items-center justify-center gap-2 text-sm sm:text-base"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -141,30 +145,36 @@ const ProductManagement: React.FC = () => {
           </div>
 
           {}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-600 mb-1">Total Products</div>
-              <div className="text-2xl font-bold text-gray-900">{stats.totalProducts}</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-6">
+            <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-gray-600 mb-1">Total</div>
+              <div className="text-lg sm:text-2xl font-bold text-gray-900">
+                {stats.totalProducts}
+              </div>
             </div>
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-600 mb-1">Available</div>
-              <div className="text-2xl font-bold text-green-600">{stats.availableProducts}</div>
+            <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-gray-600 mb-1">Available</div>
+              <div className="text-lg sm:text-2xl font-bold text-green-600">
+                {stats.availableProducts}
+              </div>
             </div>
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-600 mb-1">Total Stock</div>
-              <div className="text-2xl font-bold text-blue-600">{stats.totalStock} kg</div>
+            <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-gray-600 mb-1">Stock</div>
+              <div className="text-lg sm:text-2xl font-bold text-blue-600">
+                {stats.totalStock} kg
+              </div>
             </div>
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <div className="text-sm text-gray-600 mb-1">Avg Price</div>
-              <div className="text-2xl font-bold text-purple-600">
+            <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-gray-600 mb-1">Avg Price</div>
+              <div className="text-lg sm:text-2xl font-bold text-purple-600">
                 ₹{stats.averagePrice.toFixed(0)}
               </div>
             </div>
           </div>
 
           {}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4">
               {}
               <form onSubmit={handleSearch} className="md:col-span-2">
                 <div className="flex gap-2">
@@ -173,11 +183,11 @@ const ProductManagement: React.FC = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search products..."
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
                     type="submit"
-                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-semibold"
+                    className="px-3 sm:px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-semibold text-xs sm:text-sm whitespace-nowrap"
                   >
                     Search
                   </button>
@@ -196,25 +206,25 @@ const ProductManagement: React.FC = () => {
                     }}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-sm text-gray-700">Show available only</span>
+                  <span className="ml-2 text-xs sm:text-sm text-gray-700">Available only</span>
                 </label>
               </div>
             </div>
 
             {}
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => {
                   setSelectedCategory('');
                   setCurrentPage(1);
                 }}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors ${
                   selectedCategory === ''
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                All Categories
+                All
               </button>
               {categories.map((category) => (
                 <button
@@ -223,7 +233,7 @@ const ProductManagement: React.FC = () => {
                     setSelectedCategory(category);
                     setCurrentPage(1);
                   }}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                  className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors ${
                     selectedCategory === category
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -239,9 +249,9 @@ const ProductManagement: React.FC = () => {
           {loading ? (
             <Loading fullScreen={false} text="Loading products..." />
           ) : products.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-lg">
+            <div className="text-center py-8 sm:py-12 bg-white rounded-lg">
               <svg
-                className="mx-auto h-12 w-12 text-gray-400"
+                className="mx-auto h-10 sm:h-12 w-10 sm:w-12 text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -254,17 +264,19 @@ const ProductManagement: React.FC = () => {
                 />
               </svg>
               <h3 className="mt-2 text-sm font-medium text-gray-900">No products found</h3>
-              <p className="mt-1 text-sm text-gray-500 mb-4">Get started by adding a new product</p>
+              <p className="mt-1 text-xs sm:text-sm text-gray-500 mb-4">
+                Get started by adding a new product
+              </p>
               <button
                 onClick={() => navigate('/admin/products/new')}
-                className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold"
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold text-sm"
               >
                 + Add New Product
               </button>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {products.map((product) => (
                   <ProductCard
                     key={product._id}
@@ -279,11 +291,11 @@ const ProductManagement: React.FC = () => {
 
               {}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-2">
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className={`px-4 py-2 rounded-md font-semibold ${
+                    className={`w-full sm:w-auto px-3 sm:px-4 py-2 rounded-md font-semibold text-sm ${
                       currentPage === 1
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -292,7 +304,7 @@ const ProductManagement: React.FC = () => {
                     Previous
                   </button>
 
-                  <div className="flex gap-1">
+                  <div className="flex gap-1 flex-wrap justify-center">
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
                       if (
                         page === 1 ||
@@ -303,7 +315,7 @@ const ProductManagement: React.FC = () => {
                           <button
                             key={page}
                             onClick={() => handlePageChange(page)}
-                            className={`px-4 py-2 rounded-md font-semibold ${
+                            className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-md font-semibold text-xs sm:text-sm ${
                               currentPage === page
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -314,7 +326,7 @@ const ProductManagement: React.FC = () => {
                         );
                       } else if (page === currentPage - 2 || page === currentPage + 2) {
                         return (
-                          <span key={page} className="px-2 py-2 text-gray-400">
+                          <span key={page} className="px-1 py-2 text-gray-400 text-xs sm:text-sm">
                             ...
                           </span>
                         );
@@ -326,7 +338,7 @@ const ProductManagement: React.FC = () => {
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className={`px-4 py-2 rounded-md font-semibold ${
+                    className={`w-full sm:w-auto px-3 sm:px-4 py-2 rounded-md font-semibold text-sm ${
                       currentPage === totalPages
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'

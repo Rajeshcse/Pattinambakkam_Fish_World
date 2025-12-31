@@ -29,7 +29,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gradient: 'from-teal-600/30 to-emerald-800/30',
     rating: 5,
     category: 'Fish',
-    unit: '250g',
+    unit: '500g',
   },
   {
     id: 'squid',
@@ -43,7 +43,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gradient: 'from-purple-600/30 to-indigo-800/30',
     rating: 5,
     category: 'Squid',
-    unit: '250g',
+    unit: '500g',
   },
   {
     id: 'tiger-prawns',
@@ -57,7 +57,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gradient: 'from-orange-600/30 to-red-800/30',
     rating: 5,
     category: 'Prawn',
-    unit: '250g',
+    unit: '500g',
   },
   {
     id: 'sea-crab',
@@ -71,6 +71,6 @@ export const featuredProducts: FeaturedProduct[] = [
     gradient: 'from-amber-600/30 to-orange-800/30',
     rating: 4,
     category: 'Crab',
-    unit: '250g',
+    unit: '500g',
   },
 ];

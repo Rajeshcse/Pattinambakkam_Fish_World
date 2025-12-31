@@ -202,8 +202,8 @@ export interface FishProduct {
   _id: string;
   name: string;
   category: ProductCategory;
-  price: number; // Price per 250g unit
-  stock: number; // Stock in 250g units (e.g., 100 units = 25kg)
+  price: number; // Price per 500g unit
+  stock: number; // Stock in 500g units (e.g., 50 units = 25kg)
   description: string;
   images: string[];
   createdBy: string;
@@ -215,8 +215,8 @@ export interface FishProduct {
 export interface CreateProductRequest {
   name: string;
   category: ProductCategory;
-  price: number; // Price per 250g unit
-  stock: number; // Stock in 250g units
+  price: number; // Price per 500g unit
+  stock: number; // Stock in 500g units
   description?: string;
   images?: string[];
 }
@@ -272,7 +272,7 @@ export interface ProductResponse {
 export interface CartItem {
   _id: string;
   product: FishProduct;
-  quantity: number; // Quantity in 250g units (e.g., 4 = 1kg)
+  quantity: number; // Quantity in 500g units (e.g., 2 = 1kg)
   addedAt: string;
 }
 

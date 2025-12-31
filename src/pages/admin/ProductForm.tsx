@@ -75,7 +75,7 @@ const ProductForm: React.FC = () => {
     try {
       setLoading(true);
 
-      // Convert stock from kg to units (1 kg = 4 units of 250g)
+      // Convert stock from kg to units (1 kg = 2 units of 500g)
       const productData = {
         ...values,
         stock: values.stock * 4,
@@ -136,7 +136,9 @@ const ProductForm: React.FC = () => {
                     uploading={uploading}
                     imagePreviews={imagePreviews}
                     onImageUpload={(e) => handleImageUpload(e, values.images || [], setFieldValue)}
-                    onRemoveImage={(index) => removeImage(index, values.images || [], setFieldValue)}
+                    onRemoveImage={(index) =>
+                      removeImage(index, values.images || [], setFieldValue)
+                    }
                   />
 
                   {/* Form Actions */}
