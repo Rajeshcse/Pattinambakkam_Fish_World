@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Button, Loading, Layout } from '@/components/common';
+import { Card, Loading, Layout } from '@/components/common';
 import { adminService } from '@/services';
 import { User } from '@/types';
 import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useAuth } from '@/hooks/useAuth';
 import { useConfirm } from '@/hooks/useConfirm';
 import { getErrorMessage, logError, isNotFoundError, isAuthorizationError } from '@/utils/errors';
+import {
+  UserDetailHeader,
+  UserAvatarSection,
+  UserInfoDisplay,
+  UserEditForm,
+  UserActionButtons,
+} from '@/organizer/admin/userDetail';
 
 export const AdminUserDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -210,200 +217,48 @@ export const AdminUserDetail: React.FC = () => {
     <Layout>
       <div className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
-          <div className="mb-8 flex justify-between items-center">
-            <div>
-              <h1 className="text-4xl font-bold text-primary-600 mb-2">User Details</h1>
-              <p className="text-gray-600">View and manage user information</p>
-            </div>
-            <Button variant="outline" onClick={() => navigate('/admin/users')}>
-              Back to Users
-            </Button>
-          </div>
+          {/* Header */}
+          <UserDetailHeader />
 
+          {/* User Details Card */}
           <Card>
             {isEditing ? (
-              <form onSubmit={handleUpdateUser} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                  <input
-                    type="text"
-                    value={editForm.name}
-                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                  <input
-                    type="email"
-                    value={editForm.email}
-                    onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                  <input
-                    type="tel"
-                    value={editForm.phone}
-                    onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    required
-                  />
-                </div>
-
-                <div className="flex gap-4">
-                  <Button type="submit" variant="primary" fullWidth>
-                    Save Changes
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    fullWidth
-                    onClick={() => {
-                      setIsEditing(false);
-                      setEditForm({
-                        name: user.name,
-                        email: user.email,
-                        phone: user.phone,
-                      });
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </form>
+              <UserEditForm
+                editForm={editForm}
+                onFormChange={setEditForm}
+                onSubmit={handleUpdateUser}
+                onCancel={() => {
+                  setIsEditing(false);
+                  setEditForm({
+                    name: user.name,
+                    email: user.email,
+                    phone: user.phone,
+                  });
+                }}
+                originalUser={{
+                  name: user.name,
+                  email: user.email,
+                  phone: user.phone,
+                }}
+              />
             ) : (
               <div className="space-y-6">
-                {}
-                <div className="flex justify-center">
-                  <div className="relative">
-                    {user.avatar ? (
-                      <img
-                        src={user.avatar}
-                        alt={user.name}
-                        className="w-32 h-32 rounded-full object-cover border-4 border-primary-200"
-                      />
-                    ) : (
-                      <div className="w-32 h-32 rounded-full bg-primary-200 flex items-center justify-center border-4 border-primary-300 leading-none overflow-hidden">
-                        <span className="text-3xl font-bold text-primary-600 text-center block">
-                          {user.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                {/* Avatar Section */}
+                <UserAvatarSection user={user} />
 
-                {}
-                <div className="space-y-4">
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">User ID</h3>
-                    <p className="mt-1 text-lg text-gray-900 font-mono">{user.id}</p>
-                  </div>
+                {/* User Info Display */}
+                <UserInfoDisplay user={user} />
 
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Full Name</h3>
-                    <p className="mt-1 text-lg text-gray-900">{user.name}</p>
-                  </div>
-
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Email Address</h3>
-                    <p className="mt-1 text-lg text-gray-900">{user.email}</p>
-                  </div>
-
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Phone Number</h3>
-                    <p className="mt-1 text-lg text-gray-900">{user.phone}</p>
-                  </div>
-
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Role</h3>
-                    <div className="mt-1 flex items-center gap-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          user.role === 'admin'
-                            ? 'bg-blue-100 text-blue-800'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}
-                      >
-                        {user.role}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="border-b pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Verification Status</h3>
-                    <div className="mt-1 flex items-center gap-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          user.isVerified
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}
-                      >
-                        {user.isVerified ? 'Verified' : 'Not Verified'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="pb-4">
-                    <h3 className="text-sm font-medium text-gray-500">Member Since</h3>
-                    <p className="mt-1 text-lg text-gray-900">
-                      {new Date(user.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </p>
-                  </div>
-                </div>
-
-                {}
-                <div className="space-y-4 pt-4">
-                  <div className="flex gap-4">
-                    <Button
-                      variant="primary"
-                      size="md"
-                      fullWidth
-                      onClick={() => setIsEditing(true)}
-                    >
-                      Edit User
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="md"
-                      fullWidth
-                      onClick={handleChangeRole}
-                      disabled={user.id === currentUser?.id}
-                    >
-                      {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
-                    </Button>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <Button
-                      variant="outline"
-                      size="md"
-                      fullWidth
-                      onClick={handleToggleVerification}
-                    >
-                      {user.isVerified ? 'Unverify Email' : 'Verify Email'}
-                    </Button>
-                    <Button
-                      variant="danger"
-                      size="md"
-                      fullWidth
-                      onClick={handleDeleteUser}
-                      disabled={user.id === currentUser?.id}
-                    >
-                      Delete User
-                    </Button>
-                  </div>
-                </div>
+                {/* Action Buttons */}
+                <UserActionButtons
+                  isCurrentUser={user.id === currentUser?.id}
+                  userRole={user.role}
+                  isVerified={user.isVerified}
+                  onEditClick={() => setIsEditing(true)}
+                  onChangeRole={handleChangeRole}
+                  onToggleVerification={handleToggleVerification}
+                  onDelete={handleDeleteUser}
+                />
               </div>
             )}
           </Card>

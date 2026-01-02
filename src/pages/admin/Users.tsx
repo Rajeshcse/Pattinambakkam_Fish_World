@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Card, Button, Loading, Layout } from '@/components/common';
+import { Loading, Layout } from '@/components/common';
 import { adminService } from '@/services';
 import { User, PaginationMeta } from '@/types';
 import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useConfirm } from '@/hooks/useConfirm';
 import { getErrorMessage, logError } from '@/utils/errors';
+import {
+  UsersHeader,
+  UsersSearchFilters,
+  SelectedUsersActionBar,
+  UsersList,
+  UsersPagination,
+} from '@/organizer/admin/userManagement';
 
 export const AdminUsers: React.FC = () => {
   const navigate = useNavigate();
@@ -76,6 +83,19 @@ export const AdminUsers: React.FC = () => {
     }
     params.set('page', '1');
     setSearchParams(params);
+  };
+
+  const handleRoleFilterChange = (role: string) => {
+    handleFilterChange('role', role || null);
+  };
+
+  const handleVerifiedFilterChange = (verified: string) => {
+    handleFilterChange('isVerified', verified || null);
+  };
+
+  const handleClearSearch = () => {
+    setSearch('');
+    handleFilterChange('search', null);
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -149,332 +169,55 @@ export const AdminUsers: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return <Loading fullScreen text="Loading users..." />;
-  }
-
   return (
     <Layout>
       <div className="py-6 sm:py-8 md:py-12 px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-600 mb-1 sm:mb-2">
-                User Management
-              </h1>
-              <p className="text-xs sm:text-sm text-gray-600">Manage all users in your system</p>
-            </div>
-            <Button
-              variant="outline"
-              onClick={() => navigate('/admin/dashboard')}
-              className="w-full sm:w-auto"
-            >
-              Back to Dashboard
-            </Button>
-          </div>
+          {/* Header */}
+          <UsersHeader />
 
-          {}
-          <Card className="mb-6">
-            <div className="space-y-3 sm:space-y-4">
-              <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search by name or email..."
-                  className="flex-1 px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-                <Button type="submit" variant="primary" className="w-full sm:w-auto">
-                  Search
-                </Button>
-                {search && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      setSearch('');
-                      handleFilterChange('search', null);
-                    }}
-                    className="w-full sm:w-auto"
-                  >
-                    Clear
-                  </Button>
-                )}
-              </form>
+          {/* Search and Filters */}
+          <UsersSearchFilters
+            search={search}
+            onSearchChange={setSearch}
+            onSearch={handleSearch}
+            roleFilter={roleFilter}
+            onRoleFilterChange={handleRoleFilterChange}
+            verifiedFilter={verifiedFilter}
+            onVerifiedFilterChange={handleVerifiedFilterChange}
+            onClearSearch={handleClearSearch}
+          />
 
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                <div className="flex-1 sm:flex-none">
-                  <label className="text-xs sm:text-sm font-medium text-gray-700 mr-2">Role:</label>
-                  <select
-                    value={roleFilter || ''}
-                    onChange={(e) => handleFilterChange('role', e.target.value || null)}
-                    className="w-full sm:w-auto px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  >
-                    <option value="">All</option>
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
+          {/* Selected Users Action Bar */}
+          <SelectedUsersActionBar
+            selectedCount={selectedUsers.length}
+            onVerify={() => handleBulkAction('verify')}
+            onUnverify={() => handleBulkAction('unverify')}
+            onDelete={() => handleBulkAction('delete')}
+          />
 
-                <div className="flex-1 sm:flex-none">
-                  <label className="text-xs sm:text-sm font-medium text-gray-700 mr-2">
-                    Status:
-                  </label>
-                  <select
-                    value={verifiedFilter || ''}
-                    onChange={(e) => handleFilterChange('isVerified', e.target.value || null)}
-                    className="w-full sm:w-auto px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  >
-                    <option value="">All</option>
-                    <option value="true">Verified</option>
-                    <option value="false">Unverified</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </Card>
+          {/* Loading State */}
+          {loading ? (
+            <Loading fullScreen={false} text="Loading users..." />
+          ) : (
+            <>
+              {/* Users List */}
+              <UsersList
+                users={users}
+                selectedUsers={selectedUsers}
+                onSelectUser={handleSelectUser}
+                onSelectAll={handleSelectAll}
+                loading={loading}
+              />
 
-          {}
-          {selectedUsers.length > 0 && (
-            <Card className="mb-6 bg-blue-50 border-blue-200">
-              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-                <span className="text-xs sm:text-sm font-medium text-gray-700">
-                  {selectedUsers.length} user(s) selected
-                </span>
-                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => handleBulkAction('verify')}
-                    className="flex-1 sm:flex-none text-xs sm:text-sm"
-                  >
-                    Verify Selected
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => handleBulkAction('unverify')}
-                    className="flex-1 sm:flex-none text-xs sm:text-sm"
-                  >
-                    Unverify Selected
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleBulkAction('delete')}
-                    className="flex-1 sm:flex-none text-xs sm:text-sm"
-                  >
-                    Delete Selected
-                  </Button>
-                </div>
-              </div>
-            </Card>
+              {/* Pagination */}
+              <UsersPagination
+                pagination={pagination}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </>
           )}
-
-          {}
-          <Card>
-            {users.length === 0 ? (
-              <p className="text-gray-500 text-center py-8 text-sm">No users found</p>
-            ) : (
-              <>
-                {/* Desktop Table */}
-                <div className="hidden md:block overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead>
-                      <tr>
-                        <th className="px-4 py-3 text-left">
-                          <input
-                            type="checkbox"
-                            checked={users.length > 0 && selectedUsers.length === users.length}
-                            ref={(el) => {
-                              if (el) {
-                                el.indeterminate =
-                                  selectedUsers.length > 0 && selectedUsers.length < users.length;
-                              }
-                            }}
-                            onChange={handleSelectAll}
-                            className="rounded"
-                          />
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Name
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Email
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Phone
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Role
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
-                        </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {users && users.length > 0 ? (
-                        users.map((user) => (
-                          <tr key={user.id} className="hover:bg-gray-50">
-                            <td className="px-4 py-4">
-                              <input
-                                type="checkbox"
-                                checked={selectedUsers.includes(user.id)}
-                                onChange={() => handleSelectUser(user.id)}
-                                className="rounded"
-                              />
-                            </td>
-                            <td className="px-4 py-4 whitespace-nowrap">
-                              <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                            </td>
-                            <td className="px-4 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-500">{user.email}</div>
-                            </td>
-                            <td className="px-4 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-500">{user.phone}</div>
-                            </td>
-                            <td className="px-4 py-4 whitespace-nowrap">
-                              <span
-                                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                  user.role === 'admin'
-                                    ? 'bg-blue-100 text-blue-800'
-                                    : 'bg-gray-100 text-gray-800'
-                                }`}
-                              >
-                                {user.role}
-                              </span>
-                            </td>
-                            <td className="px-4 py-4 whitespace-nowrap">
-                              <span
-                                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                  user.isVerified
-                                    ? 'bg-green-100 text-green-800'
-                                    : 'bg-yellow-100 text-yellow-800'
-                                }`}
-                              >
-                                {user.isVerified ? 'Verified' : 'Unverified'}
-                              </span>
-                            </td>
-                            <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                              <button
-                                onClick={() => navigate(`/admin/users/${user.id}`)}
-                                className="text-primary-600 hover:text-primary-900"
-                              >
-                                View
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan={7} className="px-4 py-4 text-center text-gray-500">
-                            {loading ? 'Loading users...' : 'No users found'}
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Mobile Card View */}
-                <div className="md:hidden space-y-3">
-                  {users && users.length > 0 ? (
-                    users.map((user) => (
-                      <div key={user.id} className="bg-white border border-gray-200 rounded-lg p-4">
-                        <div className="flex items-start justify-between gap-3 mb-3">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <input
-                                type="checkbox"
-                                checked={selectedUsers.includes(user.id)}
-                                onChange={() => handleSelectUser(user.id)}
-                                className="rounded"
-                              />
-                              <h3 className="text-sm font-bold text-gray-900 truncate">
-                                {user.name}
-                              </h3>
-                            </div>
-                            <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                          </div>
-                          <button
-                            onClick={() => navigate(`/admin/users/${user.id}`)}
-                            className="px-3 py-1 bg-primary-600 text-white text-xs font-semibold rounded hover:bg-primary-700 whitespace-nowrap"
-                          >
-                            View
-                          </button>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div>
-                            <span className="text-gray-500">Phone: </span>
-                            <span className="font-medium text-gray-900">{user.phone}</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-500">Role: </span>
-                            <span
-                              className={`font-semibold ${
-                                user.role === 'admin' ? 'text-blue-600' : 'text-gray-600'
-                              }`}
-                            >
-                              {user.role}
-                            </span>
-                          </div>
-                          <div className="col-span-2">
-                            <span
-                              className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
-                                user.isVerified
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-yellow-100 text-yellow-800'
-                              }`}
-                            >
-                              {user.isVerified ? 'Verified' : 'Unverified'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-center text-gray-500 py-8">
-                      {loading ? 'Loading users...' : 'No users found'}
-                    </p>
-                  )}
-                </div>
-
-                {}
-                {pagination && pagination.totalPages > 1 && (
-                  <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <div className="text-xs sm:text-sm text-gray-700 order-2 sm:order-1">
-                      Page {pagination.currentPage} of {pagination.totalPages} (
-                      {pagination.totalUsers} total)
-                    </div>
-                    <div className="flex gap-2 order-1 sm:order-2 w-full sm:w-auto">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={!pagination.hasPrevPage}
-                        className="flex-1 sm:flex-none text-xs sm:text-sm"
-                      >
-                        Previous
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={!pagination.hasNextPage}
-                        className="flex-1 sm:flex-none text-xs sm:text-sm"
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </Card>
         </div>
       </div>
     </Layout>

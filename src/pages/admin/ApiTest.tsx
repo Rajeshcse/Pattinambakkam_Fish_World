@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import { Layout, Button, Card } from '@/components/common';
+import { Layout } from '@/components/common';
 import apiClient from '@/services/api';
 import { config } from '@/config/env';
 import { handleApiError } from '@/utils/errors';
+import { ApiTestHeader, ApiTestActions, ApiTestResults } from '@/organizer/admin/apiTest';
+
+interface TestResult {
+  test: string;
+  success: boolean;
+  data: any;
+  timestamp: string;
+}
 
 export const ApiTest: React.FC = () => {
-  const [testResults, setTestResults] = useState<any[]>([]);
+  const [testResults, setTestResults] = useState<TestResult[]>([]);
   const [loading, setLoading] = useState(false);
 
   const addResult = (test: string, success: boolean, data: any) => {
-    const result = {
+    const result: TestResult = {
       test,
       success,
       data,
@@ -20,7 +28,6 @@ export const ApiTest: React.FC = () => {
 
   const testConnection = async () => {
     setLoading(true);
-
 
     try {
       const response = await fetch(`${config.apiBaseUrl}/api/health`);
@@ -35,7 +42,6 @@ export const ApiTest: React.FC = () => {
       addResult('Backend Health Check', false, `Connection failed: ${errorMessage}`);
     }
 
-    
     const token = localStorage.getItem('accessToken');
     const user = localStorage.getItem('user');
     addResult('Auth Token Check', !!token, {
@@ -44,7 +50,6 @@ export const ApiTest: React.FC = () => {
       tokenLength: token?.length,
     });
 
-    
     if (token) {
       try {
         const response = await apiClient.get('/api/admin/dashboard');
@@ -60,7 +65,6 @@ export const ApiTest: React.FC = () => {
       }
     }
 
-    
     addResult('Environment Check', true, {
       apiBaseUrl: config.apiBaseUrl,
       isDev: config.isDev,
@@ -79,59 +83,18 @@ export const ApiTest: React.FC = () => {
     <Layout>
       <div className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">API Connection Test</h1>
-            <p className="text-gray-600">Debug API connectivity and authentication issues</p>
-          </div>
+          {/* Header */}
+          <ApiTestHeader />
 
-          <Card className="mb-6">
-            <div className="flex gap-4">
-              <Button onClick={testConnection} disabled={loading} variant="primary">
-                {loading ? 'Testing...' : 'Run Tests'}
-              </Button>
-              <Button onClick={clearResults} variant="outline">
-                Clear Results
-              </Button>
-            </div>
-          </Card>
+          {/* Test Actions */}
+          <ApiTestActions
+            loading={loading}
+            onRunTests={testConnection}
+            onClearResults={clearResults}
+          />
 
-          <div className="space-y-4">
-            {testResults.map((result, index) => (
-              <Card key={index}>
-                <div className="flex items-start gap-4">
-                  <div
-                    className={`w-3 h-3 rounded-full mt-1 ${result.success ? 'bg-green-500' : 'bg-red-500'}`}
-                  />
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className="font-medium text-gray-900">{result.test}</h3>
-                      <span className="text-sm text-gray-500">
-                        {new Date(result.timestamp).toLocaleTimeString()}
-                      </span>
-                    </div>
-                    <div
-                      className={`text-sm ${result.success ? 'text-green-700' : 'text-red-700'}`}
-                    >
-                      Status: {result.success ? 'SUCCESS' : 'FAILED'}
-                    </div>
-                    <pre className="mt-2 text-xs bg-gray-50 p-3 rounded overflow-x-auto">
-                      {JSON.stringify(result.data, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          {testResults.length === 0 && (
-            <Card>
-              <div className="text-center py-8">
-                <p className="text-gray-500">
-                  No test results yet. Click "Run Tests" to start debugging.
-                </p>
-              </div>
-            </Card>
-          )}
+          {/* Test Results */}
+          <ApiTestResults results={testResults} />
         </div>
       </div>
     </Layout>
