@@ -1,6 +1,7 @@
 import React from 'react';
 import { StatusBadge, Button, Modal } from '@/components/common';
 import type { Order, OrderStatus } from '@/types';
+import { ORDER_STATUS_OPTIONS } from '@/constants/orderStatus';
 
 interface OrderStatusModalProps {
   isOpen: boolean;
@@ -11,14 +12,6 @@ interface OrderStatusModalProps {
   onConfirm: () => void;
   loading: boolean;
 }
-
-const statusOptions: { value: OrderStatus; label: string }[] = [
-  { value: 'pending', label: 'Pending' },
-  { value: 'confirmed', label: 'Confirmed' },
-  { value: 'out-for-delivery', label: 'Out for Delivery' },
-  { value: 'delivered', label: 'Delivered' },
-  { value: 'cancelled', label: 'Cancelled' },
-];
 
 export const OrderStatusModal: React.FC<OrderStatusModalProps> = ({
   isOpen,
@@ -48,7 +41,7 @@ export const OrderStatusModal: React.FC<OrderStatusModalProps> = ({
             onChange={(e) => onStatusChange(e.target.value as OrderStatus)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500"
           >
-            {statusOptions.map((option) => (
+            {ORDER_STATUS_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

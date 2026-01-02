@@ -1,5 +1,6 @@
 import React from 'react';
 import type { OrderStatus } from '@/types';
+import { ORDER_STATUS_OPTIONS } from '@/constants/orderStatus';
 
 interface OrderFiltersProps {
   searchQuery: string;
@@ -7,14 +8,6 @@ interface OrderFiltersProps {
   filterStatus: OrderStatus | 'all';
   onFilterStatusChange: (status: OrderStatus | 'all') => void;
 }
-
-const statusOptions: { value: OrderStatus; label: string }[] = [
-  { value: 'pending', label: 'Pending' },
-  { value: 'confirmed', label: 'Confirmed' },
-  { value: 'out-for-delivery', label: 'Out for Delivery' },
-  { value: 'delivered', label: 'Delivered' },
-  { value: 'cancelled', label: 'Cancelled' },
-];
 
 export const OrderFilters: React.FC<OrderFiltersProps> = ({
   searchQuery,
@@ -46,7 +39,7 @@ export const OrderFilters: React.FC<OrderFiltersProps> = ({
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500"
           >
             <option value="all">All Orders</option>
-            {statusOptions.map((option) => (
+            {ORDER_STATUS_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

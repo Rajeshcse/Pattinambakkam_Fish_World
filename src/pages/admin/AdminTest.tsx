@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Layout } from '@/components/common';
-import { adminService } from '@/services';
+import { adminService, storageService } from '@/services';
 import { useAuth } from '@/hooks/useAuth';
 import { getErrorMessage, handleApiError } from '@/utils/errors';
+import { StorageKey } from '@/services/storageService';
 import {
   AdminTestHeader,
   AdminTestCurrentUser,
@@ -50,12 +51,14 @@ export const AdminTest: React.FC = () => {
       );
     }
 
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('accessToken');
+    const storedUser = storageService.get(StorageKey.USER);
+    const storedToken = storageService.get(StorageKey.ACCESS_TOKEN);
     addResult(
-      'LocalStorage',
+      'Storage Service',
       storedUser && storedToken ? 'success' : 'error',
-      storedUser && storedToken ? 'Auth data in localStorage' : 'Missing auth data in localStorage',
+      storedUser && storedToken
+        ? 'Auth data in storage service'
+        : 'Missing auth data in storage service',
       {
         hasUser: !!storedUser,
         hasToken: !!storedToken,
