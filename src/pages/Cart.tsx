@@ -13,12 +13,6 @@ const Cart: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const { confirm } = useConfirm();
 
-  React.useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
-
   const handleCheckout = () => {
     navigate('/checkout');
   };

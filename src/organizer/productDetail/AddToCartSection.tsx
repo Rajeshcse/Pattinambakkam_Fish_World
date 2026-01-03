@@ -99,17 +99,6 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
           ← Back
         </Button>
       </div>
-
-      {/* Login Prompt */}
-      {!isAuthenticated && isAvailable && (
-        <p className="text-xs text-gray-500 mt-2 text-center">
-          Please{' '}
-          <button onClick={() => navigate('/login')} className="text-cyan-600 hover:underline">
-            login
-          </button>{' '}
-          to add items to cart
-        </p>
-      )}
     </>
   );
 };

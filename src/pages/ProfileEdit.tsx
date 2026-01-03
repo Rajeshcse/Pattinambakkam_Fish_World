@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { useAuth } from '@/hooks/useAuth';
 import { Button, Loading, Layout } from '@/components/common';
@@ -16,18 +16,31 @@ import { PersonalInfoForm, AddressForm } from '@/organizer/profileEdit';
 export const ProfileEdit: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const toast = useResponsiveToast();
+
+  // Get redirect destination from sessionStorage (set by Register or Login)
+  const redirectTo =
+    sessionStorage.getItem('redirectAfterProfileEdit') || (location.state as any)?.redirectTo;
+
   const { formik, isSubmitting, error, dismissError } = useProfileEditForm({
     onSuccess: () => {
       toast.success('Profile updated successfully!');
-      navigate('/checkout');
+      console.log('✅ ProfileEdit saved. redirectTo:', redirectTo);
+      // Clear redirect flags
+      sessionStorage.removeItem('intendedDestination');
+      sessionStorage.removeItem('redirectAfterProfileEdit');
+      // Redirect to checkout if coming from there, otherwise profile
+      navigate(redirectTo || '/profile');
     },
     onError: (errorMessage) => {
       toast.error(errorMessage);
     },
     onNoChanges: () => {
       toast.info('No changes made');
-      navigate('/checkout');
+      sessionStorage.removeItem('intendedDestination');
+      sessionStorage.removeItem('redirectAfterProfileEdit');
+      navigate(redirectTo || '/profile');
     },
   });
 
