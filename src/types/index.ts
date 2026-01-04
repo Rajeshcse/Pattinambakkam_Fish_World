@@ -392,7 +392,7 @@ export interface CartContextType {
   itemCount: number;
   totalAmount: number;
   loading: boolean;
-  addItem: (productId: string, quantity: number) => Promise<void>;
+  addItem: (product: FishProduct, quantity: number) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   removeItem: (itemId: string) => Promise<void>;
   clearCart: () => Promise<void>;

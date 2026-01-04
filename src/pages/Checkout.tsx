@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout, Loading, Button } from '@/components/common';
-import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import {
   useCheckoutForm,
@@ -14,10 +14,10 @@ import {
 } from '@/organizer/checkout';
 
 const Checkout: React.FC = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const toast = useResponsiveToast();
   const { cart, itemCount, totalAmount, loading: cartLoading } = useCart();
-  const { isAuthenticated } = useAuth();
 
   // Use custom hook for all checkout logic
   const {
@@ -35,15 +35,25 @@ const Checkout: React.FC = () => {
     processOrder,
   } = useCheckoutForm();
 
-  // Authentication and cart validation
+  // Validate cart and address on page load
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    } else if (!cart || cart.items.length === 0) {
+    // Clean up the redirect flag now that we're at checkout
+    sessionStorage.removeItem('intendedDestination');
+
+    // Check if user has address
+    if (!user?.address || Object.keys(user.address).length === 0) {
+      console.log('No address found. Redirecting to profile/edit');
+      sessionStorage.setItem('redirectAfterProfileEdit', '/checkout');
+      toast.warning('Please complete your address information first');
+      navigate('/profile/edit', { state: { redirectTo: '/checkout' } });
+      return;
+    }
+
+    if (!cart || cart.items.length === 0) {
       toast.error('Your cart is empty');
       navigate('/cart');
     }
-  }, [isAuthenticated, cart, navigate, toast]);
+  }, [cart, navigate, toast, user]);
 
   // Loading state
   if (cartLoading || !cart) {
@@ -56,6 +66,7 @@ const Checkout: React.FC = () => {
     );
   }
 
+  // Show checkout form for authenticated users only
   return (
     <Layout>
       <div className="bg-gradient-to-b from-cyan-50 to-white min-h-screen py-8">

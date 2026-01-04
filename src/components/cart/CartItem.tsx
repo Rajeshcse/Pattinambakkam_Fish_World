@@ -46,7 +46,20 @@ export const CartItem: React.FC<CartItemProps> = ({
     }
   };
 
-  const subtotal = item.product.price * item.quantity;
+  const subtotal = (item.product?.price || 0) * item.quantity;
+
+  // Ensure product has required fields
+  if (!item.product || !item.product.name) {
+    console.error('CartItem received invalid product:', item);
+    return (
+      <div className="bg-white rounded-lg border border-red-200 p-3 sm:p-4">
+        <div className="text-red-600 font-semibold">Error: Invalid product data</div>
+        <div className="text-sm text-red-500">Product information is missing.</div>
+      </div>
+    );
+  }
+
+  const product = item.product;
 
   return (
     <div
@@ -57,10 +70,10 @@ export const CartItem: React.FC<CartItemProps> = ({
       <div className="flex gap-3 sm:gap-4">
         {}
         <div className="flex-shrink-0 w-20 sm:w-24 h-20 sm:h-24 rounded-lg overflow-hidden bg-gray-100">
-          {item.product.images && item.product.images[0] ? (
+          {product.images && product.images.length > 0 && product.images[0] ? (
             <img
-              src={item.product.images[0]}
-              alt={item.product.name}
+              src={product.images[0]}
+              alt={product.name}
               className="w-full h-full object-cover"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
@@ -91,9 +104,9 @@ export const CartItem: React.FC<CartItemProps> = ({
           <div className="flex justify-between items-start mb-2 gap-2">
             <div className="min-w-0">
               <h3 className="text-sm sm:text-lg font-semibold text-gray-900 truncate">
-                {item.product.name}
+                {product.name}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-500">{item.product.category}</p>
+              <p className="text-xs sm:text-sm text-gray-500">{product.category}</p>
             </div>
             <button
               onClick={handleRemove}
@@ -119,9 +132,7 @@ export const CartItem: React.FC<CartItemProps> = ({
 
           {}
           <div className="mb-3">
-            <span className="text-base sm:text-lg font-bold text-green-600">
-              ₹{item.product.price}
-            </span>
+            <span className="text-base sm:text-lg font-bold text-green-600">₹{product.price}</span>
             <span className="text-xs sm:text-sm text-gray-500">/500g</span>
           </div>
 
@@ -142,13 +153,13 @@ export const CartItem: React.FC<CartItemProps> = ({
                   value={item.quantity}
                   onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
                   min="1"
-                  max={item.product.stock}
+                  max={product.stock}
                   disabled={updating || disabled}
                   className="w-12 sm:w-16 text-center text-sm sm:text-base font-semibold border border-gray-200 rounded-md py-1 focus:outline-none focus:border-cyan-500 disabled:bg-gray-50"
                 />
                 <button
                   onClick={() => handleQuantityChange(item.quantity + 1)}
-                  disabled={item.quantity >= item.product.stock || updating || disabled}
+                  disabled={item.quantity >= product.stock || updating || disabled}
                   className="w-7 sm:w-8 h-7 sm:h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 disabled:bg-gray-50 disabled:text-gray-300 rounded-md text-sm sm:font-bold transition-colors"
                 >
                   +
@@ -166,14 +177,13 @@ export const CartItem: React.FC<CartItemProps> = ({
 
             {}
             <div className="text-xs text-gray-500 truncate">
-              {formatQuantityToWeight(item.quantity)} / {formatQuantityToWeight(item.product.stock)}{' '}
-              max
+              {formatQuantityToWeight(item.quantity)} / {formatQuantityToWeight(product.stock)} max
             </div>
 
             {}
-            {item.product.stock < 10 && (
+            {product.stock < 10 && (
               <div className="text-xs text-orange-600">
-                ⚠️ Only {formatQuantityToWeight(item.product.stock)} left
+                ⚠️ Only {formatQuantityToWeight(product.stock)} left
               </div>
             )}
           </div>

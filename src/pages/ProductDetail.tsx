@@ -64,16 +64,11 @@ const ProductDetail: React.FC = () => {
   };
 
   const handleAddToCart = async () => {
-    if (!isAuthenticated) {
-      toast.error('Please login to add items to cart');
-      navigate('/login');
-      return;
-    }
-
     if (!product) return;
 
     try {
-      await addItem(product._id, quantity);
+      // Pass the full product object to addItem - no need to fetch later
+      await addItem(product, quantity);
     } catch (error) {}
   };
 

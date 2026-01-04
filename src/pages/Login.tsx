@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useResponsiveToast } from '@/hooks/useResponsiveToast';
 import { Button } from '@/components/common';
@@ -12,18 +12,24 @@ export const Login: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const toast = useResponsiveToast();
+  const [loginSuccess, setLoginSuccess] = useState(false);
+
+  // Redirect will be handled by PublicRoute after login
+  useEffect(() => {
+    if (!loginSuccess) return;
+    if (!user) return;
+
+    setLoginSuccess(false);
+  }, [loginSuccess, user]);
+
   const { formik, isSubmitting, error, dismissError } = useLoginForm({
     onSuccess: () => {
-      navigate('/home');
+      setLoginSuccess(true);
     },
     onError: (errorMessage) => {
       toast.error(errorMessage);
     },
   });
-
-  if (user) {
-    return <Navigate to="/home" replace />;
-  }
 
   return (
     <AuthLayout title="Pattinambakkam_Fish_World" subtitle="Welcome back to your creative journey">

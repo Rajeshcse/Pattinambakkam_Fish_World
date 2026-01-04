@@ -26,13 +26,13 @@ export const EmailVerificationBanner: React.FC<EmailVerificationBannerProps> = (
           </svg>
         </div>
         <div className="ml-3 flex-1">
-          <h3 className="text-sm font-medium text-yellow-800">Email Not Verified</h3>
+          <h3 className="text-sm font-medium text-yellow-800">Phone Number Not Verified</h3>
           <p className="mt-1 text-sm text-yellow-700">
-            Please verify your email address to secure your account and access all features.
+            Please verify your phone number to secure your account and access all features.
           </p>
           <div className="mt-3">
             <Button variant="warning" size="sm" onClick={onVerifyEmail}>
-              Verify Email Now
+              Verify Phone Number Now
             </Button>
           </div>
         </div>
