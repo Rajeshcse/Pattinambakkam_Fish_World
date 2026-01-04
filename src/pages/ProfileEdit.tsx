@@ -8,6 +8,13 @@ import { useProfileEditForm } from '@/hooks/useProfileEditForm';
 import { PersonalInfoForm, AddressForm } from '@/organizer/profileEdit';
 
 /**
+ * Location state shape for ProfileEdit navigation
+ */
+interface ProfileEditLocationState {
+  redirectTo?: string;
+}
+
+/**
  * ProfileEdit Page
  *
  * Edit user profile information and delivery address
@@ -16,12 +23,12 @@ import { PersonalInfoForm, AddressForm } from '@/organizer/profileEdit';
 export const ProfileEdit: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation() as { state: ProfileEditLocationState | null };
   const toast = useResponsiveToast();
 
   // Get redirect destination from sessionStorage (set by Register or Login)
   const redirectTo =
-    sessionStorage.getItem('redirectAfterProfileEdit') || (location.state as any)?.redirectTo;
+    sessionStorage.getItem('redirectAfterProfileEdit') || location.state?.redirectTo;
 
   const { formik, isSubmitting, error, dismissError } = useProfileEditForm({
     onSuccess: () => {

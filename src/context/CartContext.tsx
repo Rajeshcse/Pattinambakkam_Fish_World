@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { Cart, CartContextType } from '@/types';
+import { Cart, CartContextType, FishProduct } from '@/types';
 import { cartService } from '@/services';
 import { getErrorMessage, logError } from '@/utils/errors';
 import { useAuth } from '@/hooks/useAuth';
@@ -107,7 +107,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   }, [isAuthenticated, getGuestCart]);
 
   const addItem = useCallback(
-    async (product: any, quantity: number) => {
+    async (product: FishProduct, quantity: number) => {
       // Allow guest users to add to cart (stored in localStorage)
       if (!isAuthenticated) {
         try {
