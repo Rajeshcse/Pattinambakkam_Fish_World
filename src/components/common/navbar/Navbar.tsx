@@ -66,9 +66,6 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           <div className="hidden md:flex items-center gap-6">
             {/* Navigation Links */}
             <div className="flex items-center gap-1">
-              <NavLink to="/" isActive={location.pathname === '/'} isHomePage={isHomePage}>
-                Home
-              </NavLink>
               <NavLink
                 to="/products"
                 isActive={location.pathname === '/products'}
@@ -88,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
             </div>
 
             {/* Cart Button (Desktop) */}
-            {user && (
+            {(user || itemCount > 0) && (
               <CartButton
                 itemCount={itemCount}
                 isActive={location.pathname === '/cart'}
@@ -107,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
           {/* Mobile Navigation Controls */}
           <div className="flex items-center gap-2 md:hidden">
             {/* Cart Button (Mobile) */}
-            {user && (
+            {(user || itemCount > 0) && (
               <CartButton
                 itemCount={itemCount}
                 isActive={location.pathname === '/cart'}

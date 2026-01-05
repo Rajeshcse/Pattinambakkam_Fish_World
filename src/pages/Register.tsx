@@ -12,10 +12,26 @@ export const Register: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const toast = useResponsiveToast();
-  const { formik, isSubmitting, error, dismissError } = useRegisterForm({
-    onSuccess: () => {
+
+  // Handle redirect after successful registration
+  const handleRegisterSuccess = () => {
+    const intendedDestination = sessionStorage.getItem('intendedDestination');
+    console.log('📝 Register success. intendedDestination:', intendedDestination);
+
+    if (intendedDestination === '/checkout') {
+      // New user needs to complete profile before checkout
+      console.log('→ Redirecting to profile/edit to complete address');
+      // Store in sessionStorage to preserve across navigation
+      sessionStorage.setItem('redirectAfterProfileEdit', '/checkout');
+      navigate('/profile/edit');
+    } else {
+      console.log('→ Redirecting to verify-email');
       navigate('/verify-email');
-    },
+    }
+  };
+
+  const { formik, isSubmitting, error, dismissError } = useRegisterForm({
+    onSuccess: handleRegisterSuccess,
     onError: (errorMessage) => {
       toast.error(errorMessage);
     },
