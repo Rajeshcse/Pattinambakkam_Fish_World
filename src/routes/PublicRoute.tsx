@@ -25,6 +25,6 @@ export const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
     }
   }
 
-  // Default: redirect to profile
-  return <Navigate to="/profile" replace />;
+  // Default: redirect to products
+  return <Navigate to="/products" replace />;
 };

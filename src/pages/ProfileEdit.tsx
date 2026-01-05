@@ -26,28 +26,44 @@ export const ProfileEdit: React.FC = () => {
   const location = useLocation() as { state: ProfileEditLocationState | null };
   const toast = useResponsiveToast();
 
-  // Get redirect destination from sessionStorage (set by Register or Login)
-  const redirectTo =
-    sessionStorage.getItem('redirectAfterProfileEdit') || location.state?.redirectTo;
+  // Cache redirect destination immediately on mount
+  const [redirectTarget, setRedirectTarget] = React.useState<string>('/profile');
+
+  // Effect to get and cache redirect target on component mount
+  React.useEffect(() => {
+    const target =
+      sessionStorage.getItem('redirectAfterProfileEdit') ||
+      location.state?.redirectTo ||
+      '/profile';
+    console.log('📍 ProfileEdit mounted. Setting redirect target:', target);
+    console.log('   From sessionStorage:', sessionStorage.getItem('redirectAfterProfileEdit'));
+    console.log('   From location.state:', location.state?.redirectTo);
+    setRedirectTarget(target);
+  }, [location.state]);
 
   const { formik, isSubmitting, error, dismissError } = useProfileEditForm({
     onSuccess: () => {
       toast.success('Profile updated successfully!');
-      console.log('✅ ProfileEdit saved. redirectTo:', redirectTo);
+      console.log('✅ ProfileEdit saved. Redirecting to:', redirectTarget);
+
       // Clear redirect flags
       sessionStorage.removeItem('intendedDestination');
       sessionStorage.removeItem('redirectAfterProfileEdit');
-      // Redirect to checkout if coming from there, otherwise profile
-      navigate(redirectTo || '/profile');
+
+      // Use the cached redirect target set on mount
+      navigate(redirectTarget, { replace: true });
     },
     onError: (errorMessage) => {
       toast.error(errorMessage);
     },
     onNoChanges: () => {
       toast.info('No changes made');
+      console.log('⚠️ ProfileEdit: No changes made. Redirecting to:', redirectTarget);
+
       sessionStorage.removeItem('intendedDestination');
       sessionStorage.removeItem('redirectAfterProfileEdit');
-      navigate(redirectTo || '/profile');
+
+      navigate(redirectTarget, { replace: true });
     },
   });
 

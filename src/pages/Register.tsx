@@ -19,11 +19,14 @@ export const Register: React.FC = () => {
     console.log('📝 Register success. intendedDestination:', intendedDestination);
 
     if (intendedDestination === '/checkout') {
-      // New user needs to complete profile before checkout
+      // New user from checkout → Go to profile/edit to add address first
       console.log('→ Redirecting to profile/edit to complete address');
-      // Store in sessionStorage to preserve across navigation
+      // Set the redirect flag so ProfileEdit knows to go to checkout after save
       sessionStorage.setItem('redirectAfterProfileEdit', '/checkout');
-      navigate('/profile/edit');
+      // Clear checkout intent
+      sessionStorage.removeItem('intendedDestination');
+      // Navigate to profile/edit with state backup
+      navigate('/profile/edit', { state: { redirectTo: '/checkout' } });
     } else {
       console.log('→ Redirecting to verify-email');
       navigate('/verify-email');
