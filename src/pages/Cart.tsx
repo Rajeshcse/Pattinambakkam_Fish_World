@@ -10,7 +10,6 @@ const Cart: React.FC = () => {
   const navigate = useNavigate();
   const { cart, itemCount, totalAmount, updateQuantity, removeItem, clearCart, loading } =
     useCart();
-  const { isAuthenticated } = useAuth();
   const { confirm } = useConfirm();
 
   const handleCheckout = () => {

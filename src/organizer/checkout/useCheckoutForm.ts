@@ -64,11 +64,6 @@ export const useCheckoutForm = () => {
           address: fullAddress,
         }));
         setAddressLocked(true);
-      } else {
-        toast.warning('Please add your delivery address first', {
-          autoClose: 5000,
-        });
-        navigate('/profile/edit');
       }
     }
   }, [user, navigate, toast]);
@@ -99,6 +94,31 @@ export const useCheckoutForm = () => {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  /**
+   * Check if form is complete (for button gating)
+   * Returns validation status and missing fields info
+   */
+  const getFormCompletionStatus = () => {
+    const missingFields: string[] = [];
+
+    if (!formData.address || formData.address.length < 10) {
+      missingFields.push('Address');
+    }
+
+    if (!formData.deliveryDate) {
+      missingFields.push('Delivery Date');
+    }
+
+    if (!formData.deliveryTime) {
+      missingFields.push('Delivery Time Slot');
+    }
+
+    return {
+      isComplete: missingFields.length === 0,
+      missingFields,
+    };
   };
 
   /**
@@ -288,5 +308,6 @@ ${appUrl}/admin/orders - Manage Orders`;
     setShowConfirmModal,
     handleSubmit,
     processOrder,
+    getFormCompletionStatus,
   };
 };

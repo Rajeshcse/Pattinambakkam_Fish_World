@@ -26,8 +26,13 @@ export const ProfileEdit: React.FC = () => {
   const location = useLocation() as { state: ProfileEditLocationState | null };
   const toast = useResponsiveToast();
 
-  // Cache redirect destination immediately on mount
-  const [redirectTarget, setRedirectTarget] = React.useState<string>('/profile');
+  // Use ref to store redirect target for immediate access in callbacks
+  const redirectTargetRef = React.useRef<string>(
+    sessionStorage.getItem('redirectAfterProfileEdit') || location.state?.redirectTo || '/profile',
+  );
+
+  // Also keep state for consistency
+  const [redirectTarget, setRedirectTarget] = React.useState<string>(redirectTargetRef.current);
 
   // Effect to get and cache redirect target on component mount
   React.useEffect(() => {
@@ -38,32 +43,33 @@ export const ProfileEdit: React.FC = () => {
     console.log('📍 ProfileEdit mounted. Setting redirect target:', target);
     console.log('   From sessionStorage:', sessionStorage.getItem('redirectAfterProfileEdit'));
     console.log('   From location.state:', location.state?.redirectTo);
+    redirectTargetRef.current = target;
     setRedirectTarget(target);
-  }, [location.state]);
+  }, []);
 
   const { formik, isSubmitting, error, dismissError } = useProfileEditForm({
     onSuccess: () => {
       toast.success('Profile updated successfully!');
-      console.log('✅ ProfileEdit saved. Redirecting to:', redirectTarget);
+      console.log('✅ ProfileEdit saved. Redirecting to:', redirectTargetRef.current);
 
       // Clear redirect flags
       sessionStorage.removeItem('intendedDestination');
       sessionStorage.removeItem('redirectAfterProfileEdit');
 
-      // Use the cached redirect target set on mount
-      navigate(redirectTarget, { replace: true });
+      // Use the ref to get the correct redirect target
+      navigate(redirectTargetRef.current, { replace: true });
     },
     onError: (errorMessage) => {
       toast.error(errorMessage);
     },
     onNoChanges: () => {
       toast.info('No changes made');
-      console.log('⚠️ ProfileEdit: No changes made. Redirecting to:', redirectTarget);
+      console.log('⚠️ ProfileEdit: No changes made. Redirecting to:', redirectTargetRef.current);
 
       sessionStorage.removeItem('intendedDestination');
       sessionStorage.removeItem('redirectAfterProfileEdit');
 
-      navigate(redirectTarget, { replace: true });
+      navigate(redirectTargetRef.current, { replace: true });
     },
   });
 

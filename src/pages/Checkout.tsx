@@ -33,27 +33,23 @@ const Checkout: React.FC = () => {
     setShowConfirmModal,
     handleSubmit,
     processOrder,
+    getFormCompletionStatus,
   } = useCheckoutForm();
+
+  // Get form completion status for button gating
+  const { isComplete: isFormComplete, missingFields } = getFormCompletionStatus();
 
   // Validate cart and address on page load
   useEffect(() => {
     // Clean up the redirect flag now that we're at checkout
     sessionStorage.removeItem('intendedDestination');
-
-    // Check if user has address
-    if (!user?.address || Object.keys(user.address).length === 0) {
-      console.log('No address found. Redirecting to profile/edit');
-      sessionStorage.setItem('redirectAfterProfileEdit', '/checkout');
-      toast.warning('Please complete your address information first');
-      navigate('/profile/edit', { state: { redirectTo: '/checkout' } });
-      return;
-    }
+    sessionStorage.removeItem('redirectAfterProfileEdit');
 
     if (!cart || cart.items.length === 0) {
       toast.error('Your cart is empty');
       navigate('/cart');
     }
-  }, [cart, navigate, toast, user]);
+  }, [cart, navigate, toast]);
 
   // Loading state
   if (cartLoading || !cart) {
@@ -82,6 +78,7 @@ const Checkout: React.FC = () => {
                   formData={formData}
                   addressLocked={addressLocked}
                   onInputChange={handleInputChange}
+                  hasAddress={formData.address.length > 0}
                 />
 
                 {/* Delivery Date, Time Slots, and Notes */}
@@ -103,20 +100,39 @@ const Checkout: React.FC = () => {
                 />
 
                 {/* Submit Button */}
-                <Button
-                  type="submit"
-                  disabled={submitting || cart.items.length === 0}
-                  loading={submitting}
-                  variant="primary"
-                  fullWidth
-                  size="lg"
-                >
-                  {submitting
-                    ? 'Creating Order...'
-                    : paymentMethod === 'whatsapp'
-                    ? 'Place Order via WhatsApp'
-                    : 'Continue to Payment'}
-                </Button>
+                <div className="group relative">
+                  <Button
+                    type="submit"
+                    disabled={submitting || cart.items.length === 0 || !isFormComplete}
+                    loading={submitting}
+                    variant="primary"
+                    fullWidth
+                    size="lg"
+                    className={!isFormComplete ? 'opacity-50 cursor-not-allowed' : ''}
+                  >
+                    {submitting
+                      ? 'Creating Order...'
+                      : paymentMethod === 'whatsapp'
+                      ? 'Place Order via WhatsApp'
+                      : 'Continue to Payment'}
+                  </Button>
+
+                  {/* Tooltip for missing fields */}
+                  {!isFormComplete && (
+                    <div className="absolute bottom-full left-0 right-0 mb-2 bg-gray-800 text-white text-sm rounded-lg px-3 py-2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                      <p className="font-semibold mb-1">Please complete:</p>
+                      <ul className="space-y-0.5">
+                        {missingFields.map((field) => (
+                          <li key={field} className="flex items-center">
+                            <span className="mr-2">•</span>
+                            <span>{field}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="absolute top-full left-4 w-2 h-2 bg-gray-800 transform rotate-45 -mt-1"></div>
+                    </div>
+                  )}
+                </div>
               </form>
             </div>
 
