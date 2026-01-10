@@ -11,3 +11,4 @@ export { Modal } from './Modal';
 export { ConfirmDialog } from './ConfirmDialog';
 export { ProductCard } from './ProductCard';
 export { StatusBadge } from './StatusBadge';
+export { default as ShareButton } from './ShareButton';
