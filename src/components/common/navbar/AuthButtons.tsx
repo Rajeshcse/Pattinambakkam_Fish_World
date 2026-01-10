@@ -18,7 +18,7 @@ export const AuthButtons: React.FC<AuthButtonsProps> = ({ isHomePage }) => {
         <button
           className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 ${
             isHomePage
-              ? 'text-white border-2 border-white/50 hover:bg-white hover:text-primary-600'
+              ? 'bg-blue-900/70 text-white hover:bg-blue-900'
               : 'text-primary-600 border-2 border-primary-500 hover:bg-primary-50'
           }`}
         >

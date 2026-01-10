@@ -8,6 +8,7 @@ interface DeliveryAddressFormProps {
   };
   addressLocked: boolean;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  hasAddress: boolean;
 }
 
 /**
@@ -15,13 +16,21 @@ interface DeliveryAddressFormProps {
  *
  * Handles delivery address and phone number input
  * Shows locked state when address is from user profile
+ * Shows clickable state when no address exists
  */
 export const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({
   formData,
   addressLocked,
   onInputChange,
+  hasAddress,
 }) => {
   const navigate = useNavigate();
+
+  const handleAddressClick = () => {
+    // Store checkout as return destination
+    sessionStorage.setItem('redirectAfterProfileEdit', '/checkout');
+    navigate('/profile/edit');
+  };
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -30,43 +39,58 @@ export const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({
       {/* Address Field */}
       <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
-          <label className="block text-sm font-semibold text-gray-700">
-            Delivery Address *
-          </label>
+          <label className="block text-sm font-semibold text-gray-700">Delivery Address *</label>
           {addressLocked && (
             <button
               type="button"
-              onClick={() => navigate('/profile/edit')}
+              onClick={handleAddressClick}
               className="text-sm text-cyan-600 hover:text-cyan-700 font-medium"
             >
-              Edit in Profile →
+              Edit Address →
             </button>
           )}
         </div>
-        <textarea
-          name="address"
-          value={formData.address}
-          onChange={onInputChange}
-          required
-          rows={3}
-          placeholder="Enter your complete delivery address"
-          readOnly={addressLocked}
-          className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500 ${
-            addressLocked ? 'bg-gray-50 cursor-not-allowed' : ''
-          }`}
-        />
-        {addressLocked && (
+
+        {!hasAddress ? (
+          // Read-only clickable field when no address
+          <div
+            onClick={handleAddressClick}
+            className="w-full px-4 py-3 border-2 border-dashed border-cyan-300 rounded-lg bg-cyan-50 cursor-pointer hover:bg-cyan-100 transition-colors"
+          >
+            <p className="text-gray-500 text-center">📍 Tap to add or edit your delivery address</p>
+          </div>
+        ) : (
+          // Textarea when address exists
+          <textarea
+            name="address"
+            value={formData.address}
+            onChange={onInputChange}
+            required
+            rows={3}
+            placeholder="Enter your complete delivery address"
+            readOnly={addressLocked}
+            className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-cyan-500 ${
+              addressLocked ? 'bg-gray-50 cursor-not-allowed' : ''
+            }`}
+          />
+        )}
+
+        {!hasAddress && (
+          <p className="text-xs text-cyan-600 mt-2 font-medium">
+            ℹ️ Click above to add your delivery address
+          </p>
+        )}
+
+        {addressLocked && hasAddress && (
           <p className="text-xs text-gray-500 mt-1">
-            This address is from your profile. Click "Edit in Profile" to update it.
+            This address is from your profile. Click "Edit Address" to update it.
           </p>
         )}
       </div>
 
       {/* Phone Field */}
       <div className="mb-4">
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Phone Number *
-        </label>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
         <input
           type="tel"
           name="phone"
